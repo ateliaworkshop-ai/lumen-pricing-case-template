@@ -56,6 +56,24 @@ h3,
   font-size: 28px;
 }
 
+.rec-headline {
+  margin: 0 0 18px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.rec-body p {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.rec-body p:last-child {
+  margin-bottom: 0;
+}
+
 .placeholder {
   margin: 0;
   color: var(--muted);
@@ -399,9 +417,195 @@ td strong {
   background: linear-gradient(90deg, #e6dfd2, #2c4a38);
 }
 
+.van-westendorp .tool-header h2 {
+  font-size: 32px;
+}
+
+.vw-range {
+  margin: 0 0 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 16px 18px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 22px;
+}
+
+.vw-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.vw-swatch::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.vw-swatch.too-cheap::before {
+  background: #8a3d28;
+}
+
+.vw-swatch.cheap::before {
+  background: #c47b17;
+}
+
+.vw-swatch.expensive::before {
+  background: #5b7a66;
+}
+
+.vw-swatch.too-expensive::before {
+  background: #2c4a38;
+}
+
+.vw-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.vw-band {
+  fill: #dce8df;
+  opacity: 0.65;
+}
+
+.vw-line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.vw-too-cheap {
+  stroke: #8a3d28;
+}
+
+.vw-cheap {
+  stroke: #c47b17;
+}
+
+.vw-expensive {
+  stroke: #5b7a66;
+}
+
+.vw-too-expensive {
+  stroke: #2c4a38;
+}
+
+.vw-pmc,
+.vw-pme,
+.vw-ipp,
+.vw-opp {
+  fill: var(--ink);
+}
+
+.vw-mark-label {
+  fill: var(--ink);
+  font-size: 10px;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+
+.vw-points {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.vw-points strong {
+  color: var(--ink);
+}
+
+.cockpit-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.9fr) 1.2fr;
+  gap: 20px;
+}
+
+.cockpit-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 20px;
+}
+
+.cockpit-panel h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.cockpit-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.cockpit-panel input[type="range"] {
+  width: 100%;
+  margin: 10px 0 4px;
+}
+
+.cockpit-price-readout {
+  margin: 0 0 12px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 28px;
+}
+
+.cockpit-share {
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.cockpit-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.assumption {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #8a5a14;
+}
+
+.cockpit-select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px;
+  font: inherit;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.gives-up {
+  margin-top: 24px;
+}
+
+.gives-up h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.gives-up p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 @media (max-width: 700px) {
   .tradeoff,
   .tradeoff-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .cockpit-grid {
     grid-template-columns: 1fr;
   }
 
