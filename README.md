@@ -1,49 +1,103 @@
-# LUMEN — Pricing & Go-to-Market Case — ATELIA × ESCP Starter Kit
+# LUMEN Germany Market Entry Simulator
 
-> This repo is your starting point. Codex should read this README first.
+An interactive web application to explore pricing and channel mix strategies for LUMEN's entry into the German functional beverage market.
 
-## How to Get Started
+## Overview
 
-This repo is a **template**: click **Fork** (top right), not "Use this template." Fork keeps your copy linked back to the original — that's what lets ATELIA automatically find every team's work, without anyone needing to send a link.
+This simulator addresses the core decision challenge from the LUMEN case: determining the optimal price and channel mix given the tension between:
+- **CMO's Objective**: Premium positioning (higher price, brand building)
+- **CFO's Objective**: Fast payback (lower price, higher volume, quicker margin recovery)
 
-Once you've forked it, add your teammates as collaborators (Settings → Collaborators on your fork), and leave the visibility as **Public** — don't switch it to Private, or we lose access to your work.
+The tool enables users to test different strategies and see their impact on contribution margin, revenue, volume, and payback period.
 
-## The Brief
+## Features
 
-The full brief is in `LUMEN_Case_Brief.md` (and a formatted version in `LUMEN_Case_Brief.pdf`). The data is in the `data/` folder, documented in `data/README_data.md`.
+- Interactive price selection (predefined points or custom range)
+- Dynamic channel budget allocation (DTC Online, Retail/Grocery, Gym & Office)
+- Scenario testing (Base Case, Optimistic, Pessimistic)
+- Real-time financial projections and key metrics
+- Visualizations showing trade-offs between different objectives
+- Detailed channel-by-channel breakdowns
+- Scenario comparison analysis
+- Launch timing analysis with seasonal demand and competitor promotion insights
+- Interactive visualization of monthly seasonality and competitor promotional activity
 
-One-sentence summary: LUMEN, a functional beverage brand, has to decide **price, positioning, and launch channel(s)** to enter the German market — with no real German sales data (LUMEN isn't there yet), and a real trade-off between the CMO (premium positioning) and the CFO (fast return on investment).
+## Data Sources
 
-## Rule #1 — Prompt Logging Is Automatic
+The simulator integrates data from all 12 case exhibits:
+- `price_test_results.csv`: Price sensitivity and acceptance data
+- `channel_economics.csv`: Channel-specific economics and margins
+- `cost_breakdown.csv`: Per-unit cost structure
+- `marketing_funnel_monthly.csv`: Marketing performance metrics (CAC, LTV)
+- `market_context.csv`: Market sizing and regional data
+- `seasonality_and_weather.csv`: Monthly demand seasonality index and temperature correlations
+- `competitor_price_history.csv`: Competitive pricing history and promotional activity over time
 
-This repo includes an `AGENTS.md` file, which Codex reads automatically at the start of every task — you don't need to open or edit it. The first time you talk to Codex in a new conversation, it will ask for your **student ID**. Answer it, and from then on Codex logs every prompt you send it — automatically, verbatim — into `prompts/<your-id>/session-*.md`, without you doing anything else.
+## Installation
 
-**You don't fill this in by hand.** Your only job is to make sure that log file gets committed along with your code changes — Codex writes it, but you still need to include it when your pull request is created and merged. If a pull request only has code changes and no updated log file, that's a sign something didn't get logged.
+1. Clone or download this repository
+2. Install the required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Ensure you're in the project directory (where `streamlit_app.py` is located)
 
-Why we're doing this: it's not to monitor you. It's what lets us understand, at the end, how you reasoned — not just what you produced. A good result reached with a clear prompt from the start isn't scored the same as a good result reached after fifteen random attempts.
+## Usage
 
-## Rule #2 — Before You Code, Ask Yourself These Questions
+Run the simulator with:
+```bash
+streamlit run streamlit_app.py
+```
 
-Check each box in this README as you go — not at the end, while you're working:
+The application will open in your default web browser at `http://localhost:8501`.
 
-- [ ] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
-- [ ] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
-- [ ] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
-- [ ] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
-- [ ] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
-- [ ] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
-- [ ] **Explainability**: can you explain to someone non-technical why your tool does what it does?
-- [ ] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
+### How to Use
 
-These questions aren't here to slow you down — they're part of what's being evaluated. A thoughtful answer to one of them is worth more than an extra feature nobody asked for.
+1. **Select Price**: Choose from the three candidate prices (€1.79, €2.19, €2.59) or set a custom price
+2. **Allocate Budget**: Distribute your marketing budget across the three channels (must sum to 100%)
+3. **Adjust Scenario**: Test Base Case, Optimistic (+20% acceptance), or Pessimistic (-20% acceptance)
+4. **Set Launch Timing**: Choose launch month to factor in seasonality and competitor activity
+5. **Explore Results**: Use the tabs to view detailed breakdowns, visualizations, scenario comparisons, and launch timing analysis
+6. **Iterate**: Adjust parameters to explore different strategies and their outcomes
 
-## What We Expect at the End
+## Project Structure
 
-- A prototype that works, even partially, on the LUMEN case
-- Your prompt log (`prompts/<your-id>/session-*.md`) committed and up to date
-- A short paragraph below, written in business language (not technical), explaining what you did and why
-- A live URL (Vercel or similar) if you deployed it — not required to still get credit, but expected if you did
+- `streamlit_app.py`: Main application code
+- `requirements.txt`: Python dependencies
+- `data/`: Folder containing all CSV data files
+- `DATA_ANALYSIS_FINDINGS.md`: Preliminary data analysis (for reference)
+- `LUMEN_Case_Brief.md`: The original case brief
 
-## Our Approach
+## Key Metrics Explained
 
-*[To be filled in by the team at the end.]*
+- **Contribution Margin**: (Revenue - Variable Costs) / Revenue
+- **Payback Period**: Months required to recover customer acquisition costs
+- **LTV:CAC Ratio**: Lifetime Value to Customer Acquisition Cost ratio (>1 indicates profitable customer acquisition)
+- **Expected Volume**: Forecasted unit sales based on TAM, channel allocation, acceptance rates, and seasonal factors
+
+## Customization
+
+To modify the simulation assumptions:
+- Modify TAM assumptions by changing the market segment used in the code
+- Adjust scenario multipliers in the sidebar controls
+- Edit channel definitions in the calculation functions
+
+## Deployment
+
+The app can be deployed for free using:
+- [Streamlit Community Cloud](https://streamlit.io/cloud)
+- Heroku
+- AWS, Azure, or Google Cloud platforms
+
+Simply push the repository to GitHub and connect it to Streamlit Cloud for instant deployment.
+
+## Notes
+
+- All calculations are based on the provided case data
+- The simulator makes reasonable extrapolations where German-specific data is unavailable
+- Intended for educational and exploratory purposes in the case competition context
+- Results should be interpreted as directional guidance rather than precise forecasts
+
+---
+
+*Built for the ATELIA × ESCP LUMEN Pricing & Go-to-Market Case*
