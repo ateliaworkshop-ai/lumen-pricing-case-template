@@ -211,6 +211,8 @@ with control_cols[2]:
     )
 st.markdown("</div>", unsafe_allow_html=True)
 
+compare_button_slot = st.empty()
+
 
 selected_test = price_tests[
     (price_tests["price_eur"] == selected_price)
@@ -228,6 +230,33 @@ monthly_profit = unit_contribution * survey_frequency * seasonality_factor
 payback_months = blended_cac / monthly_profit if monthly_profit else float("inf")
 clv = monthly_profit * CUSTOMER_LIFETIME_MONTHS
 clv_cac_ratio = clv / blended_cac if blended_cac else 0
+
+scenario_key = (round(float(selected_price), 2), selected_channel, selected_month)
+scenario_label = f"EUR {selected_price:.2f} · {selected_channel} · {month_names[selected_month]}"
+scenario_metrics = {
+    "Profit per unit": unit_contribution,
+    "Monthly profit per customer": monthly_profit,
+    "Break-even on CAC": payback_months,
+    "CLV vs CAC": clv,
+    "CLV:CAC ratio": clv_cac_ratio,
+}
+if "comparison_scenarios" not in st.session_state:
+    st.session_state.comparison_scenarios = []
+
+with compare_button_slot:
+    if st.button("Compare on a histogram", type="secondary", width="stretch"):
+        already_added = any(item["key"] == scenario_key for item in st.session_state.comparison_scenarios)
+        if already_added:
+            st.info("This scenario is already in the comparison.")
+        else:
+            st.session_state.comparison_scenarios.append(
+                {
+                    "key": scenario_key,
+                    "label": scenario_label,
+                    **scenario_metrics,
+                }
+            )
+            st.success(f"Added {scenario_label} to the comparison.")
 
 passed = [
     clv_cac_ratio >= LTV_CAC_TARGET,
@@ -256,6 +285,42 @@ kpi_cards = [
 for column, card in zip(kpi_cols, kpi_cards):
     with column:
         st.markdown(card, unsafe_allow_html=True)
+
+
+if st.session_state.comparison_scenarios:
+    st.divider()
+    st.subheader("Scenario comparison")
+    st.markdown(
+        '<div class="small-note">Choose the outputs to compare. Each bar represents one saved price, channel, and launch-month scenario.</div>',
+        unsafe_allow_html=True,
+    )
+    comparison_options = list(scenario_metrics.keys())
+    selected_metrics = st.multiselect(
+        "Outputs to compare",
+        comparison_options,
+        default=comparison_options[:2],
+    )
+    if selected_metrics:
+        comparison_df = pd.DataFrame(st.session_state.comparison_scenarios).rename(
+            columns={"label": "Scenarios"}
+        )
+        st.bar_chart(
+            comparison_df,
+            x="Scenarios",
+            y=selected_metrics,
+            x_label="Scenarios",
+            y_label="Value",
+            stack=False,
+            height=420,
+            width="stretch",
+        )
+        st.caption("Values retain their original units: EUR, months, or ratio.")
+    else:
+        st.info("Select at least one output to display the histogram.")
+
+    if st.button("Clear comparison", type="secondary"):
+        st.session_state.comparison_scenarios = []
+        st.rerun()
 
 st.markdown(
     f'<div class="verdict {verdict_class}">'
