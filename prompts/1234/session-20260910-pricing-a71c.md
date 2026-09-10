@@ -44,3 +44,10 @@ Recorded: 2026-09-10 (original message timestamp unavailable)
 add this to Tommaso's branch
 
 Result: Prepared Germany competitor pricing note for the Tommaso branch, including source references and limitations, together with this session log.
+
+## Entry 8
+Recorded: 2026-09-10 (original message timestamp unavailable)
+
+now merge Tommaso's branch to the main branch
+
+Result: Confirmed PR #2 targets main and is mergeable; recorded explicit authorization to merge. Merge outcome is tracked by PR #2 on GitHub.
