@@ -1,0 +1,85 @@
+<section id="lumen-launch-timeline" aria-labelledby="lumen-launch-title">
+  <style>
+    #lumen-launch-timeline { color: var(--foreground); }
+    #lumen-launch-timeline .timeline { display: grid; grid-template-columns: 8.5rem repeat(4, minmax(0, 1fr)); gap: .55rem .7rem; align-items: stretch; }
+    #lumen-launch-timeline .period { padding: .35rem 0; border-bottom: 1px solid var(--border); font-weight: 500; }
+    #lumen-launch-timeline .lane-label { padding: .75rem .35rem .5rem 0; font-weight: 500; }
+    #lumen-launch-timeline .launch { min-height: 7.8rem; padding: .7rem; border-left: .32rem solid var(--viz-series-1); background: color-mix(in srgb, var(--viz-series-1) 12%, transparent); }
+    #lumen-launch-timeline .launch.performance { border-left-color: var(--viz-series-2); background: color-mix(in srgb, var(--viz-series-2) 12%, transparent); }
+    #lumen-launch-timeline .launch.commuter { border-left-color: var(--viz-series-3); background: color-mix(in srgb, var(--viz-series-3) 12%, transparent); }
+    #lumen-launch-timeline .launch.student { border-left-color: var(--viz-series-4); background: color-mix(in srgb, var(--viz-series-4) 12%, transparent); }
+    #lumen-launch-timeline .launch h3 { margin: 0 0 .25rem; font: inherit; font-weight: 500; }
+    #lumen-launch-timeline .launch p { margin: 0 0 .35rem; }
+    #lumen-launch-timeline .launch small { color: var(--muted-foreground); }
+    #lumen-launch-timeline .span-2 { grid-column: span 2; }
+    #lumen-launch-timeline .span-3 { grid-column: span 3; }
+    #lumen-launch-timeline .gate { border-left: .32rem solid var(--border); padding: .7rem; background: color-mix(in srgb, var(--muted) 45%, transparent); }
+    #lumen-launch-timeline .legend { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: .9rem; color: var(--muted-foreground); }
+    #lumen-launch-timeline .key { display: inline-block; width: .8rem; height: .8rem; margin-right: .3rem; vertical-align: -.1rem; background: var(--viz-series-1); }
+    #lumen-launch-timeline .key.performance { background: var(--viz-series-2); }
+    #lumen-launch-timeline .key.commuter { background: var(--viz-series-3); }
+    #lumen-launch-timeline .key.student { background: var(--viz-series-4); }
+    @media (max-width: 600px) {
+      #lumen-launch-timeline .timeline { grid-template-columns: 1fr; gap: .45rem; }
+      #lumen-launch-timeline .period { display: none; }
+      #lumen-launch-timeline .lane-label { padding-top: 1rem; border-top: 1px solid var(--border); }
+      #lumen-launch-timeline .span-2, #lumen-launch-timeline .span-3 { grid-column: auto; }
+      #lumen-launch-timeline .launch::before, #lumen-launch-timeline .gate::before { display: block; margin-bottom: .35rem; color: var(--muted-foreground); font-size: .85em; }
+      #lumen-launch-timeline .wellness::before { content: "Months 0–3"; }
+      #lumen-launch-timeline .performance::before { content: "Months 3–6"; }
+      #lumen-launch-timeline .commuter::before { content: "Months 6–9"; }
+      #lumen-launch-timeline .student::before { content: "Months 9–12"; }
+    }
+  </style>
+  <h2 id="lumen-launch-title">Potential Lumen launch sequence</h2>
+  <div class="timeline" role="img" aria-label="A four-phase launch timeline: clean focus for urban wellness professionals first, performance for gym-goers second, a commuter trial next, then a student value pack.">
+    <div></div>
+    <div class="period">Months 0–3</div>
+    <div class="period">Months 3–6</div>
+    <div class="period">Months 6–9</div>
+    <div class="period">Months 9–12</div>
+
+    <div class="lane-label">Lead launch</div>
+    <article class="launch wellness span-2">
+      <h3>Clean Focus</h3>
+      <p>Adaptogen-led, coffee-replacement drink for Urban Wellness Professionals. Start with DTC and selected grocery in Berlin, Hamburg, and Munich.</p>
+      <small>Best fit: 9.1/10 purchase intent, 3.6/10 price sensitivity, 7.6 purchases/month. Quotes favor clean ingredients and adaptogens; taste must avoid “medicine.”</small>
+    </article>
+    <div class="gate span-2"><strong>Gate:</strong> Repeat-rate and taste acceptance prove the premium proposition before wider distribution.</div>
+
+    <div class="lane-label">Second wave</div>
+    <div></div>
+    <article class="launch performance span-2">
+      <h3>Performance Refresh</h3>
+      <p>Great-tasting functional energy for Fitness &amp; Gym-Goers. Pilot gym/office placement with a clear performance reason to earn shelf space.</p>
+      <small>8.0/10 purchase intent; Gym &amp; Office has 37 surveyed fitness respondents. Quote signal: outperform VoltFit on taste, not packaging alone.</small>
+    </article>
+    <div class="gate"><strong>Gate:</strong> Demonstrate velocity per gym and performance/taste preference against VoltFit.</div>
+
+    <div class="lane-label">Channel expansion</div>
+    <div></div>
+    <div></div>
+    <article class="launch commuter">
+      <h3>Station Trial</h3>
+      <p>Single-SKU, grab-and-go test at station kiosks; lead with an unmistakable taste cue and easy first trial.</p>
+      <small>Commuters show 6.7/10 intent, but quotes say kiosk availability and taste determine adoption; habit is the core barrier.</small>
+    </article>
+    <div class="gate"><strong>Gate:</strong> Kiosk conversion and repeat purchase justify a permanent commuter line.</div>
+
+    <div class="lane-label">Value expansion</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <article class="launch student">
+      <h3>Exam-Period Value Pack</h3>
+      <p>Limited multi-pack or promotion for Students &amp; Budget-Conscious shoppers, timed around exams and sold through grocery/DTC.</p>
+      <small>Students have the lowest intent (5.5/10) and highest price sensitivity (7.9/10). Quotes explicitly ask for exam-period promotions and reject €2.50/can.</small>
+    </article>
+  </div>
+  <div class="legend" aria-label="Launch category legend">
+    <span><i class="key"></i>Premium wellness</span>
+    <span><i class="key performance"></i>Performance</span>
+    <span><i class="key commuter"></i>Convenience trial</span>
+    <span><i class="key student"></i>Value-led</span>
+  </div>
+</section>
