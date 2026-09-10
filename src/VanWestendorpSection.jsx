@@ -9,7 +9,7 @@ function formatEur(value) {
   return `€${value.toFixed(2)}`;
 }
 
-function CurveChart({ view }) {
+function CurveChart({ view, recPrice = 2.19, premiumBand = { min: 2.1, max: 2.7 } }) {
   const width = 800;
   const height = 280;
   const pad = { top: 18, right: 16, bottom: 36, left: 42 };
@@ -19,6 +19,7 @@ function CurveChart({ view }) {
   const x0 = prices[0];
   const x1 = prices[prices.length - 1];
   const x = (p) => pad.left + ((p - x0) / (x1 - x0)) * innerW;
+  const xc = (p) => x(Math.min(x1, Math.max(x0, p)));
   const y = (pct) => pad.top + innerH - (pct / 100) * innerH;
 
   function line(series) {
@@ -78,6 +79,36 @@ function CurveChart({ view }) {
           height={innerH}
         />
       )}
+      {premiumBand && (
+        <rect
+          className="vw-premium"
+          x={xc(premiumBand.min)}
+          y={pad.top}
+          width={Math.max(0, xc(premiumBand.max) - xc(premiumBand.min))}
+          height={innerH}
+        />
+      )}
+      <line
+        className="vw-rec-line"
+        x1={xc(recPrice)}
+        x2={xc(recPrice)}
+        y1={pad.top}
+        y2={pad.top + innerH}
+      />
+      <text
+        className="vw-rec-label"
+        x={
+          xc(recPrice) > pad.left + innerW - 110
+            ? xc(recPrice) - 8
+            : xc(recPrice) + 6
+        }
+        y={pad.top + 14}
+        textAnchor={
+          xc(recPrice) > pad.left + innerW - 110 ? "end" : "start"
+        }
+      >
+        Our rec. {formatEur(recPrice)}
+      </text>
       <polyline className="vw-line vw-too-cheap" points={line(curves.tooCheap)} />
       <polyline className="vw-line vw-cheap" points={line(curves.cheap)} />
       <polyline className="vw-line vw-expensive" points={line(curves.expensive)} />
@@ -111,7 +142,7 @@ export default function VanWestendorpSection() {
       : "Acceptable range could not be computed from the intersections.";
 
   return (
-    <section className="van-westendorp" aria-labelledby="vw-title">
+    <section id="van-westendorp" className="van-westendorp" aria-labelledby="vw-title">
       <header className="tool-header">
         <p className="eyebrow">Price analysis · Van Westendorp</p>
         <h2 id="vw-title">Price Sensitivity Meter</h2>
@@ -125,12 +156,21 @@ export default function VanWestendorpSection() {
       <p className="vw-range" role="status">
         {range}
       </p>
+      <p className="limitation">
+        Our recommended €2.19 sits above the PMC–PME band
+        {view.pme ? ` (PME ${formatEur(view.pme.price)})` : ""}. That is
+        deliberate: the green band is generic-drink comfort; the terracotta
+        strip is the VoltFit / Root &amp; Rise premium shelf (€2.1–€2.7). We
+        price for that strip, not for the survey midpoint.
+      </p>
 
       <div className="vw-legend" aria-hidden="true">
         <span className="vw-swatch too-cheap">Too cheap</span>
         <span className="vw-swatch cheap">Cheap</span>
         <span className="vw-swatch expensive">Expensive</span>
         <span className="vw-swatch too-expensive">Too expensive</span>
+        <span className="vw-swatch rec-line">Our rec. €2.19</span>
+        <span className="vw-swatch premium-band">Premium shelf €2.1–€2.7</span>
       </div>
 
       <CurveChart view={view} />
@@ -161,7 +201,8 @@ export default function VanWestendorpSection() {
       {view.oppNote && <p className="data-note">{view.oppNote}</p>}
 
       <p className="stat-note">
-        Shaded band is the acceptable range (PMC–PME). Built from{" "}
+        Green band is the acceptable range (PMC–PME); terracotta strip is the
+        premium competitor shelf. Built from{" "}
         {view.n} of {view.read} respondents in price_sensitivity_survey.csv
         {view.droppedMissing || view.droppedOrder
           ? ` (dropped ${view.droppedMissing} incomplete, ${view.droppedOrder} with thresholds out of order).`

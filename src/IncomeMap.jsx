@@ -15,7 +15,7 @@ function fillFor(t) {
   return `rgb(${mix[0]}, ${mix[1]}, ${mix[2]})`;
 }
 
-export default function IncomeMap({ regions }) {
+export default function IncomeMap({ regions, highlightCode }) {
   const [geographies, setGeographies] = useState(null);
   const [mapError, setMapError] = useState(null);
   const [hover, setHover] = useState(null);
@@ -76,8 +76,10 @@ export default function IncomeMap({ regions }) {
       <h3>Income map</h3>
       <p className="stat-note">
         Darker green = higher disposable income per inhabitant. Hover a region
-        for the figure. Same live Eurostat values as the table — no region is
-        singled out as the launch pick.
+        for the figure. Same live Eurostat values as the table.{" "}
+        {highlightCode
+          ? "The team first region is outlined in terracotta."
+          : "No region is singled out as the launch pick."}
       </p>
       <div className="map-frame">
         <ComposableMap
@@ -101,8 +103,8 @@ export default function IncomeMap({ regions }) {
                     key={geo.rsmKey}
                     geography={geo}
                     fill={region ? fillFor(t) : "#ddd8cc"}
-                    stroke="#f4efe6"
-                    strokeWidth={0.7}
+                    stroke={code === highlightCode ? "#8a3d28" : "#f4efe6"}
+                    strokeWidth={code === highlightCode ? 1.8 : 0.7}
                     onMouseEnter={() =>
                       setHover(
                         region

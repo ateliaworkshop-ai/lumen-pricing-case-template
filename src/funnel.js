@@ -48,6 +48,28 @@ export function buildFunnelView(csvText) {
     byMonth.set(row.month, bucket);
   }
 
+  const byChannelMap = new Map();
+  for (const row of clean) {
+    const bucket = byChannelMap.get(row.channel) ?? {
+      channel: row.channel,
+      spend: 0,
+      customers: 0,
+    };
+    bucket.spend += row.spend_eur;
+    bucket.customers += row.conversions_customers_acquired;
+    byChannelMap.set(row.channel, bucket);
+  }
+
+  const byChannel = [...byChannelMap.values()]
+    .map((b) => ({
+      channel: b.channel,
+      spend: b.spend,
+      customers: b.customers,
+      cac: b.customers > 0 ? b.spend / b.customers : 0,
+      spendShare: spend > 0 ? b.spend / spend : 0,
+    }))
+    .sort((a, b) => b.spendShare - a.spendShare);
+
   const series = [...byMonth.values()]
     .sort((a, b) => a.month.localeCompare(b.month))
     .map((bucket) => {
@@ -69,6 +91,7 @@ export function buildFunnelView(csvText) {
     meetsTarget: ltvCac >= TARGET_LTV_CAC,
     series,
     marketingChannels: [...new Set(clean.map((r) => r.channel))].sort(),
+    byChannel,
     dataNote: {
       rowsRead: rows.length,
       rowsUsed: clean.length,
