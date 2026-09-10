@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import priceTestCsv from "../data/price_test_results.csv?raw";
 import channelEconomicsCsv from "../data/channel_economics.csv?raw";
 import PaybackSection from "./PaybackSection.jsx";
+import LaunchLocationSection from "./LaunchLocationSection.jsx";
+import SectionErrorBoundary from "./SectionErrorBoundary.jsx";
 import { parseCsv } from "./csv.js";
 
 const PRICES = [1.79, 2.19, 2.59];
@@ -194,6 +196,10 @@ export default function App() {
 
       <hr className="section-rule" />
       <PaybackSection />
+      <hr className="section-rule" />
+      <SectionErrorBoundary>
+        <LaunchLocationSection />
+      </SectionErrorBoundary>
     </div>
   );
 }
