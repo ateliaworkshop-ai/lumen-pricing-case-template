@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import priceTestCsv from "../data/price_test_results.csv?raw";
 import channelEconomicsCsv from "../data/channel_economics.csv?raw";
+import PaybackSection from "./PaybackSection.jsx";
 import { parseCsv } from "./csv.js";
 
 const PRICES = [1.79, 2.19, 2.59];
@@ -190,6 +191,9 @@ export default function App() {
           </section>
         </>
       )}
+
+      <hr className="section-rule" />
+      <PaybackSection />
     </div>
   );
 }
