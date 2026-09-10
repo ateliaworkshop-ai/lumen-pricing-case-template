@@ -8,7 +8,13 @@ from typing import Any
 import streamlit as st
 
 from acceptance import acceptance_rate
-from constants import BLENDED_CAC_EUR, DEFAULT_PAYBACK_HORIZON_MONTHS, SALES_CHANNELS
+from constants import (
+    ACCEPTANCE_FLOOR,
+    BLENDED_CAC_EUR,
+    DEFAULT_PAYBACK_HORIZON_MONTHS,
+    SALES_CHANNELS,
+    TARGET_LTV_CAC,
+)
 from data_loader import cleaning_report
 from economics import (
     customer_lifetime_months,
@@ -18,6 +24,7 @@ from economics import (
     payback_months,
     unit_contribution,
 )
+from verdict import verdict
 
 
 LAUNCH_MONTHS = tuple(range(1, 13))
@@ -103,10 +110,40 @@ if launch_month not in LAUNCH_MONTHS:
 
 if input_error:
     st.warning(input_error)
-st.info(
-    f"Selected payback horizon: {payback_horizon} months. "
-    "It will be used by the verdict layer in the next milestone."
-)
+
+
+st.subheader("Decision verdict")
+if price is None or input_error is not None:
+    st.info("Verdict unavailable until all scenario inputs are valid.")
+else:
+    verdict_result, verdict_error = _safe_call(
+        verdict,
+        price,
+        channel,
+        launch_month,
+        payback_horizon,
+    )
+    if verdict_error:
+        st.info(f"Verdict not available yet: {verdict_error}")
+    elif verdict_result is None:
+        st.info("Verdict unavailable for this scenario.")
+    else:
+        st.metric("Verdict", verdict_result.get("verdict", "Unavailable"))
+        st.write("Decided by:", verdict_result.get("decided_by", "Unavailable"))
+        st.write("Reasons:")
+        reasons = verdict_result.get("reasons")
+        if reasons:
+            for reason in reasons:
+                st.write(f"- {reason}")
+        else:
+            st.write("Unavailable")
+        st.write("Trade-off:", verdict_result.get("trade_off", "Unavailable"))
+        st.write("Returned metrics:")
+        returned_metrics = verdict_result.get("metrics")
+        if returned_metrics:
+            st.json(returned_metrics)
+        else:
+            st.write("Unavailable")
 
 
 st.subheader("Scenario economics")
@@ -181,6 +218,10 @@ with assumption_columns[1]:
     st.caption("The acquisition cost assumption used by the economics module.")
 if lifetime_error:
     st.info(lifetime_error)
+st.caption(
+    "Display-only thresholds from the model contract: "
+    f"target LTV:CAC {TARGET_LTV_CAC}; acceptance floor {ACCEPTANCE_FLOOR:.2f}."
+)
 
 
 with st.expander("Data quality and cleaning report"):
