@@ -7,12 +7,13 @@ alwaysApply: true
 
 ## Communication
 
-- Match the user's language.
+- Infer the language of each current user message and reply in that language unless asked otherwise; do not force Italian.
+- Write all persistent repository content in English, including code, comments, docstrings, UI text, documentation, Issues, pull requests, and commit messages.
+- Prompt logs are the only language exception: preserve every prompt verbatim in its original language and never add translations inside prompt entries.
 - Use plain language and short sentences.
 - Explain each Git term when first used.
 - Before each Git action, state what it does and why.
 - After each action, state result and next step.
-- Never assume the user understands terminal output.
 
 ## Before changing files
 
