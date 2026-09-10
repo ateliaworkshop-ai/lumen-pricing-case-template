@@ -19,6 +19,8 @@ The tool enables users to test different strategies and see their impact on cont
 - Visualizations showing trade-offs between different objectives
 - Detailed channel-by-channel breakdowns
 - Scenario comparison analysis
+- Launch timing analysis with seasonal demand and competitor promotion insights
+- Interactive visualization of monthly seasonality and competitor promotional activity
 
 ## Data Sources
 
@@ -26,9 +28,10 @@ The simulator integrates data from all 12 case exhibits:
 - `price_test_results.csv`: Price sensitivity and acceptance data
 - `channel_economics.csv`: Channel-specific economics and margins
 - `cost_breakdown.csv`: Per-unit cost structure
-- `marketing_funnel_monthly.csv`: Marketing performance metrics
+- `marketing_funnel_monthly.csv`: Marketing performance metrics (CAC, LTV)
 - `market_context.csv`: Market sizing and regional data
-- `seasonality_and_weather.csv`: Seasonal demand patterns
+- `seasonality_and_weather.csv`: Monthly demand seasonality index and temperature correlations
+- `competitor_price_history.csv`: Competitive pricing history and promotional activity over time
 
 ## Installation
 
@@ -48,6 +51,15 @@ streamlit run streamlit_app.py
 
 The application will open in your default web browser at `http://localhost:8501`.
 
+### How to Use
+
+1. **Select Price**: Choose from the three candidate prices (€1.79, €2.19, €2.59) or set a custom price
+2. **Allocate Budget**: Distribute your marketing budget across the three channels (must sum to 100%)
+3. **Adjust Scenario**: Test Base Case, Optimistic (+20% acceptance), or Pessimistic (-20% acceptance)
+4. **Set Launch Timing**: Choose launch month to factor in seasonality and competitor activity
+5. **Explore Results**: Use the tabs to view detailed breakdowns, visualizations, scenario comparisons, and launch timing analysis
+6. **Iterate**: Adjust parameters to explore different strategies and their outcomes
+
 ## Project Structure
 
 - `streamlit_app.py`: Main application code
@@ -61,13 +73,12 @@ The application will open in your default web browser at `http://localhost:8501`
 - **Contribution Margin**: (Revenue - Variable Costs) / Revenue
 - **Payback Period**: Months required to recover customer acquisition costs
 - **LTV:CAC Ratio**: Lifetime Value to Customer Acquisition Cost ratio (>1 indicates profitable customer acquisition)
-- **Expected Volume**: Forecasted unit sales based on TAM, channel allocation, and acceptance rates
+- **Expected Volume**: Forecasted unit sales based on TAM, channel allocation, acceptance rates, and seasonal factors
 
 ## Customization
 
 To modify the simulation assumptions:
-- Adjust `seasonal_factor` in the code to test different months
-- Modify TAM assumptions by changing the market segment used
+- Modify TAM assumptions by changing the market segment used in the code
 - Adjust scenario multipliers in the sidebar controls
 - Edit channel definitions in the calculation functions
 

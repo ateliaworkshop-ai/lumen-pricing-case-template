@@ -44,6 +44,15 @@ def load_market_context():
 def load_seasonality():
     return pd.read_csv('data/seasonality_and_weather.csv')
 
+@st.cache_data
+def load_competitor_promo():
+    df = pd.read_csv('data/competitor_price_history.csv')
+    df['month'] = pd.to_datetime(df['month'])
+    df['month_num'] = df['month'].dt.month
+    # Count promotions per month (across all competitors where promo_active is True)
+    promo_by_month = df[df['promo_active']].groupby('month_num').size().reindex(range(1,13), fill_value=0)
+    return promo_by_month
+
 # Load all data
 price_df = load_price_test_data()
 channel_df = load_channel_economics()
@@ -51,6 +60,7 @@ cost_df = load_cost_breakdown()
 marketing_df = load_marketing_funnel()
 market_df = load_market_context()
 seasonality_df = load_seasonality()
+competitor_promo = load_competitor_promo()
 
 # Calculate average COGS per unit
 cogs_per_unit = cost_df[cost_df['cost_component'] == 'TOTAL COGS per unit (330ml can)']['cost_per_unit_eur'].values[0]
@@ -150,9 +160,17 @@ acceptance_multiplier = {
     "Pessimistic (-20% acceptance)": 0.8
 }[scenario]
 
-# Calculate market size adjustment (optional seasonal factor)
-current_month = 6  # June as default for demonstration
-seasonal_factor = seasonality_df[seasonality_df['month'] == current_month]['seasonality_index_100_avg'].values[0] / 100
+# Launch timing
+st.sidebar.subheader("Launch Timing")
+launch_month = st.sidebar.selectbox(
+    "Launch Month",
+    options=list(range(1, 13)),
+    format_func=lambda x: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][x-1],
+    index=5  # June (0-indexed 5) as default
+)
+
+# Get seasonal factor for selected launch month
+seasonal_factor = seasonality_df[seasonality_df['month'] == launch_month]['seasonality_index_100_avg'].values[0] / 100
 
 # Main calculation function
 def calculate_outcomes(price, dtc_pct, retail_pct, gym_pct, acceptance_mult, seasonal_adj):
@@ -304,7 +322,7 @@ with col8:
     )
 
 # Tabs for detailed analysis
-tab1, tab2, tab3, tab4 = st.tabs(["📈 Channel Breakdown", "📊 Visualizations", "📋 Scenario Comparison", "ℹ️ About"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["📈 Channel Breakdown", "📊 Visualizations", "📋 Scenario Comparison", "🗓️ Launch Timing", "ℹ️ About"])
 
 with tab1:
     st.subheader("Channel Performance Breakdown")
@@ -334,7 +352,7 @@ with tab1:
             'expected_contribution_eur': 'Expected Contribution'
         })
 
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
+        st.dataframe(display_df, hide_index=True)
 
         # Summary calculations
         st.subheader("Summary by Channel")
@@ -422,7 +440,7 @@ with tab2:
         fig.update_xaxes(title_text="Volume (K units)", row=2, col=2)
         fig.update_yaxes(title_text="Contribution Margin (%)", row=2, col=2)
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, )
 
         # Additional chart: Acceptance vs Price
         st.subheader("Price Sensitivity Analysis")
@@ -448,7 +466,7 @@ with tab2:
             yaxis_title="Acceptance Rate (%)",
             hovermode='x'
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, )
 
 with tab3:
     st.subheader("Scenario Comparison")
@@ -477,7 +495,7 @@ with tab3:
         })
 
     comparison_df = pd.DataFrame(comparison_data)
-    st.dataframe(comparison_df, use_container_width=True, hide_index=True)
+    st.dataframe(comparison_df, hide_index=True)
 
     # Highlight best scenario for each metric
     st.write("**Best Performing Scenario by Metric:**")
@@ -498,6 +516,116 @@ with tab3:
         st.metric("Fastest Payback", best_payback if best_payback != "N/A" else "N/A")
 
 with tab4:
+    st.subheader("Launch Timing Analysis")
+
+    # Create seasonality and competitor promotion visualization
+    months = list(range(1, 13))
+    month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    # Get seasonality index for all months
+    seasonality_idx = []
+    for m in months:
+        idx = seasonality_df[seasonality_df['month'] == m]['seasonality_index_100_avg'].values[0]
+        seasonality_idx.append(idx)
+
+    # Get competitor promo counts for all months (already loaded as competitor_promo series)
+    promo_counts = [competitor_promo.get(m, 0) for m in months]
+
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Add seasonality index line
+    fig.add_trace(
+        go.Scatter(x=month_names, y=seasonality_idx, mode='lines+markers',
+                   name='Seasonality Index (100=avg)', line=dict(color='blue', width=3)),
+        secondary_y=False,
+    )
+
+    # Add competitor promotions as bars
+    fig.add_trace(
+        go.Bar(x=month_names, y=promo_counts, name='Competitor Promo Count',
+               marker_color='rgba(255, 165, 0, 0.6)', opacity=0.7),
+        secondary_y=True,
+    )
+
+    # Highlight selected launch month
+    selected_month_name = month_names[launch_month-1]
+    fig.add_trace(
+        go.Scatter(x=[selected_month_name], y=[seasonality_idx[launch_month-1]],
+                   mode='markers', marker=dict(size=15, color='red', symbol='star'),
+                   name=f'Selected Launch Month: {selected_month_name}'),
+        secondary_y=False,
+    )
+
+    # Update layout
+    fig.update_layout(
+        title_text="Seasonal Demand & Competitor Activity by Month",
+        xaxis_title="Month",
+        hovermode='x unified',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+
+    # Set y-axes titles
+    fig.update_yaxes(title_text="Seasonality Index (<b>100</b> = Average Demand)", secondary_y=False)
+    fig.update_yaxes(title_text="Competitor Promo Count (number of promotions)", secondary_y=True, showgrid=False)
+
+    st.plotly_chart(fig, width='stretch')
+
+    # Launch timing insights
+    st.subheader("Launch Timing Insights")
+
+    # Find best months based on seasonality
+    best_seasonality_month = months[seasonality_idx.index(max(seasonality_idx))]
+    best_seasonality_name = month_names[best_seasonality_month-1]
+
+    # Find months with lowest competitor activity (for less competition)
+    min_promo_month = months[promo_counts.index(min(promo_counts))]
+    min_promo_name = month_names[min_promo_month-1]
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.info(f"""
+        **Peak Demand Month**: {best_seasonality_name}
+        (Seasonality Index: {max(seasonality_idx):.0f})
+        """)
+    with col2:
+        st.info(f"""
+        **Lowest Competitor Activity**: {min_promo_name}
+        (Promotions: {min(promo_counts)})
+        """)
+
+    # Provide recommendation based on selected month
+    selected_seasonality = seasonality_idx[launch_month-1]
+    selected_promo = promo_counts[launch_month-1]
+
+    if selected_seasonality >= max(seasonality_idx) * 0.9:  # Top 10% of seasonality
+        seasonality_assessment = "Excellent timing - near peak demand season"
+    elif selected_seasonality >= max(seasonality_idx) * 0.7:  # Top 30%
+        seasonality_assessment = "Good timing - above average demand season"
+    else:
+        seasonality_assessment = "Suboptimal timing - below average demand season"
+
+    if selected_promo <= min(promo_counts) + 1:  # Nearly minimum promo activity
+        competition_assessment = "Favorable - low competitor promotional activity"
+    elif selected_promo <= max(promo_counts) * 0.5:  # Less than half of max
+        competition_assessment = "Moderate - some competitor promotional activity"
+    else:
+        competition_assessment = "Challenging - high competitor promotional activity"
+
+    st.success(f"""
+    **Launch Timing Assessment for {selected_month_name}:**
+    - Seasonality: {seasonality_assessment}
+    - Competition: {competition_assessment}
+    """)
+
+    # Show how launch month affects the seasonal factor in the simulation
+    st.write(f"""
+    **Impact on Simulation**:
+    The selected launch month ({selected_month_name}) applies a seasonal factor of {seasonal_factor:.2f}
+    to the base acceptance rates in the financial projections above.
+    """)
+
+with tab5:
     st.subheader("About This Simulator")
     st.markdown("""
     ### Purpose
@@ -516,6 +644,7 @@ with tab4:
     - **marketing_funnel_monthly.csv**: Channel-specific CAC, LTV, and marketing performance
     - **market_context.csv**: Germany functional beverage market sizing and regional breakdown
     - **seasonality_and_weather.csv**: Monthly demand seasonality and temperature correlations
+    - **competitor_price_history.csv**: Competitive pricing and promotion activity over time
     """)
 
     st.markdown("""
@@ -524,11 +653,12 @@ with tab4:
     2. **Acceptance Rates**: Based on survey data from `price_test_results.csv`, adjustable by scenario
     3. **Channel Allocation**: Marketing budget distributed across DTC Online, Retail/Grocery, and Gym & Office
     4. **Seasonal Adjustment**: Optional monthly demand variation based on `seasonality_and_weather.csv`
-    5. **Financial Metrics**:
+    5. **Competitor Activity**: Promotion frequency derived from `competitor_price_history.csv`
+    6. **Financial Metrics**:
        - CAC and LTV averaged from most recent 6 months of marketing data
        - Payback period = (CAC × Total Customers) / Total Contribution
        - LTV:CAC ratio from marketing funnel data
-    6. **Volume Calculation**: Expected units = TAM × Channel Allocation × Acceptance Rate
+    7. **Volume Calculation**: Expected units = TAM × Channel Allocation × Acceptance Rate × Seasonal Factor
     """)
 
     st.markdown("""
@@ -536,15 +666,17 @@ with tab4:
     1. **Select Price**: Choose from the three candidate prices (€1.79, €2.19, €2.59) or set a custom price
     2. **Allocate Budget**: Distribute your marketing budget across the three channels (must sum to 100%)
     3. **Adjust Scenario**: Test Base Case, Optimistic (+20% acceptance), or Pessimistic (-20% acceptance)
-    4. **Explore Results**: Use the tabs to view detailed breakdowns, visualizations, and scenario comparisons
-    5. **Iterate**: Adjust parameters to explore different strategies and their outcomes
+    4. **Set Launch Timing**: Choose launch month to factor in seasonality and competitor activity
+    5. **Explore Results**: Use the tabs to view detailed breakdowns, visualizations, scenario comparisons, and launch timing analysis
+    6. **Iterate**: Adjust parameters to explore different strategies and their outcomes
     """)
 
     st.markdown("""
     ### Insights to Explore
     - How does channel mix affect the price/volume trade-off?
     - Which channel combination maximizes contribution vs. revenue vs. speed of payback?
-    - How sensitive are outcomes to changes in acceptance rates?
+    - How sensitive are outcomes to changes in acceptance rates and seasonal factors?
+    - What is the optimal launch timing considering both demand seasonality and competitor activity?
     - What is the optimal strategy for different objectives (margin maximization vs. market share vs. quick ROI)?
     """)
 
