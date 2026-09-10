@@ -336,6 +336,69 @@ td strong {
   font-family: "IBM Plex Sans", system-ui, sans-serif;
 }
 
+.table-scroll {
+  overflow-x: auto;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.table-scroll table {
+  border: 0;
+}
+
+.launch .tool-header h2 {
+  font-size: 32px;
+}
+
+.launch-note {
+  margin: 0 0 16px;
+}
+
+.choropleth {
+  margin-top: 32px;
+}
+
+.choropleth h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.map-frame {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.map-tooltip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  margin: 0;
+  background: #1c2418;
+  color: #f6f3ec;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.map-legend-bar {
+  flex: 1;
+  height: 8px;
+  background: linear-gradient(90deg, #e6dfd2, #2c4a38);
+}
+
 @media (max-width: 700px) {
   .tradeoff,
   .tradeoff-3 {
