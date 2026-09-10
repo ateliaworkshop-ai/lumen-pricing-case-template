@@ -149,16 +149,12 @@ else:
 st.sidebar.subheader("Scenario Assumptions")
 scenario = st.sidebar.selectbox(
     "Scenario",
-    ["Base Case", "Optimistic (+20% acceptance)", "Pessimistic (-20% acceptance)"],
+    ["Base Case"],
     index=0
 )
 
 # Acceptance rate adjustment based on scenario
-acceptance_multiplier = {
-    "Base Case": 1.0,
-    "Optimistic (+20% acceptance)": 1.2,
-    "Pessimistic (-20% acceptance)": 0.8
-}[scenario]
+acceptance_multiplier = 1.0
 
 # Launch timing
 st.sidebar.subheader("Launch Timing")
@@ -471,13 +467,12 @@ with tab2:
 with tab3:
     st.subheader("Scenario Comparison")
 
-    # Compare base, optimistic, and pessimistic scenarios
-    scenarios = ["Base Case", "Optimistic (+20% acceptance)", "Pessimistic (-20% acceptance)"]
+    # Compare scenarios (currently only Base Case available)
+    scenarios = ["Base Case"]
     scenario_results = {}
 
     for sc in scenarios:
-        mult = {"Base Case": 1.0, "Optimistic (+20% acceptance)": 1.2, "Pessimistic (-20% acceptance)": 0.8}[sc]
-        scenario_results[sc] = calculate_outcomes(selected_price, dtc_pct, retail_pct, gym_pct, mult, seasonal_factor)
+        scenario_results[sc] = calculate_outcomes(selected_price, dtc_pct, retail_pct, gym_pct, 1.0, seasonal_factor)
 
     # Create comparison dataframe
     comparison_data = []
@@ -497,7 +492,7 @@ with tab3:
     comparison_df = pd.DataFrame(comparison_data)
     st.dataframe(comparison_df, hide_index=True)
 
-    # Highlight best scenario for each metric
+    # Highlight best scenario for each metric (only Base Case available)
     st.write("**Best Performing Scenario by Metric:**")
     best_contrib = max(scenarios, key=lambda x: scenario_results[x]['total_contribution'])
     best_margin = max(scenarios, key=lambda x: scenario_results[x]['total_margin_pct'])
