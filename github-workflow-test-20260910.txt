@@ -1,0 +1,3 @@
+GitHub workflow test file.
+
+Created to verify the pull → branch → commit → push → pull request → merge workflow.
