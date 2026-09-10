@@ -3,7 +3,7 @@ import priceTestCsv from "../data/price_test_results.csv?raw";
 import economicsCsv from "../data/channel_economics.csv?raw";
 import costCsv from "../data/cost_breakdown.csv?raw";
 import funnelCsv from "../data/marketing_funnel_monthly.csv?raw";
-import surveyCsv from "../data/customer_survey.csv?raw";
+import surveyCsv from "../data/customer_survey_anonymised.csv?raw";
 import vwCsv from "../data/price_sensitivity_survey.csv?raw";
 import {
   DATA_LTV_MONTHS,
@@ -13,8 +13,16 @@ import {
   loadCockpitData,
   simulateCockpit,
   computeGivesUp,
+  weightedMarketingCac,
+  defaultMarketingShares,
+  tensionScores,
+  vsRecommendation,
+  REC,
+  sensitivityTornado,
 } from "./cockpit.js";
 import { fetchGermanHouseholdIncome } from "./eurostat.js";
+import seasonCsv from "../data/seasonality_and_weather.csv?raw";
+import { buildSeasonality, seasonIndexFor } from "./exhibits.js";
 
 const data = loadCockpitData({
   priceTestCsv,
@@ -44,22 +52,59 @@ function formatRatio(value) {
   return `${value.toFixed(2)}:1`;
 }
 
-const DEFAULT_SHARES = {
-  "DTC Online": 15,
-  "Retail/Grocery": 45,
-  "Gym & Office": 40,
-};
+function signedDelta(value, format) {
+  if (!Number.isFinite(value)) return "—";
+  const pretty = format(Math.abs(value));
+  if (Math.abs(value) < 1e-9) return pretty;
+  return `${value > 0 ? "+" : "−"}${pretty}`;
+}
+
+function Tornado({ rows }) {
+  const max = Math.max(...rows.map((r) => Math.abs(r.dRatio)), 0.01);
+  return (
+    <ul className="tornado">
+      {rows.map((row) => {
+        const width = (Math.abs(row.dRatio) / max) * 50;
+        const positive = row.dRatio >= 0;
+        return (
+          <li key={row.label}>
+            <span className="tornado-label">{row.label}</span>
+            <div className="tornado-track" aria-hidden="true">
+              <span
+                className={positive ? "is-pos" : "is-neg"}
+                style={{
+                  width: `${width}%`,
+                  marginLeft: positive ? "50%" : `${50 - width}%`,
+                }}
+              />
+            </div>
+            <span className="tornado-val">
+              {positive ? "+" : "−"}
+              {Math.abs(row.dRatio).toFixed(2)}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+const DEFAULT_SHARES = REC.channelShares;
+const DEFAULT_MKT = defaultMarketingShares(data.marketingCacs);
+const season = buildSeasonality(seasonCsv);
 
 const DEFAULT_REGION = "DE21";
 
 export default function CockpitSection() {
   const [price, setPrice] = useState(2.19);
   const [shares, setShares] = useState(DEFAULT_SHARES);
+  const [mktShares, setMktShares] = useState(DEFAULT_MKT);
   const [year1Budget, setYear1Budget] = useState(400000);
   const [lifetimeMonths, setLifetimeMonths] = useState(DATA_LTV_MONTHS);
   const [regions, setRegions] = useState([]);
   const [regionCode, setRegionCode] = useState(DEFAULT_REGION);
   const [regionError, setRegionError] = useState(null);
+  const [launchMonth, setLaunchMonth] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -75,6 +120,11 @@ export default function CockpitSection() {
     return () => controller.abort();
   }, []);
 
+  const cac = useMemo(
+    () => weightedMarketingCac(data.marketingCacs, mktShares),
+    [mktShares],
+  );
+
   const sim = useMemo(
     () =>
       simulateCockpit(data, {
@@ -82,8 +132,27 @@ export default function CockpitSection() {
         channelShares: shares,
         year1Budget,
         lifetimeMonths,
+        cac,
       }),
-    [price, shares, year1Budget, lifetimeMonths],
+    [price, shares, year1Budget, lifetimeMonths, cac],
+  );
+
+  const recSim = useMemo(
+    () =>
+      simulateCockpit(data, {
+        price: REC.price,
+        channelShares: REC.channelShares,
+        year1Budget,
+        lifetimeMonths: REC.lifetimeMonths,
+        cac: weightedMarketingCac(data.marketingCacs, DEFAULT_MKT),
+      }),
+    [year1Budget],
+  );
+
+  const scores = useMemo(() => tensionScores(sim, data), [sim]);
+  const vs = useMemo(
+    () => vsRecommendation(sim, recSim, regionCode, mktShares, DEFAULT_MKT),
+    [sim, recSim, regionCode, mktShares],
   );
 
   const givesUp = useMemo(
@@ -91,28 +160,51 @@ export default function CockpitSection() {
     [price, sim.fundedNames],
   );
 
+  const tornado = useMemo(
+    () =>
+      sensitivityTornado(data, {
+        price,
+        channelShares: shares,
+        year1Budget,
+        lifetimeMonths,
+        cac,
+      }),
+    [price, shares, year1Budget, lifetimeMonths, cac],
+  );
+
   const selectedRegion = regions.find((r) => r.code === regionCode);
+  const seasonIndex = seasonIndexFor(season.months, launchMonth);
+  const seasonalUnits = sim.units * (seasonIndex / 100);
+  const seasonalNet = seasonalUnits * sim.blendContrib - sim.budget;
 
   function setShare(channel, value) {
     setShares((prev) => ({ ...prev, [channel]: Number(value) }));
+  }
+
+  function setMktShare(channel, value) {
+    setMktShares((prev) => ({ ...prev, [channel]: Number(value) }));
   }
 
   const shareTotal = SALES_CHANNELS.reduce(
     (s, ch) => s + (Number(shares[ch]) || 0),
     0,
   );
+  const mktTotal = data.marketingCacs.reduce(
+    (s, row) => s + (Number(mktShares[row.channel]) || 0),
+    0,
+  );
 
   return (
-    <section className="cockpit" aria-labelledby="cockpit-title">
+    <section id="cockpit" className="cockpit" aria-labelledby="cockpit-title">
       <header className="tool-header">
         <p className="eyebrow">Stress-test · Decision cockpit</p>
         <h2 id="cockpit-title">Decision cockpit</h2>
         <p className="lede">
-          Stress-test a price, a sales-channel spend mix, and two labelled
-          assumptions (year-1 budget and customer lifetime). CAC is the blended
-          marketing CAC from the funnel file — it is not measured per
-          DTC/Retail/Gym, so the same CAC is applied to every funded sales
-          channel.
+          Stress-test a price, a sales-channel spend mix, and the marketing
+          mix that actually sets CAC. Two labelled assumptions (year-1 budget
+          and customer lifetime) sit below. CAC is not measured per
+          DTC/Retail/Gym — the same blended marketing CAC is applied to every
+          funded sales channel.
         </p>
         <p className="stat-note">
           Opens on our recommended settings (€2.19, Retail/Grocery 45% and Gym
@@ -120,6 +212,25 @@ export default function CockpitSection() {
           lifetime). Adjust any input to stress-test it.
         </p>
       </header>
+
+      <div className="hero-kpis" aria-label="Live recommendation-scale outputs">
+        <div>
+          <span>Acceptance</span>
+          <strong>{sim.acceptance.toFixed(1)}%</strong>
+        </div>
+        <div>
+          <span>CAC payback</span>
+          <strong>{formatMonths(sim.blendPayback)}</strong>
+        </div>
+        <div>
+          <span>LTV:CAC</span>
+          <strong>{formatRatio(sim.blendRatio)}</strong>
+        </div>
+        <div>
+          <span>Year-1 net</span>
+          <strong>{formatEur(sim.year1Net, 0)}</strong>
+        </div>
+      </div>
 
       <div className="cockpit-grid">
         <div className="cockpit-panel">
@@ -175,6 +286,35 @@ export default function CockpitSection() {
           <p className={Math.abs(shareTotal - 100) > 0.5 ? "assumption warn" : "stat-note"}>
             Split total: {shareTotal.toFixed(0)}%
             {Math.abs(shareTotal - 100) > 0.5 ? " — renormalized to 100% in outputs." : ""}
+          </p>
+
+          <label className="cockpit-label" style={{ marginTop: 18 }}>
+            Marketing mix (this is the CAC lever)
+          </label>
+          <p className="stat-note">
+            Historical spend shares from marketing_funnel_monthly.csv. Shift
+            away from Retail Sampling toward Referral to move LTV:CAC — sales
+            channels above do not change CAC.
+          </p>
+          {data.marketingCacs.map((row) => (
+            <div key={row.channel} className="cockpit-share">
+              <span>
+                {row.channel} · {Math.round(mktShares[row.channel] || 0)}% · CAC{" "}
+                {formatEur(row.cac)}
+              </span>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={mktShares[row.channel] || 0}
+                onChange={(e) => setMktShare(row.channel, e.target.value)}
+              />
+            </div>
+          ))}
+          <p className={Math.abs(mktTotal - 100) > 0.5 ? "assumption warn" : "stat-note"}>
+            Mix total: {mktTotal.toFixed(0)}% · live blended CAC {formatEur(cac)}
+            {Math.abs(mktTotal - 100) > 0.5 ? " — renormalized for the weighted CAC." : ""}
           </p>
 
           <label className="cockpit-label" htmlFor="cockpit-budget">
@@ -238,10 +378,103 @@ export default function CockpitSection() {
               ))}
             </select>
           )}
+
+          <label className="cockpit-label" htmlFor="cockpit-month">
+            Launch month (seasonality)
+          </label>
+          <p className="assumption">
+            Assumption — German seasonality index applied only to year-1 units.
+            Does not change CAC or LTV:CAC. There are no German LUMEN sales.
+          </p>
+          <select
+            id="cockpit-month"
+            className="cockpit-select"
+            value={launchMonth}
+            onChange={(e) => setLaunchMonth(Number(e.target.value))}
+          >
+            <option value={0}>Full-year average (index 100)</option>
+            {season.months.map((m) => (
+              <option key={m.month} value={m.month}>
+                {m.label} · index {m.index} · {m.temp}°C
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="cockpit-panel">
           <h3>Live outputs</h3>
+          <div className={vs.onRec ? "vs-rec is-on" : "vs-rec is-off"}>
+            {vs.onRec ? (
+              <p>
+                On the team recommendation (€2.19 · Retail 45 / Gym 40 / DTC 15
+                · Oberbayern · historical marketing mix). Move a slider to see
+                what you give up.
+              </p>
+            ) : (
+              <>
+                <p>
+                  Away from our recommendation (€2.19 · Retail 45 / Gym 40 /
+                  DTC 15 · Oberbayern · historical marketing mix).
+                </p>
+                <p>
+                  Price {signedDelta(vs.dPrice, (n) => formatEur(n))} ·
+                  acceptance{" "}
+                  {signedDelta(vs.dAcceptance, (n) => `${n.toFixed(1)} pts`)} ·
+                  contribution {signedDelta(vs.dContrib, (n) => formatEur(n))} ·
+                  LTV:CAC {signedDelta(vs.dRatio, (n) => n.toFixed(2))} · CAC{" "}
+                  {signedDelta(vs.dCac, (n) => formatEur(n))}
+                </p>
+                <button
+                  type="button"
+                  className="chip"
+                  onClick={() => {
+                    setPrice(REC.price);
+                    setShares({ ...REC.channelShares });
+                    setMktShares({ ...DEFAULT_MKT });
+                    setLifetimeMonths(REC.lifetimeMonths);
+                    setRegionCode(REC.regionCode);
+                  }}
+                >
+                  Back to recommendation
+                </button>
+              </>
+            )}
+          </div>
+
+          <div className="tension" aria-label="CMO versus CFO scores">
+            <h3>CMO vs CFO tension</h3>
+            <div className="tension-row">
+              <div>
+                <p className="tension-label">CFO · payback</p>
+                <div className="meter" aria-hidden="true">
+                  <span style={{ width: `${scores.cfo}%` }} />
+                </div>
+                <p className="stat-note">
+                  {scores.cfo}/100 · LTV:CAC {formatRatio(sim.blendRatio)} vs{" "}
+                  {LTV_CAC_TARGET}:1
+                </p>
+              </div>
+              <div>
+                <p className="tension-label">CMO · premium</p>
+                <div className="meter is-cmo" aria-hidden="true">
+                  <span style={{ width: `${scores.cmo}%` }} />
+                </div>
+                <p className="stat-note">
+                  {scores.cmo}/100 · Urban Wellness comfort{" "}
+                  {(scores.urbanComfort * 100).toFixed(0)}% at {formatEur(price)}
+                </p>
+              </div>
+            </div>
+            <p className="stat-note">
+              CFO scores the 3:1 hurdle. CMO scores whether the price sits on
+              the VoltFit / Root &amp; Rise shelf (€2.1–€2.7) and how many
+              Urban Wellness respondents still have it inside their personal
+              Van Westendorp band. At €2.19 that target segment is comfortable
+              even though the all-respondent PMC–PME band ends near €1.97 —
+              the generic gap is not their gap.
+            </p>
+          </div>
+
           <div className="cockpit-kpis">
             <article className="stat">
               <p className="stat-kicker">Volume</p>
@@ -282,9 +515,12 @@ export default function CockpitSection() {
               {Math.round(sim.customers).toLocaleString("en-GB")} customers ·{" "}
               {Math.round(sim.units).toLocaleString("en-GB")} units · retail
               revenue {formatEur(sim.revenue, 0)}. Customers = assumed budget ÷
-              blended CAC {formatEur(data.blendedCac)}. Units = customers ×
+              blended CAC {formatEur(sim.cac)}. Units = customers ×
               survey frequency × min(12, lifetime). Net = contribution × units −
               budget.
+              {launchMonth
+                ? ` Seasonal overlay (${season.months.find((m) => m.month === launchMonth)?.label}, index ${seasonIndex}): ${Math.round(seasonalUnits).toLocaleString("en-GB")} units · net ${formatEur(seasonalNet, 0)}.`
+                : ""}
             </p>
           </article>
 
@@ -316,7 +552,7 @@ export default function CockpitSection() {
                       </span>
                     </td>
                     <td>{formatEur(row.contribution)}</td>
-                    <td>{formatEur(data.blendedCac)}</td>
+                    <td>{formatEur(sim.cac)}</td>
                     <td>{formatMonths(row.payback)}</td>
                     <td>{formatRatio(row.ratio)}</td>
                     <td>{formatEur(row.year1Net, 0)}</td>
@@ -339,10 +575,11 @@ export default function CockpitSection() {
             </table>
           )}
           <p className="data-note">
-            Same blended CAC ({formatEur(data.blendedCac)}) on every sales
-            channel on purpose: the funnel file has Paid Social / Influencer /
-            Sampling / Referral, not DTC/Retail/Gym. Channel differences here
-            come only from contribution per unit.
+            Same blended CAC ({formatEur(sim.cac)}) on every sales channel on
+            purpose: the funnel file has Paid Social / Influencer / Sampling /
+            Referral, not DTC/Retail/Gym. Channel differences in the table
+            come only from contribution per unit; CAC moves when you change
+            the marketing mix.
           </p>
 
           <div className="gives-up">
@@ -371,8 +608,8 @@ export default function CockpitSection() {
                       `${c.channel} ${(c.preferShare * 100).toFixed(0)}%`,
                   )
                   .join(", ")}
-                ). From customer_survey.csv preferred_channel; names/emails are
-                not used.
+                ). From the anonymised survey extract (preferred_channel);
+                names/emails are not in the file the app loads.
               </p>
             ) : (
               <p>
@@ -408,6 +645,17 @@ export default function CockpitSection() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div className="gives-up">
+            <h3>What moves LTV:CAC from here</h3>
+            <p className="stat-note">
+              Each bar is the change in LTV:CAC if that one lever moves, holding
+              the other current inputs fixed. CAC mix and assumed lifetime move
+              the ratio most; sales-channel mix moves it only through
+              contribution per unit (same CAC on every sales channel).
+            </p>
+            <Tornado rows={tornado} />
           </div>
         </div>
       </div>

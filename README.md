@@ -26,14 +26,14 @@ Why we're doing this: it's not to monitor you. It's what lets us understand, at 
 
 Check each box in this README as you go — not at the end, while you're working:
 
-- [ ] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
-- [ ] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
-- [ ] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
-- [ ] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
-- [ ] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
-- [ ] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
-- [ ] **Explainability**: can you explain to someone non-technical why your tool does what it does?
-- [ ] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
+- [x] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
+- [x] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
+- [x] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
+- [x] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
+- [x] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
+- [x] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
+- [x] **Explainability**: can you explain to someone non-technical why your tool does what it does?
+- [x] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
 
 These questions aren't here to slow you down — they're part of what's being evaluated. A thoughtful answer to one of them is worth more than an extra feature nobody asked for.
 
@@ -46,4 +46,6 @@ These questions aren't here to slow you down — they're part of what's being ev
 
 ## Our Approach
 
-*[To be filled in by the team at the end.]*
+LUMEN has never sold a can in Germany, so we refused to pretend we had a German sales forecast. We built a shared decision page for the CMO and the CFO: pick a price, a channel mix, and a first region, and see what you gain and what you give up. Our recommendation is €2.19 — high enough to sit with premium competitors, low enough that about half of surveyed buyers still say yes — led by grocery and gym/office rather than a slow brand-building splash, and opened in the highest-income south (Oberbayern first). We are not chasing maximum volume or a full premium brand build; we are chasing a defensible price and a faster payback. The Van Westendorp survey would have liked a cheaper drink; we accept that gap on purpose, because the people we are actually targeting (urban wellness) are comfortable at €2.19 and the empty shelf between heritage and VoltFit is where the brand belongs. Timing is shown (summer is stronger than January) but we did not lock a launch month into the conclusion — that is a stress-test, not a second recommendation.
+
+We did not use the names or emails in the customer survey: they do not help a pricing decision, and nobody opening this page should see them. The tool only uses anonymous answers (segment, city, channel, intent). We used official public income statistics for German regions; that source does not need an API key, and we stored none. Nothing is saved after you close the page. If a number is an assumption (budget, how long a customer stays), it is labelled as one. If a data source is incomplete or inconsistent, we say so rather than hide it. The page is meant to be argued over in a meeting, not admired as software.

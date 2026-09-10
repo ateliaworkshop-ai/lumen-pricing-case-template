@@ -81,7 +81,7 @@ export default function PaybackSection() {
     : `Below the ${view.target}:1 target`;
 
   return (
-    <section className="payback" aria-labelledby="payback-title">
+    <section id="payback" className="payback" aria-labelledby="payback-title">
       <header className="tool-header">
         <p className="eyebrow">CFO view · acquisition efficiency</p>
         <h2 id="payback-title">Does marketing spend pay back?</h2>
@@ -148,6 +148,39 @@ export default function PaybackSection() {
           />
         </article>
       </div>
+
+      <h3 className="subhead">Why the blend misses 3:1</h3>
+      <p className="stat-note">
+        Retail Sampling is {((view.byChannel[0]?.spendShare ?? 0) * 100).toFixed(0)}%
+        of spend at {formatEur(view.byChannel[0]?.cac ?? 0)} CAC. Referral is
+        cheaper. The cockpit marketing-mix sliders move this blend; sales
+        channel (DTC / Retail / Gym) does not.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Marketing channel</th>
+            <th>Spend share</th>
+            <th>Customers</th>
+            <th>CAC</th>
+          </tr>
+        </thead>
+        <tbody>
+          {view.byChannel.map((row) => (
+            <tr key={row.channel}>
+              <td>
+                <strong>{row.channel}</strong>
+                <span className="mini-bar" aria-hidden="true">
+                  <span style={{ width: `${row.spendShare * 100}%` }} />
+                </span>
+              </td>
+              <td>{(row.spendShare * 100).toFixed(1)}%</td>
+              <td>{Math.round(row.customers).toLocaleString("en-GB")}</td>
+              <td>{formatEur(row.cac)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <p className="data-note">
         Data check: {view.dataNote.rowsRead} month×channel rows in

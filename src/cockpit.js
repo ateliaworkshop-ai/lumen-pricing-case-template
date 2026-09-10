@@ -55,6 +55,7 @@ export function loadCockpitData({
     acceptanceKnots,
     blendedCac: funnel.blendedCac,
     dataLtv: funnel.blendedLtv,
+    marketingCacs: funnel.byChannel,
     freq,
     survey,
     vw,
@@ -106,12 +107,41 @@ function normalizeShares(shares) {
   };
 }
 
+export function weightedMarketingCac(marketingCacs, shares) {
+  let spend = 0;
+  let customers = 0;
+  for (const row of marketingCacs) {
+    const w = Number(shares?.[row.channel]) || 0;
+    if (w <= 0 || !(row.cac > 0)) continue;
+    spend += w;
+    customers += w / row.cac;
+  }
+  if (customers <= 0) {
+    const tot = marketingCacs.reduce((s, r) => s + r.spend, 0);
+    const cust = marketingCacs.reduce((s, r) => s + r.customers, 0);
+    return cust > 0 ? tot / cust : 0;
+  }
+  return spend / customers;
+}
+
+export const REC = {
+  price: 2.19,
+  channelShares: {
+    "DTC Online": 15,
+    "Retail/Grocery": 45,
+    "Gym & Office": 40,
+  },
+  lifetimeMonths: DATA_LTV_MONTHS,
+  regionCode: "DE21",
+};
+
 export function simulateCockpit(data, inputs) {
   const price = Number(inputs.price);
   const lifetime = Math.max(1, Number(inputs.lifetimeMonths) || DATA_LTV_MONTHS);
   const budget = Math.max(0, Number(inputs.year1Budget) || 0);
   const { shares, total: shareSum } = normalizeShares(inputs.channelShares);
   const funded = SALES_CHANNELS.filter((ch) => shares[ch] > 0);
+  const cac = Number(inputs.cac) > 0 ? Number(inputs.cac) : data.blendedCac;
 
   const acceptance = interpolateAcceptance(price, data.acceptanceKnots);
   const blend = blendedContribution(
@@ -127,14 +157,14 @@ export function simulateCockpit(data, inputs) {
   const channels = SALES_CHANNELS.map((channel) => {
     const econ = unitEconomics(price, channel, data.takeRates, data.cogs);
     const spend = budget * shares[channel];
-    const customers = data.blendedCac > 0 ? spend / data.blendedCac : 0;
+    const customers = cac > 0 ? spend / cac : 0;
     const monthsActive = Math.min(12, lifetime);
     const units = customers * data.freq * monthsActive;
     const ltv = monthlyValue(econ.contribution) * lifetime;
-    const ratio = data.blendedCac > 0 ? ltv / data.blendedCac : 0;
+    const ratio = cac > 0 ? ltv / cac : 0;
     const payback =
       monthlyValue(econ.contribution) > 0
-        ? data.blendedCac / monthlyValue(econ.contribution)
+        ? cac / monthlyValue(econ.contribution)
         : Infinity;
     const year1Net = units * econ.contribution - spend;
     let verdict = "below";
@@ -167,10 +197,10 @@ export function simulateCockpit(data, inputs) {
         fundedRows.reduce((s, c) => s + c.share, 0)
       : blend;
   const blendLtv = monthlyValue(blendContrib) * lifetime;
-  const blendRatio = data.blendedCac > 0 ? blendLtv / data.blendedCac : 0;
+  const blendRatio = cac > 0 ? blendLtv / cac : 0;
   const blendPayback =
     monthlyValue(blendContrib) > 0
-      ? data.blendedCac / monthlyValue(blendContrib)
+      ? cac / monthlyValue(blendContrib)
       : Infinity;
 
   return {
@@ -191,6 +221,7 @@ export function simulateCockpit(data, inputs) {
     ltvScale,
     budget,
     fundedNames: funded,
+    cac,
   };
 }
 
@@ -237,4 +268,142 @@ export function computeGivesUp(data, price, fundedNames) {
   const prefShareUnfunded = unfundedPref.reduce((s, c) => s + c.preferShare, 0);
 
   return { channelWalkaway, segments, prefShareUnfunded, unfundedPref };
+}
+
+export function defaultMarketingShares(marketingCacs) {
+  return Object.fromEntries(
+    marketingCacs.map((row) => [row.channel, Math.round(row.spendShare * 100)]),
+  );
+}
+
+export function tensionScores(sim, data) {
+  const cfo = Math.round(100 * Math.min(1.15, sim.blendRatio / LTV_CAC_TARGET));
+
+  let premium = 0;
+  if (sim.price >= 2.1 && sim.price <= 2.7) premium = 100;
+  else if (sim.price < 2.1) {
+    premium = Math.max(0, Math.round((100 * (sim.price - 1.4)) / 0.7));
+  } else {
+    premium = Math.max(0, Math.round(100 - (sim.price - 2.7) * 80));
+  }
+
+  const urban = data.vw.filter((r) =>
+    String(r.segment).includes("Urban Wellness"),
+  );
+  const urbanComfort =
+    urban.length === 0
+      ? 0
+      : urban.filter(
+          (r) => r.too_cheap_eur < sim.price && sim.price < r.too_expensive_eur,
+        ).length / urban.length;
+
+  const cmo = Math.round(0.65 * premium + 0.35 * urbanComfort * 100);
+
+  return {
+    cfo: Math.max(0, Math.min(100, cfo)),
+    cmo: Math.max(0, Math.min(100, cmo)),
+    premium,
+    urbanComfort,
+  };
+}
+
+export function sensitivityTornado(data, baseInputs) {
+  const base = simulateCockpit(data, baseInputs);
+  const mkt = data.marketingCacs;
+  const def = defaultMarketingShares(mkt);
+  const tilt = (samplingPct, referralPct) =>
+    Object.fromEntries(
+      mkt.map((row) => {
+        if (String(row.channel).includes("Sampling")) {
+          return [row.channel, samplingPct];
+        }
+        if (String(row.channel).includes("Referral")) {
+          return [row.channel, referralPct];
+        }
+        return [row.channel, def[row.channel]];
+      }),
+    );
+
+  const scenarios = [
+    { label: "Price €1.79", inputs: { ...baseInputs, price: 1.79 } },
+    { label: "Price €2.59", inputs: { ...baseInputs, price: 2.59 } },
+    { label: "Lifetime 12 months", inputs: { ...baseInputs, lifetimeMonths: 12 } },
+    { label: "Lifetime 24 months", inputs: { ...baseInputs, lifetimeMonths: 24 } },
+    {
+      label: "All Retail/Grocery",
+      inputs: {
+        ...baseInputs,
+        channelShares: {
+          "DTC Online": 0,
+          "Retail/Grocery": 100,
+          "Gym & Office": 0,
+        },
+      },
+    },
+    {
+      label: "All DTC Online",
+      inputs: {
+        ...baseInputs,
+        channelShares: {
+          "DTC Online": 100,
+          "Retail/Grocery": 0,
+          "Gym & Office": 0,
+        },
+      },
+    },
+    {
+      label: "Referral-heavy CAC",
+      inputs: {
+        ...baseInputs,
+        cac: weightedMarketingCac(mkt, tilt(20, 70)),
+      },
+    },
+    {
+      label: "Sampling-heavy CAC",
+      inputs: {
+        ...baseInputs,
+        cac: weightedMarketingCac(mkt, tilt(80, 10)),
+      },
+    },
+  ];
+
+  return scenarios
+    .map((s) => {
+      const sim = simulateCockpit(data, s.inputs);
+      return {
+        label: s.label,
+        dRatio: sim.blendRatio - base.blendRatio,
+        ratio: sim.blendRatio,
+      };
+    })
+    .sort((a, b) => Math.abs(b.dRatio) - Math.abs(a.dRatio));
+}
+
+export function vsRecommendation(sim, recSim, regionCode, mktShares, defaultMkt) {
+  const onPrice = Math.abs(sim.price - REC.price) < 0.005;
+  const onLife = sim.lifetime === REC.lifetimeMonths;
+  const onRegion = !regionCode || regionCode === REC.regionCode;
+  const onMix = SALES_CHANNELS.every(
+    (ch) =>
+      Math.abs(
+        (sim.channels.find((c) => c.channel === ch)?.share ?? 0) * 100 -
+          REC.channelShares[ch],
+      ) < 1.5,
+  );
+  const onMkt =
+    !mktShares ||
+    !defaultMkt ||
+    Object.keys(defaultMkt).every(
+      (ch) =>
+        Math.abs((Number(mktShares[ch]) || 0) - (Number(defaultMkt[ch]) || 0)) <
+        1.5,
+    );
+  return {
+    onRec: onPrice && onLife && onRegion && onMix && onMkt,
+    dPrice: sim.price - REC.price,
+    dAcceptance: sim.acceptance - recSim.acceptance,
+    dContrib: sim.blendContrib - recSim.blendContrib,
+    dRatio: sim.blendRatio - recSim.blendRatio,
+    dCac: sim.cac - recSim.cac,
+  };
 }
