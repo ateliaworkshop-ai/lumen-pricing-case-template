@@ -1,0 +1,2 @@
+GitHub connection test.
+This two-line file is ready for a pull request.
