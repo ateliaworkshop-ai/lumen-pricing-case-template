@@ -14,7 +14,7 @@ The tool enables users to test different strategies and see their impact on cont
 
 - Interactive price selection (predefined points or custom range)
 - Dynamic channel budget allocation (DTC Online, Retail/Grocery, Gym & Office)
-- Scenario testing (Base Case, Optimistic, Pessimistic)
+- Scenario testing (Base Case)
 - Real-time financial projections and key metrics
 - Visualizations showing trade-offs between different objectives
 - Detailed channel-by-channel breakdowns
@@ -55,7 +55,7 @@ The application will open in your default web browser at `http://localhost:8501`
 
 1. **Select Price**: Choose from the three candidate prices (€1.79, €2.19, €2.59) or set a custom price
 2. **Allocate Budget**: Distribute your marketing budget across the three channels (must sum to 100%)
-3. **Adjust Scenario**: Test Base Case, Optimistic (+20% acceptance), or Pessimistic (-20% acceptance)
+3. **Adjust Scenario**: Test Base Case scenario
 4. **Set Launch Timing**: Choose launch month to factor in seasonality and competitor activity
 5. **Explore Results**: Use the tabs to view detailed breakdowns, visualizations, scenario comparisons, and launch timing analysis
 6. **Iterate**: Adjust parameters to explore different strategies and their outcomes
