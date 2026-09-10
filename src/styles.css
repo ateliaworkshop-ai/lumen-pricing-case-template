@@ -239,8 +239,106 @@ td strong {
   font-size: 12px;
 }
 
+.section-rule {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 48px 0 40px;
+}
+
+.payback .tool-header h2 {
+  font-size: 32px;
+}
+
+.limitation,
+.data-note {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.limitation {
+  margin: 0 0 24px;
+}
+
+.data-note {
+  margin: 24px 0 0;
+}
+
+.tradeoff-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.is-pass {
+  background: #dce8df;
+  color: var(--moss);
+}
+
+.status.is-miss {
+  background: #f3e1c8;
+  color: #8a5a14;
+}
+
+.charts {
+  display: grid;
+  gap: 28px;
+}
+
+.charts h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.trend {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.trend-grid {
+  stroke: #e6dfd2;
+  stroke-width: 1;
+}
+
+.trend-target {
+  stroke: var(--clay);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.trend-line {
+  fill: none;
+  stroke: var(--moss);
+  stroke-width: 2;
+}
+
+.trend-dot {
+  fill: var(--moss);
+}
+
+.trend-tick,
+.trend-x {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+
 @media (max-width: 700px) {
-  .tradeoff {
+  .tradeoff,
+  .tradeoff-3 {
     grid-template-columns: 1fr;
   }
 
