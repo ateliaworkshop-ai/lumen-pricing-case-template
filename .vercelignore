@@ -1,0 +1,8 @@
+# The public dashboard only needs these three aggregate data sources.
+data/*
+!data/historical_sales_weekly.csv
+!data/marketing_funnel_monthly.csv
+!data/price_test_results.csv
+
+# Never publish workshop prompt logs.
+prompts/

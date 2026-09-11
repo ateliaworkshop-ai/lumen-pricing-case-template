@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMEN Germany Market Entry</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>.channel-plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.channel-plan-grid article{padding:16px;border:1px solid var(--line);border-radius:10px}.channel-plan-grid article:first-child{border-color:var(--green);background:#f1fbf8}.channel-plan-grid h3{margin:6px 0;font-size:1rem}.channel-plan-grid p{margin:0;color:var(--muted);font-size:.8rem}.channel-plan-grid b{display:block;margin-top:9px;font-size:.8rem;color:var(--ink)}@media(max-width:560px){.channel-plan-grid{grid-template-columns:1fr}}</style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">LUMEN · Germany market entry</p>
+        <h1>Germany Market Entry</h1>
+        <p>Make the premium-positioning and fast-payback trade-off explicit before committing to a German launch.</p>
+      </header>
+
+      <section class="notice"><strong>No German LUMEN sales exist.</strong> Volume is a transparent estimate calibrated from NL, DK and SE sales, German survey aggregates, price-test acceptance, seasonality, and your assumptions.</section>
+
+      <section class="layout">
+        <aside class="controls" aria-label="Decision assumptions">
+          <div class="section-label">Decision assumptions</div>
+          <label>Decision emphasis <output id="weightLabel">Balanced</output><input id="cfoWeight" type="range" min="0" max="100" value="50" /><small>CMO premium fit ← → CFO fast payback</small></label>
+          <label>Germany scale factor<input id="scale" type="number" min="0.1" max="20" step="0.1" value="4" /><small>Relative to median home-market channel volume</small></label>
+          <label>Distribution readiness<input id="readiness" type="number" min="0.1" max="1" step="0.05" value="0.7" /><small>0.1 = limited test; 1 = full rollout</small></label>
+          <label>Launch month<select id="month"></select><small id="seasonNote"></small></label>
+          <label>Fixed launch cost (€)<input id="fixedCost" type="number" min="0" max="5000000" step="10000" value="180000" /></label>
+          <label>First-year marketing spend (€)<input id="marketingSpend" type="number" min="0" max="5000000" step="10000" value="220000" /></label>
+          <label>First-year penetration ceiling<input id="penetration" type="number" min="0.0001" max="0.05" step="0.0001" value="0.001" /><small>Share of €2.55bn Energy / focus market</small></label>
+          <p class="validation" id="validation" role="alert"></p>
+        </aside>
+
+        <div class="results">
+          <section class="recommendation" id="recommendation"></section>
+          <section class="metric-grid" id="metrics"></section>
+          <section class="panel channel-plan">
+            <div class="panel-heading"><div><p class="eyebrow">Channel launch sequence</p><h2>Where to start in Germany</h2></div><p>Ranked from the current CMO/CFO decision weighting.</p></div>
+            <div class="channel-plan-grid" id="channelPlan"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">All scenarios</p><h2>Price × channel decision matrix</h2></div><p>Every cell is evaluated independently.</p></div>
+            <div class="table-wrap"><table><thead><tr><th>Channel</th><th>Price</th><th>Est. annual units</th><th>Net revenue</th><th>Contribution</th><th>Payback</th><th>CMO</th><th>CFO</th><th>Decision</th></tr></thead><tbody id="scenarioRows"></tbody></table></div>
+          </section>
+          <section class="two-col">
+            <article class="panel"><p class="eyebrow">Positioning</p><h2>Price versus competitors</h2><div id="positioning"></div></article>
+            <article class="panel"><p class="eyebrow">Marketing benchmark</p><h2>Historical acquisition efficiency</h2><div id="marketing"></div></article>
+          </section>
+          <section class="panel method">
+            <p class="eyebrow">Assumptions &amp; method</p><h2>How the model works</h2>
+            <div class="method-grid">
+              <p><strong>1. Comparable baseline</strong><br><code>B₍c₎ = median annual units across NL, DK, SE</code><br>Exact duplicate records are removed before calculating the home-market baseline.</p>
+              <p><strong>2. German volume</strong><br><code>V = B × G × H × I × (A₍p,c₎ / A₂.₁₉,c) × S × D</code><br><em>G</em> Germany scale, <em>H</em> German channel preference ÷ home channel share, <em>I</em> intent index, <em>A</em> tested acceptance, <em>S</em> seasonality, and <em>D</em> readiness.</p>
+              <p><strong>3. Economics</strong><br><code>Net revenue = V × net price</code><br><code>Contribution = V × unit contribution</code><br><code>Payback = (fixed + marketing spend) / (annual contribution / 12)</code></p>
+              <p><strong>4. Positioning &amp; choice</strong><br><code>PPI = 100 × (price − mass/niche midpoint) / (premium midpoint − mass/niche midpoint)</code><br>The recommendation combines normalized CFO payback/margin and CMO premium-fit scores according to the decision-emphasis slider.</p>
+            </div>
+            <p class="footnote">Survey inputs are pre-aggregated from 420 German respondents. Names, emails, respondent IDs, and the raw customer-survey file are never loaded by this site.</p>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

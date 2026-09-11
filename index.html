@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMEN | Market Entry Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">LUMEN · Germany market entry</p>
+          <h1>Growth, pricing &amp; channel performance</h1>
+          <p class="lede">A decision dashboard built from LUMEN's historical sales, price-test, and acquisition data.</p>
+        </div>
+        <div class="live"><span></span> Case data · updated through Jun 2026</div>
+      </header>
+
+      <section class="kpis" aria-label="Key performance indicators">
+        <article><p>Sales volume</p><strong id="units">—</strong><small>across comparable markets</small></article>
+        <article><p>Net revenue</p><strong id="revenue">—</strong><small>all recorded weekly sales</small></article>
+        <article><p>Revenue / unit</p><strong id="rpu">—</strong><small>blended realized price</small></article>
+        <article><p>Promotion weeks</p><strong id="promo">—</strong><small>share of sales records</small></article>
+      </section>
+
+      <section class="grid">
+        <article class="panel panel-wide">
+          <div class="panel-head"><div><p class="eyebrow">Sales momentum</p><h2>Weekly revenue trend</h2></div><span id="trendNote">Loading data…</span></div>
+          <div id="trend" class="chart" aria-label="Weekly revenue trend chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Channel mix</p><h2>Where volume comes from</h2></div></div>
+          <div id="channels" class="bars" aria-label="Sales volume by channel"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Acquisition</p><h2>Marketing efficiency</h2></div></div>
+          <div id="marketing" class="marketing" aria-label="Marketing performance by acquisition channel"></div>
+        </article>
+
+        <article class="panel panel-wide decision">
+          <div class="panel-head"><div><p class="eyebrow">Pricing decision</p><h2>Scenario economics</h2></div>
+            <label>Test price <select id="priceSelect" aria-label="Test price"></select></label>
+          </div>
+          <div id="priceCards" class="price-cards"></div>
+          <p class="recommendation" id="recommendation"></p>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

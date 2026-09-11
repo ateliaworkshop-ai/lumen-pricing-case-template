@@ -1,4 +1,4 @@
-# LUMEN — Pricing & Go-to-Market Case — ATELIA × ESCP Starter Kit
+<h1><span style="color: red;">LUMEN — Pricing &amp; Go-to-Market Case — ATELIA × ESCP Starter Kit</span></h1>
 
 > This repo is your starting point. Codex should read this README first.
 
