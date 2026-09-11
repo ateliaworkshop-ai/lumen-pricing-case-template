@@ -29,6 +29,15 @@ import { clamp, round2 } from "./chartPointer.js";
 import { fetchGermanHouseholdIncome } from "./eurostat.js";
 import { buildSeasonality } from "./exhibits.js";
 import seasonCsv from "../data/seasonality_and_weather.csv?raw";
+import {
+  decisionHash,
+  emptyNotes,
+  parseDecisionHash,
+  snapshotFromState,
+  TEAMS,
+} from "./teams.js";
+
+const NOTES_KEY = "lumen-team-board-v1";
 
 const DecisionContext = createContext(null);
 
@@ -72,6 +81,16 @@ export function DecisionProvider({ children }) {
   const [launchMonth, setLaunchMonth] = useState(0);
   const [shelfChannel, setShelfChannel] = useState("Retail/Grocery");
   const [pinnedPrice, setPinnedPrice] = useState(null);
+  const [team, setTeam] = useState("combined");
+  const [notes, setNotes] = useState(() => {
+    try {
+      const raw = localStorage.getItem(NOTES_KEY);
+      return raw ? { ...emptyNotes(), ...JSON.parse(raw) } : emptyNotes();
+    } catch {
+      return emptyNotes();
+    }
+  });
+  const [incomingFrom, setIncomingFrom] = useState(null);
   const [regions, setRegions] = useState([]);
   const [regionYear, setRegionYear] = useState(null);
   const [regionStatus, setRegionStatus] = useState("loading");
@@ -171,6 +190,85 @@ export function DecisionProvider({ children }) {
     if (patch.regionCode) setRegionCode(patch.regionCode);
     if (patch.launchMonth != null) setLaunchMonth(patch.launchMonth);
   }, []);
+
+  const setNote = useCallback((id, text) => {
+    setNotes((prev) => {
+      const next = { ...prev, [id]: String(text).slice(0, 400) };
+      try {
+        localStorage.setItem(NOTES_KEY, JSON.stringify(next));
+      } catch {
+        /* private mode — notes stay in memory for this session */
+      }
+      return next;
+    });
+  }, []);
+
+  const shareDecision = useCallback(
+    async (asTeam) => {
+      const snap = snapshotFromState({
+        price,
+        shares,
+        mktShares,
+        year1Budget,
+        lifetimeMonths,
+        regionCode,
+        launchMonth,
+        team: asTeam || team,
+        notes,
+        from: team,
+      });
+      const hash = decisionHash(snap);
+      const url = `${window.location.origin}${window.location.pathname}${hash}`;
+      window.history.replaceState(null, "", hash);
+      try {
+        await navigator.clipboard.writeText(url);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [
+      price,
+      shares,
+      mktShares,
+      year1Budget,
+      lifetimeMonths,
+      regionCode,
+      launchMonth,
+      team,
+      notes,
+    ],
+  );
+
+  const clearIncoming = useCallback(() => setIncomingFrom(null), []);
+
+  useEffect(() => {
+    const snap = parseDecisionHash(window.location.hash);
+    if (!snap) return undefined;
+    applyPatch({
+      price: snap.price,
+      channelShares: snap.shares,
+      mktShares: snap.mktShares,
+      year1Budget: snap.year1Budget,
+      lifetimeMonths: snap.lifetimeMonths,
+      regionCode: snap.regionCode,
+      launchMonth: snap.launchMonth,
+    });
+    if (snap.team) setTeam(snap.team);
+    if (snap.notes) {
+      setNotes((prev) => {
+        const next = { ...emptyNotes(), ...prev, ...snap.notes };
+        try {
+          localStorage.setItem(NOTES_KEY, JSON.stringify(next));
+        } catch {
+          /* ignore */
+        }
+        return next;
+      });
+    }
+    if (snap.from) setIncomingFrom(snap.from);
+    return undefined;
+  }, [applyPatch]);
 
   const resetToRec = useCallback(() => {
     setPriceRaw(REC.price);
@@ -274,6 +372,13 @@ export function DecisionProvider({ children }) {
       monthLabel,
       pinnedPrice,
       pinPrice,
+      team,
+      setTeam,
+      notes,
+      setNote,
+      shareDecision,
+      incomingFrom,
+      clearIncoming,
     }),
     [
       price,
@@ -305,6 +410,12 @@ export function DecisionProvider({ children }) {
       monthLabel,
       pinnedPrice,
       pinPrice,
+      team,
+      notes,
+      setNote,
+      shareDecision,
+      incomingFrom,
+      clearIncoming,
     ],
   );
 
@@ -338,6 +449,8 @@ export function DecisionBar() {
     setLaunchMonth,
     pinnedPrice,
     pinPrice,
+    team,
+    setTeam,
   } = useDecision();
 
   const mix = SALES_CHANNELS.map(
@@ -391,6 +504,17 @@ export function DecisionBar() {
           {season.months.map((m) => (
             <option key={m.month} value={m.month}>
               {m.label}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Team view"
+          value={team}
+          onChange={(e) => setTeam(e.target.value)}
+        >
+          {TEAMS.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
             </option>
           ))}
         </select>

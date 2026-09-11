@@ -10,6 +10,7 @@ import VoicesSection from "./VoicesSection.jsx";
 import TimingSection from "./TimingSection.jsx";
 import PriceCacSection from "./PriceCacSection.jsx";
 import IntegritySection from "./IntegritySection.jsx";
+import DashboardSection from "./DashboardSection.jsx";
 import PageNav from "./PageNav.jsx";
 import { parseCsv } from "./csv.js";
 import { LUMEN_PRICE, SINGLE_CAN, vwNotExpensiveShare } from "./exhibits.js";
@@ -22,6 +23,7 @@ import {
   unitEconomics,
 } from "./cockpit.js";
 import { DecisionBar, DecisionProvider, useDecision } from "./decision.jsx";
+import { teamSees } from "./teams.js";
 
 const competitorRows = parseCsv(competitorCsv).filter(
   (r) => r.format === SINGLE_CAN,
@@ -55,6 +57,7 @@ function AppInner() {
     leadChannel,
     fundedChannels,
     cockpitData,
+    team,
   } = useDecision();
 
   const selected = useMemo(() => new Set(fundedChannels), [fundedChannels]);
@@ -196,6 +199,14 @@ function AppInner() {
         </div>
       </section>
 
+      {teamSees(team, "dashboard") && (
+        <>
+          <hr className="section-rule" />
+          <DashboardSection />
+        </>
+      )}
+
+      {teamSees(team, "explorer") && (
       <section id="explorer" className="explorer" aria-labelledby="explorer-title">
       <header className="tool-header">
         <p className="eyebrow">LUMEN · Germany market entry</p>
@@ -354,27 +365,64 @@ function AppInner() {
         </>
       )}
       </section>
+      )}
 
-      <hr className="section-rule" />
-      <PriceCacSection />
-      <hr className="section-rule" />
-      <ShelfSection />
-      <hr className="section-rule" />
-      <VanWestendorpSection />
-      <hr className="section-rule" />
-      <VoicesSection />
-      <hr className="section-rule" />
-      <PaybackSection />
-      <hr className="section-rule" />
-      <TimingSection />
-      <hr className="section-rule" />
-      <SectionErrorBoundary>
-        <LaunchLocationSection />
-      </SectionErrorBoundary>
-      <hr className="section-rule" />
-      <IntegritySection />
-      <hr className="section-rule" />
-      <CockpitSection />
+      {teamSees(team, "price-cac") && (
+        <>
+          <hr className="section-rule" />
+          <PriceCacSection />
+        </>
+      )}
+      {teamSees(team, "shelf") && (
+        <>
+          <hr className="section-rule" />
+          <ShelfSection />
+        </>
+      )}
+      {teamSees(team, "van-westendorp") && (
+        <>
+          <hr className="section-rule" />
+          <VanWestendorpSection />
+        </>
+      )}
+      {teamSees(team, "voices") && (
+        <>
+          <hr className="section-rule" />
+          <VoicesSection />
+        </>
+      )}
+      {teamSees(team, "payback") && (
+        <>
+          <hr className="section-rule" />
+          <PaybackSection />
+        </>
+      )}
+      {teamSees(team, "timing") && (
+        <>
+          <hr className="section-rule" />
+          <TimingSection />
+        </>
+      )}
+      {teamSees(team, "launch") && (
+        <>
+          <hr className="section-rule" />
+          <SectionErrorBoundary>
+            <LaunchLocationSection />
+          </SectionErrorBoundary>
+        </>
+      )}
+      {teamSees(team, "integrity") && (
+        <>
+          <hr className="section-rule" />
+          <IntegritySection />
+        </>
+      )}
+      {teamSees(team, "cockpit") && (
+        <>
+          <hr className="section-rule" />
+          <CockpitSection />
+        </>
+      )}
     </div>
   );
 }

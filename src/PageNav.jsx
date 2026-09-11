@@ -1,26 +1,19 @@
-import React, { useEffect, useState } from "react";
-
-const LINKS = [
-  { id: "recommendation", label: "Rec" },
-  { id: "explorer", label: "Price" },
-  { id: "price-cac", label: "CAC" },
-  { id: "shelf", label: "Shelf" },
-  { id: "van-westendorp", label: "VW" },
-  { id: "voices", label: "Who" },
-  { id: "payback", label: "Payback" },
-  { id: "timing", label: "Timing" },
-  { id: "launch", label: "Map" },
-  { id: "integrity", label: "Caveats" },
-  { id: "cockpit", label: "Cockpit" },
-];
+import React, { useEffect, useMemo, useState } from "react";
+import { NAV_LINKS, teamSees } from "./teams.js";
+import { useDecision } from "./decision.jsx";
 
 export default function PageNav() {
+  const { team } = useDecision();
   const [active, setActive] = useState("recommendation");
+  const links = useMemo(
+    () => NAV_LINKS.filter((l) => teamSees(team, l.id)),
+    [team],
+  );
 
   useEffect(() => {
-    const nodes = LINKS.map((l) => document.getElementById(l.id)).filter(
-      Boolean,
-    );
+    const nodes = links
+      .map((l) => document.getElementById(l.id))
+      .filter(Boolean);
     if (!nodes.length) return undefined;
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,11 +26,11 @@ export default function PageNav() {
     );
     nodes.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [links]);
 
   return (
     <nav className="page-nav" aria-label="Jump to section">
-      {LINKS.map((link) => (
+      {links.map((link) => (
         <a
           key={link.id}
           href={`#${link.id}`}

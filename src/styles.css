@@ -260,6 +260,66 @@ button.vw-swatch.is-off {
   cursor: ew-resize;
 }
 
+.dash-tension {
+  margin: 0 0 22px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.team-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 16px 16px 14px;
+}
+
+.team-card.is-active {
+  border-color: var(--clay);
+}
+
+.team-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.team-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin: 12px 0;
+}
+
+.team-metrics dt {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.team-metrics dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.team-note {
+  width: 100%;
+  margin: 6px 0 12px;
+  padding: 8px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  resize: vertical;
+}
+
+.live-callout .linkish {
+  margin-left: 8px;
+}
+
 .chart-hint {
   margin: 6px 0 16px;
   font-size: 12px;
@@ -1504,6 +1564,10 @@ tr.is-pick {
 
   .decision-bar-actions {
     justify-content: flex-start;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
   }
 }
 
