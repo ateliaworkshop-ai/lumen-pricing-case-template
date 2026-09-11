@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import competitorCsv from "../data/competitor_prices_by_channel.csv?raw";
 import historyCsv from "../data/competitor_price_history.csv?raw";
 import { LUMEN_PRICE, buildPromoPressure, buildShelf } from "./exhibits.js";
@@ -12,9 +12,10 @@ function formatEur(value) {
   return `€${value.toFixed(2)}`;
 }
 
-function ShelfLine({ items, recPrice, onPickPrice }) {
+function ShelfLine({ items, recPrice, pinnedPrice, onPickPrice, onPin }) {
   const min = 0.9;
   const max = 3.3;
+  const dragging = useRef(false);
   const x = (p) => `${8 + ((p - min) / (max - min)) * 84}%`;
   const mate = items.find((r) => r.competitor.includes("Mate"));
   const volt = items.find((r) => r.competitor.includes("Volt"));
@@ -26,20 +27,58 @@ function ShelfLine({ items, recPrice, onPickPrice }) {
     (row) => row.lumen && Math.abs(row.price - recPrice) < 0.005,
   );
 
-  function pickFromClick(event) {
+  function pickFromEvent(event) {
     const rect = event.currentTarget.getBoundingClientRect();
     const t = (event.clientX - rect.left) / rect.width;
     const inner = (t - 0.08) / 0.84;
     const raw = min + inner * (max - min);
-    onPickPrice(Math.min(PRICE_MAX, Math.max(PRICE_MIN, raw)));
+    return Math.min(PRICE_MAX, Math.max(PRICE_MIN, raw));
   }
 
   return (
     <div
       className="shelf-line is-interactive"
-      role="img"
-      aria-label="Single-can price line. Click to set the live LUMEN price."
-      onClick={pickFromClick}
+      role="slider"
+      tabIndex={0}
+      aria-valuemin={PRICE_MIN}
+      aria-valuemax={PRICE_MAX}
+      aria-valuenow={items.find((r) => r.lumen)?.price ?? recPrice}
+      aria-label="Single-can price line. Drag to set the live LUMEN price. Shift-click to pin."
+      onPointerDown={(event) => {
+        if (event.shiftKey) {
+          onPin?.(pickFromEvent(event));
+          return;
+        }
+        dragging.current = true;
+        event.currentTarget.setPointerCapture?.(event.pointerId);
+        onPickPrice(pickFromEvent(event));
+      }}
+      onPointerMove={(event) => {
+        if (dragging.current) onPickPrice(pickFromEvent(event));
+      }}
+      onPointerUp={() => {
+        dragging.current = false;
+      }}
+      onPointerCancel={() => {
+        dragging.current = false;
+      }}
+      onDoubleClick={() => onPickPrice(recPrice)}
+      onKeyDown={(event) => {
+        const live = items.find((r) => r.lumen)?.price ?? recPrice;
+        const step = event.shiftKey ? 0.1 : 0.01;
+        if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+          event.preventDefault();
+          onPickPrice(live - step);
+        } else if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+          event.preventDefault();
+          onPickPrice(live + step);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          onPickPrice(recPrice);
+        } else if (event.key === "Escape") {
+          onPin?.(null);
+        }
+      }}
     >
       {gap && (
         <span
@@ -57,14 +96,21 @@ function ShelfLine({ items, recPrice, onPickPrice }) {
           {formatEur(recPrice)}
         </span>
       )}
+      {pinnedPrice != null && Math.abs(pinnedPrice - recPrice) > 0.02 && (
+        <span className="shelf-dot is-pin" style={{ left: x(pinnedPrice) }}>
+          <strong>Pin</strong>
+          {formatEur(pinnedPrice)}
+        </span>
+      )}
       {items.map((row) => (
         <span
           key={row.competitor}
           className={row.lumen ? "shelf-dot is-lumen" : "shelf-dot"}
           style={{ left: x(row.price) }}
-          onClick={(e) => {
+          onPointerDown={(e) => {
             e.stopPropagation();
-            onPickPrice(row.price);
+            if (e.shiftKey) onPin?.(row.price);
+            else onPickPrice(row.price);
           }}
         >
           <strong>{row.lumen ? "LUMEN" : row.competitor}</strong>
@@ -82,8 +128,15 @@ function ShelfLine({ items, recPrice, onPickPrice }) {
 }
 
 export default function ShelfSection() {
-  const { price, setPrice, shelfChannel, setShelfChannel, leadChannel } =
-    useDecision();
+  const {
+    price,
+    setPrice,
+    shelfChannel,
+    setShelfChannel,
+    leadChannel,
+    pinnedPrice,
+    pinPrice,
+  } = useDecision();
   const rows = (shelf.byChannel.get(shelfChannel) ?? []).slice();
   const withLumen = [
     ...rows,
@@ -129,12 +182,15 @@ export default function ShelfSection() {
         <ShelfLine
           items={withLumen}
           recPrice={REC.price}
+          pinnedPrice={pinnedPrice}
           onPickPrice={setPrice}
+          onPin={pinPrice}
         />
       )}
       <p className="chart-hint">
-        Click a brand to price-match. Channel tabs also lead the live sales mix
-        toward that channel (70 / 15 / 15).
+        Drag the line or use arrows to move LUMEN. Shift-click a brand (or the
+        line) to pin a comparison. Double-click returns to €2.19. Channel tabs
+        also lead the live sales mix toward that channel (70 / 15 / 15).
       </p>
 
       <ul className="shelf-list">
@@ -142,7 +198,9 @@ export default function ShelfSection() {
           <li
             key={row.competitor}
             className={row.lumen ? "is-lumen is-clickable" : "is-clickable"}
-            onClick={() => setPrice(row.price)}
+            onClick={(e) =>
+              e.shiftKey ? pinPrice(row.price) : setPrice(row.price)
+            }
           >
             <div className="shelf-meta">
               <strong>{row.competitor}</strong>

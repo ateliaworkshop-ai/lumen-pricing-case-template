@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import funnelCsv from "../data/marketing_funnel_monthly.csv?raw";
 import { buildFunnelView } from "./funnel.js";
 import { useDecision } from "./decision.jsx";
+import { ChartTooltip, indexFromSvgEvent } from "./usePriceScrub.jsx";
 
 const view = buildFunnelView(funnelCsv);
 
@@ -13,7 +14,7 @@ function formatRatio(value) {
   return `${value.toFixed(2)}:1`;
 }
 
-function TrendChart({ series, valueKey, target, liveValue, formatTick }) {
+function TrendChart({ series, valueKey, target, liveValue, formatTick, onInspect, inspectIndex }) {
   const width = 800;
   const height = 180;
   const pad = { top: 16, right: 16, bottom: 28, left: 40 };
@@ -26,17 +27,41 @@ function TrendChart({ series, valueKey, target, liveValue, formatTick }) {
   const y = (v) => pad.top + innerH - ((v - min) / span) * innerH;
   const x = (i) =>
     pad.left + (series.length === 1 ? innerW / 2 : (i / (series.length - 1)) * innerW);
+  const [hover, setHover] = useState(null);
 
   const points = series.map((p, i) => `${x(i)},${y(p[valueKey])}`).join(" ");
   const ticks = [min, (min + max) / 2, max];
+  const scale = { width, padLeft: pad.left, padRight: pad.right, count: series.length };
+  const active = hover ?? inspectIndex;
+  const hoverPct = active != null ? (x(active) / width) * 100 : 50;
+  const activePoint = active != null ? series[active] : null;
+
+  function readIndex(event) {
+    return indexFromSvgEvent(event, scale);
+  }
 
   return (
-    <svg
-      className="trend"
-      viewBox={`0 0 ${width} ${height}`}
-      role="img"
-      aria-label={`Trend of ${valueKey} over 18 months`}
-    >
+    <div className="chart-wrap">
+      <svg
+        className="trend is-interactive"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        tabIndex={0}
+        aria-label={`Trend of ${valueKey} over 18 months. Hover or click a month to inspect it. Arrow keys move the inspected month.`}
+        onPointerMove={(event) => setHover(readIndex(event))}
+        onPointerLeave={() => setHover(null)}
+        onPointerDown={(event) => onInspect?.(readIndex(event))}
+        onKeyDown={(event) => {
+          const current = inspectIndex ?? 0;
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            onInspect?.(Math.max(0, current - 1));
+          } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            onInspect?.(Math.min(series.length - 1, current + 1));
+          }
+        }}
+      >
       {ticks.map((tick) => (
         <g key={tick}>
           <line
@@ -70,8 +95,23 @@ function TrendChart({ series, valueKey, target, liveValue, formatTick }) {
         />
       )}
       <polyline className="trend-line" points={points} />
+      {active != null && (
+        <line
+          className="chart-crosshair"
+          x1={x(active)}
+          x2={x(active)}
+          y1={pad.top}
+          y2={pad.top + innerH}
+        />
+      )}
       {series.map((p, i) => (
-        <circle key={p.month} className="trend-dot" cx={x(i)} cy={y(p[valueKey])} r="3" />
+        <circle
+          key={p.month}
+          className={i === inspectIndex ? "trend-dot is-on" : "trend-dot"}
+          cx={x(i)}
+          cy={y(p[valueKey])}
+          r={i === active ? 5 : 3}
+        />
       ))}
       {series.map((p, i) =>
         i % 3 === 0 || i === series.length - 1 ? (
@@ -81,11 +121,23 @@ function TrendChart({ series, valueKey, target, liveValue, formatTick }) {
         ) : null,
       )}
     </svg>
+      <ChartTooltip xPct={hoverPct}>
+        {activePoint ? (
+          <>
+            <strong>{activePoint.label}</strong>
+            <span>{formatTick(activePoint[valueKey])}</span>
+            <span>Historical month — not a live input</span>
+          </>
+        ) : null}
+      </ChartTooltip>
+    </div>
   );
 }
 
 export default function PaybackSection() {
   const { cac, sim, mktShares, boostMktChannel } = useDecision();
+  const [inspectIndex, setInspectIndex] = useState(null);
+  const inspected = inspectIndex != null ? view.series[inspectIndex] : null;
   const statusClass = view.meetsTarget ? "status is-pass" : "status is-miss";
   const statusLabel = view.meetsTarget
     ? `Clears the ${view.target}:1 target`
@@ -145,6 +197,8 @@ export default function PaybackSection() {
             valueKey="cac"
             liveValue={cac}
             formatTick={(v) => `€${v.toFixed(0)}`}
+            inspectIndex={inspectIndex}
+            onInspect={setInspectIndex}
           />
         </article>
         <article>
@@ -159,15 +213,29 @@ export default function PaybackSection() {
             target={view.target}
             liveValue={sim.blendRatio}
             formatTick={(v) => `${v.toFixed(1)}:1`}
+            inspectIndex={inspectIndex}
+            onInspect={setInspectIndex}
           />
         </article>
       </div>
 
+      {inspected && (
+        <p className="live-callout">
+          Inspecting {inspected.label}: historical CAC {formatEur(inspected.cac)},
+          LTV:CAC {formatRatio(inspected.ltvCac)}. That month is recorded
+          history — clicking it does not change the live marketing mix. Live
+          CAC is {formatEur(cac)}.
+        </p>
+      )}
       <p className="live-callout">
         Historical blend is {formatEur(view.blendedCac)} CAC and{" "}
         {formatRatio(view.ltvCac)}. Live marketing mix is {formatEur(cac)} CAC
         and {formatRatio(sim.blendRatio)} — click a row below to weight that
         channel more (the funnel history itself does not change).
+      </p>
+      <p className="chart-hint">
+        Hover or click a month on either chart to inspect it. Focus the chart
+        and use arrows to walk the 18 months. History stays history.
       </p>
       <h3 className="subhead">Why the blend misses 3:1</h3>
       <p className="stat-note">

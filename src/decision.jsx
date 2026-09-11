@@ -71,6 +71,7 @@ export function DecisionProvider({ children }) {
   const [regionCode, setRegionCode] = useState(REC.regionCode);
   const [launchMonth, setLaunchMonth] = useState(0);
   const [shelfChannel, setShelfChannel] = useState("Retail/Grocery");
+  const [pinnedPrice, setPinnedPrice] = useState(null);
   const [regions, setRegions] = useState([]);
   const [regionYear, setRegionYear] = useState(null);
   const [regionStatus, setRegionStatus] = useState("loading");
@@ -95,6 +96,17 @@ export function DecisionProvider({ children }) {
 
   const setPrice = useCallback((value) => {
     setPriceRaw(clampPrice(value));
+  }, []);
+
+  const pinPrice = useCallback((value) => {
+    if (value == null || Number.isNaN(Number(value))) {
+      setPinnedPrice(null);
+      return;
+    }
+    const next = clampPrice(value);
+    setPinnedPrice((current) =>
+      current != null && Math.abs(current - next) < 0.02 ? null : next,
+    );
   }, []);
 
   const setShare = useCallback((channel, value) => {
@@ -169,6 +181,7 @@ export function DecisionProvider({ children }) {
     setRegionCode(REC.regionCode);
     setLaunchMonth(0);
     setShelfChannel("Retail/Grocery");
+    setPinnedPrice(null);
   }, []);
 
   const cac = useMemo(
@@ -259,6 +272,8 @@ export function DecisionProvider({ children }) {
       applyPatch,
       fundedChannels,
       monthLabel,
+      pinnedPrice,
+      pinPrice,
     }),
     [
       price,
@@ -288,6 +303,8 @@ export function DecisionProvider({ children }) {
       applyPatch,
       fundedChannels,
       monthLabel,
+      pinnedPrice,
+      pinPrice,
     ],
   );
 
@@ -319,6 +336,8 @@ export function DecisionBar() {
     setRegionCode,
     launchMonth,
     setLaunchMonth,
+    pinnedPrice,
+    pinPrice,
   } = useDecision();
 
   const mix = SALES_CHANNELS.map(
@@ -375,6 +394,15 @@ export function DecisionBar() {
             </option>
           ))}
         </select>
+        <button
+          type="button"
+          className={pinnedPrice != null ? "chip is-on" : "chip"}
+          onClick={() =>
+            pinnedPrice != null ? pinPrice(null) : pinPrice(price)
+          }
+        >
+          {pinnedPrice != null ? `Unpin ${formatEur(pinnedPrice)}` : "Pin price"}
+        </button>
         <button
           type="button"
           className={vs.onRec ? "chip is-on" : "chip"}
