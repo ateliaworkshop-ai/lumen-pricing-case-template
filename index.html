@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMEN / Germany launch cockpit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark">L</div>
+          <div>
+            <div class="eyebrow">LUMEN / STRATEGY &amp; ANALYTICS</div>
+            <h1>Germany launch cockpit</h1>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <span class="status-dot"></span>
+          <span>Decision model · 2026 planning</span>
+        </div>
+      </header>
+
+      <section class="product-stage" id="productStage" aria-label="LUMEN product presentation">
+        <div class="stage-copy">
+          <div class="eyebrow accent">A NEW KIND OF ENERGY</div>
+          <h2>Light on sugar.<br /><span>Heavy on momentum.</span></h2>
+          <p class="stage-lede">A sparkling functional drink with natural caffeine from green tea and a light adaptogen blend — made for the moments when the day asks for more.</p>
+          <div class="stage-progress"><span class="stage-progress-bar" id="stageProgressBar"></span></div>
+          <div class="stage-hint"><span class="scroll-icon">↕</span><span>Scroll to explore the can</span></div>
+        </div>
+        <div class="stage-visual">
+          <div class="can-glow"></div>
+          <div class="can-shadow"></div>
+          <div class="can" id="heroCan" aria-label="LUMEN sparkling functional drink can">
+            <div class="can-top"></div>
+            <div class="can-body">
+              <div class="can-rings"></div>
+              <div class="can-label">
+                <div class="can-wordmark">LUMEN</div>
+                <div class="can-rule"></div>
+                <div class="can-category">SPARKLING<br />FUNCTIONAL</div>
+                <div class="can-orbit"><span>GREEN TEA</span><span>ADAPTOGEN BLEND</span></div>
+                <div class="can-flavour">CITRUS<br /><em>NO. 01</em></div>
+                <div class="can-spec">LOW SUGAR&nbsp; · &nbsp;NATURAL CAFFEINE</div>
+              </div>
+              <div class="can-label can-label-back" aria-hidden="true">
+                <div class="can-wordmark">LUMEN</div>
+                <div class="can-rule"></div>
+                <div class="can-category">RETURN<br />TO THE LIGHT</div>
+                <div class="can-flavour">DE<br /><em>NO. 01</em></div>
+                <div class="can-spec">SPARKLING FUNCTIONAL</div>
+              </div>
+              <div class="can-sheen"></div>
+            </div>
+            <div class="can-bottom"></div>
+          </div>
+          <div class="stage-side-note note-left"><span>01</span><strong>Clean energy</strong><small>without the crash</small></div>
+          <div class="stage-side-note note-right"><span>02</span><strong>Built for motion</strong><small>wherever the day goes</small></div>
+        </div>
+      </section>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow accent">MARKET ENTRY / DE</div>
+          <h2>Find the launch plan that keeps the brand premium <em>and</em> the runway intact.</h2>
+          <p>Explore the trade-off between acceptance, unit economics, and payback. Every control below updates the recommendation in real time.</p>
+        </div>
+        <div class="hero-note">
+          <span class="note-label">Model read</span>
+          <strong id="heroRead">Balanced launch, built for learning.</strong>
+          <span id="heroSubread">A premium enough price with a channel mix that earns the right to scale.</span>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <aside class="panel controls-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="section-index">01</span>
+              <h3>Shape the plan</h3>
+            </div>
+            <span class="live-pill"><span></span> Live</span>
+          </div>
+
+          <div class="control-block">
+            <div class="control-label-row">
+              <label>Consumer price</label>
+              <span class="control-value" id="priceValue">€2.19</span>
+            </div>
+            <div class="price-options" id="priceOptions">
+              <button data-price="1.79"><span>€1.79</span><small>Reach</small></button>
+              <button class="selected" data-price="2.19"><span>€2.19</span><small>Balanced</small></button>
+              <button data-price="2.59"><span>€2.59</span><small>Margin</small></button>
+            </div>
+          </div>
+
+          <div class="control-block">
+            <div class="control-label-row">
+              <label>First-wave sales mix</label>
+              <span class="control-caption">Drag to rebalance</span>
+            </div>
+            <div class="mix-list">
+              <div class="mix-row">
+                <div class="mix-title"><span class="channel-dot dot-lime"></span><span>DTC Online</span><b id="dtcPct">30%</b></div>
+                <input id="dtcRange" type="range" min="0" max="100" value="30" />
+              </div>
+              <div class="mix-row">
+                <div class="mix-title"><span class="channel-dot dot-sky"></span><span>Retail / Grocery</span><b id="retailPct">45%</b></div>
+                <input id="retailRange" type="range" min="0" max="100" value="45" />
+              </div>
+              <div class="mix-row">
+                <div class="mix-title"><span class="channel-dot dot-amber"></span><span>Gym &amp; Office</span><b id="gymPct">25%</b></div>
+                <input id="gymRange" type="range" min="0" max="100" value="25" />
+              </div>
+            </div>
+            <div class="mix-total"><span>Total allocated</span><strong id="mixTotal">100%</strong></div>
+          </div>
+
+          <div class="control-block">
+            <div class="control-label-row">
+              <label>Marketing activation</label>
+              <span class="control-caption">Budget mix</span>
+            </div>
+            <div class="activation-pills" id="activationPills">
+              <button class="active" data-channel="Influencer / Content">Influencer</button>
+              <button data-channel="Retail Sampling">Sampling</button>
+              <button data-channel="Referral / Subscription">Referral</button>
+              <button data-channel="Paid Social">Paid social</button>
+            </div>
+          </div>
+
+          <div class="assumption-box">
+            <span class="assumption-icon">i</span>
+            <p><strong>How to read this.</strong> The model uses the case’s per-channel price-test contribution, survey acceptance, and trailing funnel CAC / LTV benchmarks. The scenario range is a planning view, not a forecast.</p>
+          </div>
+        </aside>
+
+        <section class="main-stack">
+          <div class="metric-grid">
+            <div class="metric-card featured">
+              <span class="metric-label">Recommended posture</span>
+              <div class="metric-main" id="posture">Balanced</div>
+              <div class="metric-foot"><span class="signal signal-good"></span><span id="postureDetail">Strongest blend of reach and economics</span></div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Blended contribution</span>
+              <div class="metric-main" id="blendedContribution">€0.91</div>
+              <div class="metric-foot"><span id="marginText">58.4% margin</span><span class="metric-delta" id="marginDelta">+26.4 pts vs home</span></div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Est. acceptance</span>
+              <div class="metric-main" id="acceptance">51.7%</div>
+              <div class="metric-foot"><span id="acceptanceText">1 in 2 prospects</span><span class="metric-delta">survey signal</span></div>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">CAC payback</span>
+              <div class="metric-main" id="payback">4.1 mo</div>
+              <div class="metric-foot"><span id="ltvCac">LTV:CAC 3.0×</span><span class="metric-delta">target ≥ 3×</span></div>
+            </div>
+          </div>
+
+          <div class="visual-grid">
+            <article class="panel chart-panel">
+              <div class="panel-heading compact">
+                <div>
+                  <span class="section-index">02</span>
+                  <h3>Scenario runway</h3>
+                </div>
+                <div class="legend"><span><i class="legend-dot base"></i>Base</span><span><i class="legend-dot range"></i>Range</span></div>
+              </div>
+              <div class="chart-wrap">
+                <svg id="scenarioChart" viewBox="0 0 720 300" role="img" aria-label="Scenario chart showing contribution profit over six months"></svg>
+              </div>
+              <div class="chart-caption"><span>Contribution profit / first 6 months</span><strong id="scenarioSummary">€38k base case</strong></div>
+            </article>
+
+            <article class="panel mix-panel">
+              <div class="panel-heading compact">
+                <div>
+                  <span class="section-index">03</span>
+                  <h3>Channel economics</h3>
+                </div>
+                <span class="mini-caption">Net / unit</span>
+              </div>
+              <div class="channel-rows" id="channelRows"></div>
+              <div class="channel-insight"><span class="insight-arrow">↗</span><span id="channelInsight">Gym &amp; Office protects contribution; Retail builds the funnel.</span></div>
+            </article>
+          </div>
+
+          <div class="panel recommendation-panel">
+            <div class="recommendation-copy">
+              <div class="panel-heading compact">
+                <div>
+                  <span class="section-index">04</span>
+                  <h3>What we would do first</h3>
+                </div>
+                <span class="recommendation-tag">Working recommendation</span>
+              </div>
+              <h4 id="recommendationTitle">Enter at €2.19 with a retail-led, digital-supported test.</h4>
+              <p id="recommendationBody">Use Retail / Grocery to create trial and social proof, keep DTC close behind for higher contribution, and make Influencer / Content the first activation engine. This preserves premium cues while giving the CFO a credible payback path.</p>
+            </div>
+            <div class="decision-score">
+              <div class="score-ring"><span id="scoreValue">78</span><small>/100</small></div>
+              <span>Balance score</span>
+              <div class="score-bar"><span id="scoreBar"></span></div>
+              <small>Growth ↔ return</small>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="timing-lab panel" id="timingLab">
+        <div class="timing-intro"><span class="section-index">05 / Timing lab</span><h3>Catch the demand wave.</h3><p>Timing is not a date on a calendar. It is a short window where seasonal demand is rising, the shelf is quieter, and LUMEN has enough runway to learn.</p><div class="confidence-note"><span>i</span><p><strong>Evidence strength: directional.</strong> 12 monthly seasonality / weather observations and 48 competitor-month observations support the signal, not a forecast.</p></div></div>
+        <div class="timing-control"><label for="launchMonth">Drag the launch window</label><input id="launchMonth" type="range" min="1" max="12" value="4"><div class="month-read"><strong id="launchMonthLabel">APRIL</strong><span id="launchSignal">Build momentum</span></div><div class="month-ticks"><span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span><span>SEP</span><span>NOV</span></div><div class="timing-chart-wrap"><svg id="timingChart" viewBox="0 0 620 150" role="img" aria-label="Monthly seasonality and temperature chart"></svg></div><div class="timing-legend"><span><i class="legend-line demand"></i>Demand index</span><span><i class="legend-line temp"></i>Temperature</span><span><i class="legend-promo"></i>Promo month</span></div></div>
+        <div class="timing-readout"><div class="timing-score"><span>WINDOW SCORE</span><strong id="timingScore">84</strong><small>/100</small></div><div class="timing-reasons" id="timingReasons"></div><div class="promo-detail" id="promoDetail"></div></div>
+        <div class="timing-verdict"><span class="verdict-mark" id="verdictMark">✓</span><div><span class="eyebrow">THE CALL</span><h4 id="timingVerdict">Launch in April: prime the market, then ride summer.</h4><p id="timingCopy">Demand is accelerating and competitors are not heavily discounting. This gives LUMEN a clean runway to build trial before the seasonal peak.</p><small class="timing-source">Sources: Exhibit 12 · <code>data/seasonality_and_weather.csv</code> (12 monthly observations); Exhibit 3 · <code>data/competitor_price_history.csv</code> (48 competitor-month observations).</small></div></div>
+      </section>
+
+      <footer class="footer-note">
+        <span>Source: LUMEN Germany Market Entry Brief · Exhibits 7, 8, 9 &amp; 11</span>
+        <span>Prototype for decision support · Update assumptions as German learnings arrive</span>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
