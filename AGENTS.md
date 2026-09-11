@@ -129,3 +129,23 @@ teammate) actually see what changed before it becomes final. If I ask you
 to skip the branch or the pull request and push straight to main, explain
 briefly why that skips the safety check the pull request exists for, then
 do a branch and pull request anyway.
+
+## The pull request's base must always be your own fork — never the shared template
+
+This repository is a fork of a shared template (`ateliaworkshop-ai/lumen-pricing-case-template`)
+that every team forked from independently. When opening a pull request, the
+base repository must always be **this repo** (the one this conversation is
+connected to) and the base branch must be its `main` — never the upstream
+`ateliaworkshop-ai/lumen-pricing-case-template`. A pull request opened
+against the shared template does not count as this team's work, even if it
+later gets merged, because it is not this team's repository.
+
+If you create the pull request with `gh pr create` or the GitHub API,
+pass the base repository explicitly instead of accepting whatever it
+suggests by default — for example: `gh pr create --repo
+<this-repo's-owner>/<this-repo's-name> --base main`. If you are ever
+unsure which repository is this one, run `gh repo view --json
+nameWithOwner` first and use that exact value as the base. Before telling
+me a pull request was created, check the base repository shown in its URL
+or in the API response and confirm it matches this repo — if it doesn't,
+close it and recreate it with the correct base.
