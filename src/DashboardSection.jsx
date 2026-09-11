@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { LTV_CAC_TARGET, tensionScores } from "./cockpit.js";
+import { LTV_CAC_TARGET, SALES_CHANNELS, computeGivesUp, tensionScores } from "./cockpit.js";
 import { NOTE_TEAMS, TEAMS, teamById } from "./teams.js";
 import { season, useDecision } from "./decision.jsx";
 import { seasonIndexFor } from "./exhibits.js";
+import { BarChart, Gauge, PieChart } from "./BiCharts.jsx";
 
 function formatEur(value, digits = 2) {
   if (!Number.isFinite(value)) return "—";
@@ -21,6 +22,158 @@ function formatRatio(value) {
 function formatMonths(value) {
   if (!Number.isFinite(value)) return "—";
   return `${value.toFixed(1)} mo`;
+}
+
+function shortChannel(channel) {
+  if (String(channel).startsWith("Retail")) return "Retail";
+  if (String(channel).startsWith("Gym")) return "Gym";
+  if (String(channel).includes("Sampling")) return "Sampling";
+  if (String(channel).includes("Referral")) return "Referral";
+  if (String(channel).includes("Social")) return "Paid Social";
+  if (String(channel).includes("Influencer")) return "Influencer";
+  return "DTC";
+}
+
+function LiveVisuals() {
+  const {
+    shares,
+    mktShares,
+    sim,
+    price,
+    cockpitData,
+    leadChannel,
+    boostMktChannel,
+    setLaunchMonth,
+    launchMonth,
+    team,
+  } = useDecision();
+  const givesUp = useMemo(
+    () => computeGivesUp(cockpitData, price, sim.fundedNames),
+    [cockpitData, price, sim.fundedNames],
+  );
+  const salesPie = SALES_CHANNELS.map((ch) => ({
+    key: ch,
+    label: shortChannel(ch),
+    value: Number(shares[ch]) || 0,
+    hint: "Click to lead this sales channel",
+  }));
+  const mktPie = (cockpitData.marketingCacs || []).map((row) => ({
+    key: row.channel,
+    label: shortChannel(row.channel),
+    value: Number(mktShares[row.channel]) || 0,
+    hint: `CAC ${formatEur(row.cac)} · click to weight this mix`,
+  }));
+  const acceptPie = [
+    { key: "yes", label: "Would buy", value: sim.acceptance },
+    { key: "no", label: "Would not", value: Math.max(0, 100 - sim.acceptance) },
+  ];
+  const contribBars = sim.channels.map((row) => ({
+    key: row.channel,
+    label: shortChannel(row.channel),
+    value: row.contribution,
+  }));
+  const netBars = sim.channels.map((row) => ({
+    key: row.channel,
+    label: shortChannel(row.channel),
+    value: row.year1Net,
+  }));
+  const segmentBars = givesUp.segments.map((s) => ({
+    key: s.segment,
+    label: s.segment.replace(" Seekers", "").replace("Urban Wellness", "Urban W."),
+    value: s.comfort * 100,
+  }));
+  const seasonBars = season.months.map((m) => ({
+    key: m.month,
+    label: m.label,
+    value: m.index,
+    color: m.month === launchMonth ? "#8a3d28" : "#2c4a38",
+  }));
+
+  const showCmo = team === "combined" || team === "cmo";
+  const showCfo = team === "combined" || team === "cfo";
+  const showLaunch = team === "combined" || team === "launch";
+
+  return (
+    <div className="bi-grid">
+      {(showCfo || showLaunch) && (
+        <article className="bi-tile">
+          <h3>Sales-channel spend mix</h3>
+          <p className="stat-note">Share of the assumed year-1 budget. Click a slice to lead that channel.</p>
+          <PieChart items={salesPie} onSelect={(s) => leadChannel(s.key)} />
+        </article>
+      )}
+      {showCfo && (
+        <article className="bi-tile">
+          <h3>Marketing mix (CAC lever)</h3>
+          <p className="stat-note">
+            Not DTC / Retail / Gym — those are sales channels. Click a slice to
+            weight this acquisition mix.
+          </p>
+          <PieChart
+            items={mktPie}
+            donut
+            center={formatEur(sim.cac)}
+            onSelect={(s) => boostMktChannel(s.key)}
+          />
+        </article>
+      )}
+      {showCmo && (
+        <article className="bi-tile">
+          <h3>Acceptance at live price</h3>
+          <p className="stat-note">Price-test share who would buy, interpolated between the file knots.</p>
+          <PieChart items={acceptPie} donut center={`${sim.acceptance.toFixed(0)}%`} />
+        </article>
+      )}
+      {showCfo && (
+        <article className="bi-tile">
+          <h3>Contribution / unit</h3>
+          <p className="stat-note">After channel cuts and COGS. Same blended CAC on every sales channel.</p>
+          <BarChart
+            items={contribBars}
+            format={(v) => formatEur(v)}
+            onSelect={(s) => leadChannel(s.key)}
+          />
+        </article>
+      )}
+      {showCfo && (
+        <article className="bi-tile">
+          <h3>Year-1 net by sales channel</h3>
+          <p className="stat-note">Contribution × units − that channel’s share of the assumed budget.</p>
+          <BarChart items={netBars} format={(v) => formatEur(v, 0)} />
+        </article>
+      )}
+      {showCfo && (
+        <article className="bi-tile">
+          <h3>LTV:CAC gauge</h3>
+          <p className="stat-note">Needle is live. Tick is the 3:1 brief target.</p>
+          <Gauge
+            value={sim.blendRatio}
+            max={4}
+            target={LTV_CAC_TARGET}
+            label={formatRatio(sim.blendRatio)}
+          />
+        </article>
+      )}
+      {showCmo && (
+        <article className="bi-tile">
+          <h3>Segment in-band at live price</h3>
+          <p className="stat-note">Van Westendorp: too cheap &lt; price &lt; too expensive.</p>
+          <BarChart items={segmentBars} format={(v) => `${v.toFixed(0)}%`} />
+        </article>
+      )}
+      {showLaunch && (
+        <article className="bi-tile">
+          <h3>Germany seasonality</h3>
+          <p className="stat-note">Click a month to set live launch timing. Index 100 = average. Not LUMEN sales.</p>
+          <BarChart
+            items={seasonBars}
+            format={(v) => String(v)}
+            onSelect={(s) => setLaunchMonth(s.key)}
+          />
+        </article>
+      )}
+    </div>
+  );
 }
 
 function TeamCard({ def, active, scores, sim, selectedRegion, monthLabel, seasonIndex }) {
@@ -187,10 +340,10 @@ export default function DashboardSection() {
         <p className="eyebrow">Shared room · decision dashboard</p>
         <h2 id="dashboard-title">One board, three briefs</h2>
         <p className="lede">
-          CMO, CFO, and launch read different exhibits from the same live
-          decision. Switch a view to hide the other teams’ deep-dives. Leave a
-          note and hand off a link — there is no login and no server; the link
-          carries the numbers and the notes.
+          Power BI-style visuals on the live decision: pies for mix, a donut for
+          acceptance, bars for contribution and seasonality, a gauge for
+          LTV:CAC. Click a slice or bar to move the same sliders the rest of
+          the page uses. CMO, CFO, and launch still get different tiles.
         </p>
       </header>
 
@@ -242,6 +395,8 @@ export default function DashboardSection() {
           <strong>{vs.onRec ? "On rec" : "Stress-test"}</strong>
         </div>
       </div>
+
+      <LiveVisuals />
 
       <div className="tension-row dash-tension">
         <div>
