@@ -1,18 +1,25 @@
-import React, { useState } from "react";
-import seasonCsv from "../data/seasonality_and_weather.csv?raw";
+import React from "react";
 import historyCsv from "../data/competitor_price_history.csv?raw";
-import { buildPromoEvents, buildSeasonality } from "./exhibits.js";
+import { buildPromoEvents } from "./exhibits.js";
+import { season, useDecision } from "./decision.jsx";
 
-const view = buildSeasonality(seasonCsv);
 const promos = buildPromoEvents(historyCsv);
-const maxIndex = Math.max(...view.months.map((m) => m.index));
+const maxIndex = Math.max(...season.months.map((m) => m.index));
 
 export default function TimingSection() {
-  const [month, setMonth] = useState(view.peak.month);
-  const selected = view.months.find((m) => m.month === month) ?? view.peak;
-  const monthPromos = promos.filter((p) => p.monthNum === selected.month);
-  const vsPeak = selected.index / view.peak.index;
-  const vsTrough = selected.index / view.trough.index;
+  const { launchMonth, setLaunchMonth, sim } = useDecision();
+  const selected =
+    launchMonth === 0
+      ? null
+      : (season.months.find((m) => m.month === launchMonth) ?? season.peak);
+  const monthPromos = selected
+    ? promos.filter((p) => p.monthNum === selected.month)
+    : [];
+  const vsPeak = selected ? selected.index / season.peak.index : 1;
+  const vsTrough = selected ? selected.index / season.trough.index : 1;
+  const overlayUnits = selected
+    ? sim.units * (selected.index / 100)
+    : sim.units;
 
   return (
     <section id="timing" className="timing" aria-labelledby="timing-title">
@@ -21,34 +28,51 @@ export default function TimingSection() {
         <h2 id="timing-title">Demand seasonality in Germany</h2>
         <p className="lede">
           Monthly seasonality index (100 = average) plus mean German
-          temperature. Click a month. This is a timing signal for a cold
-          functional drink — not German LUMEN sales, because there are none.
-          The team recommendation does not lock a launch month; stress-test it
-          in the cockpit.
+          temperature. Click a month to set the live launch timing — the
+          cockpit applies that index to year-1 units only. This is a timing
+          signal for a cold functional drink — not German LUMEN sales, because
+          there are none.
         </p>
       </header>
+
+      <div className="chip-row">
+        <button
+          type="button"
+          className={launchMonth === 0 ? "chip is-on" : "chip"}
+          onClick={() => setLaunchMonth(0)}
+          aria-pressed={launchMonth === 0}
+        >
+          Full-year average
+        </button>
+      </div>
 
       <div className="tradeoff">
         <article className="stat">
           <p className="stat-kicker">Selected</p>
-          <h3>{selected.label}</h3>
-          <p className="stat-value">{selected.index}</p>
+          <h3>{selected ? selected.label : "Full year"}</h3>
+          <p className="stat-value">{selected ? selected.index : 100}</p>
           <p className="stat-note">
-            {selected.temp}°C mean. {(vsPeak * 100).toFixed(0)}% of the July
-            peak · {(vsTrough * 100).toFixed(0)}% of the January trough.
-            {selected.index >= 110
+            {selected
+              ? `${selected.temp}°C mean. ${(vsPeak * 100).toFixed(0)}% of the July peak · ${(vsTrough * 100).toFixed(0)}% of the January trough.`
+              : "Index 100 — no seasonal overlay on year-1 units."}
+            {selected && selected.index >= 110
               ? " Inside the high-season window (index ≥ 110)."
-              : selected.month === 4
+              : selected && selected.month === 4
                 ? " Last quiet month before the climb — trial time, not peak sell-through."
-                : " Below the high-season threshold."}
+                : selected
+                  ? " Below the high-season threshold."
+                  : ""}
+            {` Live year-1 units at this index: ${Math.round(overlayUnits).toLocaleString("en-GB")}.`}
           </p>
         </article>
         <article className="stat">
           <p className="stat-kicker">Promo calendar · exhibit 3</p>
           <h3>
-            {monthPromos.length
-              ? `${monthPromos.length} competitor promo${monthPromos.length > 1 ? "s" : ""}`
-              : "No listed promo"}
+            {!selected
+              ? "Pick a month"
+              : monthPromos.length
+                ? `${monthPromos.length} competitor promo${monthPromos.length > 1 ? "s" : ""}`
+                : "No listed promo"}
           </h3>
           <p className="stat-note">
             {monthPromos.length
@@ -64,19 +88,19 @@ export default function TimingSection() {
       </div>
 
       <div className="season-bars" role="list">
-        {view.months.map((m) => (
+        {season.months.map((m) => (
           <button
             key={m.month}
             type="button"
             className={
-              m.month === selected.month
+              m.month === launchMonth
                 ? "season-col is-on"
                 : m.index >= 110
                   ? "season-col is-peak"
                   : "season-col"
             }
-            onClick={() => setMonth(m.month)}
-            aria-pressed={m.month === selected.month}
+            onClick={() => setLaunchMonth(m.month === launchMonth ? 0 : m.month)}
+            aria-pressed={m.month === launchMonth}
           >
             <span
               className="season-bar"
@@ -89,11 +113,11 @@ export default function TimingSection() {
       </div>
 
       <p className="limitation">
-        High season is {view.window[0].label}–{view.window[view.window.length - 1].label}{" "}
+        High season is {season.window[0].label}–{season.window[season.window.length - 1].label}{" "}
         (index ≥ 110). April sits just before that climb (index 98); July is
         the peak (138). We show both so timing can be argued — we are not
-        locking April or July into the recommendation text. The cockpit can
-        apply the selected month’s index to year-1 units only.
+        locking April or July into the recommendation text. The cockpit applies
+        the selected month’s index to year-1 units only.
       </p>
     </section>
   );

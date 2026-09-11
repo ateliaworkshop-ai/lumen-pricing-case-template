@@ -4,6 +4,7 @@ import surveyCsv from "../data/customer_survey_anonymised.csv?raw";
 import vwCsv from "../data/price_sensitivity_survey.csv?raw";
 import { parseCsv } from "./csv.js";
 import { buildAwareness, vwNotExpensiveShare } from "./exhibits.js";
+import { useDecision } from "./decision.jsx";
 
 const costLines = parseCsv(costCsv).filter(
   (r) => Number.isFinite(r.cost_per_unit_eur) && Number.isFinite(r.pct_of_total),
@@ -16,9 +17,11 @@ function formatEur(value, digits = 2) {
 }
 
 export default function IntegritySection() {
+  const { price } = useDecision();
   const vw179 = vwNotExpensiveShare(vw, 1.79);
   const vw219 = vwNotExpensiveShare(vw, 2.19);
   const vw259 = vwNotExpensiveShare(vw, 2.59);
+  const liveVw = vwNotExpensiveShare(vw, price);
 
   return (
     <section id="integrity" className="integrity" aria-labelledby="integrity-title">
@@ -30,6 +33,12 @@ export default function IntegritySection() {
           Nothing here changes the team conclusion — it says what would.
         </p>
       </header>
+
+      <p className="live-callout">
+        At the live price {formatEur(price)}, Van Westendorp “not yet
+        expensive” is {(liveVw * 100).toFixed(1)}% (the €2.19 check is{" "}
+        {(vw219 * 100).toFixed(1)}%, matching the price test).
+      </p>
 
       <div className="integrity-grid">
         <div>

@@ -1,37 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
-import priceTestCsv from "../data/price_test_results.csv?raw";
-import economicsCsv from "../data/channel_economics.csv?raw";
-import costCsv from "../data/cost_breakdown.csv?raw";
-import funnelCsv from "../data/marketing_funnel_monthly.csv?raw";
-import surveyCsv from "../data/customer_survey_anonymised.csv?raw";
-import vwCsv from "../data/price_sensitivity_survey.csv?raw";
+import React, { useMemo } from "react";
 import {
-  DATA_LTV_MONTHS,
   LTV_CAC_TARGET,
+  PRICE_MAX,
+  PRICE_MIN,
   PRICE_PICKS,
   SALES_CHANNELS,
-  loadCockpitData,
-  simulateCockpit,
   computeGivesUp,
-  weightedMarketingCac,
-  defaultMarketingShares,
   tensionScores,
-  vsRecommendation,
-  REC,
   sensitivityTornado,
 } from "./cockpit.js";
-import { fetchGermanHouseholdIncome } from "./eurostat.js";
-import seasonCsv from "../data/seasonality_and_weather.csv?raw";
-import { buildSeasonality, seasonIndexFor } from "./exhibits.js";
-
-const data = loadCockpitData({
-  priceTestCsv,
-  economicsCsv,
-  costCsv,
-  funnelCsv,
-  surveyCsv,
-  vwCsv,
-});
+import { seasonIndexFor } from "./exhibits.js";
+import { season, useDecision } from "./decision.jsx";
 
 function formatEur(value, digits = 2) {
   if (!Number.isFinite(value)) return "—";
@@ -59,7 +38,7 @@ function signedDelta(value, format) {
   return `${value > 0 ? "+" : "−"}${pretty}`;
 }
 
-function Tornado({ rows }) {
+function Tornado({ rows, onApply }) {
   const max = Math.max(...rows.map((r) => Math.abs(r.dRatio)), 0.01);
   return (
     <ul className="tornado">
@@ -68,20 +47,26 @@ function Tornado({ rows }) {
         const positive = row.dRatio >= 0;
         return (
           <li key={row.label}>
-            <span className="tornado-label">{row.label}</span>
-            <div className="tornado-track" aria-hidden="true">
-              <span
-                className={positive ? "is-pos" : "is-neg"}
-                style={{
-                  width: `${width}%`,
-                  marginLeft: positive ? "50%" : `${50 - width}%`,
-                }}
-              />
-            </div>
-            <span className="tornado-val">
-              {positive ? "+" : "−"}
-              {Math.abs(row.dRatio).toFixed(2)}
-            </span>
+            <button
+              type="button"
+              className="tornado-btn"
+              onClick={() => onApply(row.patch)}
+            >
+              <span className="tornado-label">{row.label}</span>
+              <div className="tornado-track" aria-hidden="true">
+                <span
+                  className={positive ? "is-pos" : "is-neg"}
+                  style={{
+                    width: `${width}%`,
+                    marginLeft: positive ? "50%" : `${50 - width}%`,
+                  }}
+                />
+              </div>
+              <span className="tornado-val">
+                {positive ? "+" : "−"}
+                {Math.abs(row.dRatio).toFixed(2)}
+              </span>
+            </button>
           </li>
         );
       })}
@@ -89,71 +74,33 @@ function Tornado({ rows }) {
   );
 }
 
-const DEFAULT_SHARES = REC.channelShares;
-const DEFAULT_MKT = defaultMarketingShares(data.marketingCacs);
-const season = buildSeasonality(seasonCsv);
-
-const DEFAULT_REGION = "DE21";
-
 export default function CockpitSection() {
-  const [price, setPrice] = useState(2.19);
-  const [shares, setShares] = useState(DEFAULT_SHARES);
-  const [mktShares, setMktShares] = useState(DEFAULT_MKT);
-  const [year1Budget, setYear1Budget] = useState(400000);
-  const [lifetimeMonths, setLifetimeMonths] = useState(DATA_LTV_MONTHS);
-  const [regions, setRegions] = useState([]);
-  const [regionCode, setRegionCode] = useState(DEFAULT_REGION);
-  const [regionError, setRegionError] = useState(null);
-  const [launchMonth, setLaunchMonth] = useState(0);
+  const {
+    price,
+    setPrice,
+    shares,
+    setShare,
+    mktShares,
+    setMktShare,
+    year1Budget,
+    setYear1Budget,
+    lifetimeMonths,
+    setLifetimeMonths,
+    regions,
+    regionCode,
+    setRegionCode,
+    regionError,
+    launchMonth,
+    setLaunchMonth,
+    cockpitData: data,
+    cac,
+    sim,
+    vs,
+    resetToRec,
+    applyPatch,
+  } = useDecision();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchGermanHouseholdIncome(controller.signal)
-      .then((result) => {
-        setRegions(result.regions);
-        setRegionCode((current) => current || result.regions[0]?.code || "");
-      })
-      .catch((err) => {
-        if (err.name === "AbortError") return;
-        setRegionError(err.message || "Eurostat unavailable");
-      });
-    return () => controller.abort();
-  }, []);
-
-  const cac = useMemo(
-    () => weightedMarketingCac(data.marketingCacs, mktShares),
-    [mktShares],
-  );
-
-  const sim = useMemo(
-    () =>
-      simulateCockpit(data, {
-        price,
-        channelShares: shares,
-        year1Budget,
-        lifetimeMonths,
-        cac,
-      }),
-    [price, shares, year1Budget, lifetimeMonths, cac],
-  );
-
-  const recSim = useMemo(
-    () =>
-      simulateCockpit(data, {
-        price: REC.price,
-        channelShares: REC.channelShares,
-        year1Budget,
-        lifetimeMonths: REC.lifetimeMonths,
-        cac: weightedMarketingCac(data.marketingCacs, DEFAULT_MKT),
-      }),
-    [year1Budget],
-  );
-
-  const scores = useMemo(() => tensionScores(sim, data), [sim]);
-  const vs = useMemo(
-    () => vsRecommendation(sim, recSim, regionCode, mktShares, DEFAULT_MKT),
-    [sim, recSim, regionCode, mktShares],
-  );
+  const scores = useMemo(() => tensionScores(sim, data), [sim, data]);
 
   const givesUp = useMemo(
     () => computeGivesUp(data, price, sim.fundedNames),
@@ -176,14 +123,6 @@ export default function CockpitSection() {
   const seasonIndex = seasonIndexFor(season.months, launchMonth);
   const seasonalUnits = sim.units * (seasonIndex / 100);
   const seasonalNet = seasonalUnits * sim.blendContrib - sim.budget;
-
-  function setShare(channel, value) {
-    setShares((prev) => ({ ...prev, [channel]: Number(value) }));
-  }
-
-  function setMktShare(channel, value) {
-    setMktShares((prev) => ({ ...prev, [channel]: Number(value) }));
-  }
 
   const shareTotal = SALES_CHANNELS.reduce(
     (s, ch) => s + (Number(shares[ch]) || 0),
@@ -241,8 +180,8 @@ export default function CockpitSection() {
           <input
             id="cockpit-price"
             type="range"
-            min="1.49"
-            max="2.79"
+            min={PRICE_MIN}
+            max={PRICE_MAX}
             step="0.01"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
@@ -427,13 +366,7 @@ export default function CockpitSection() {
                 <button
                   type="button"
                   className="chip"
-                  onClick={() => {
-                    setPrice(REC.price);
-                    setShares({ ...REC.channelShares });
-                    setMktShares({ ...DEFAULT_MKT });
-                    setLifetimeMonths(REC.lifetimeMonths);
-                    setRegionCode(REC.regionCode);
-                  }}
+                  onClick={resetToRec}
                 >
                   Back to recommendation
                 </button>
@@ -653,9 +586,10 @@ export default function CockpitSection() {
               Each bar is the change in LTV:CAC if that one lever moves, holding
               the other current inputs fixed. CAC mix and assumed lifetime move
               the ratio most; sales-channel mix moves it only through
-              contribution per unit (same CAC on every sales channel).
+              contribution per unit (same CAC on every sales channel). Click a
+              bar to apply that lever to the live decision.
             </p>
-            <Tornado rows={tornado} />
+            <Tornado rows={tornado} onApply={applyPatch} />
           </div>
         </div>
       </div>

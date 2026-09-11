@@ -3,8 +3,11 @@ import { buildFunnelView } from "./funnel.js";
 
 export const SALES_CHANNELS = ["DTC Online", "Retail/Grocery", "Gym & Office"];
 export const PRICE_PICKS = [1.79, 2.19, 2.59];
+export const PRICE_MIN = 1.49;
+export const PRICE_MAX = 2.79;
 export const LTV_CAC_TARGET = 3;
 export const DATA_LTV_MONTHS = 18;
+export const DEFAULT_YEAR1_BUDGET = 400000;
 
 export function loadCockpitData({
   priceTestCsv,
@@ -325,14 +328,13 @@ export function sensitivityTornado(data, baseInputs) {
     );
 
   const scenarios = [
-    { label: "Price €1.79", inputs: { ...baseInputs, price: 1.79 } },
-    { label: "Price €2.59", inputs: { ...baseInputs, price: 2.59 } },
-    { label: "Lifetime 12 months", inputs: { ...baseInputs, lifetimeMonths: 12 } },
-    { label: "Lifetime 24 months", inputs: { ...baseInputs, lifetimeMonths: 24 } },
+    { label: "Price €1.79", patch: { price: 1.79 } },
+    { label: "Price €2.59", patch: { price: 2.59 } },
+    { label: "Lifetime 12 months", patch: { lifetimeMonths: 12 } },
+    { label: "Lifetime 24 months", patch: { lifetimeMonths: 24 } },
     {
       label: "All Retail/Grocery",
-      inputs: {
-        ...baseInputs,
+      patch: {
         channelShares: {
           "DTC Online": 0,
           "Retail/Grocery": 100,
@@ -342,8 +344,7 @@ export function sensitivityTornado(data, baseInputs) {
     },
     {
       label: "All DTC Online",
-      inputs: {
-        ...baseInputs,
+      patch: {
         channelShares: {
           "DTC Online": 100,
           "Retail/Grocery": 0,
@@ -353,25 +354,27 @@ export function sensitivityTornado(data, baseInputs) {
     },
     {
       label: "Referral-heavy CAC",
-      inputs: {
-        ...baseInputs,
-        cac: weightedMarketingCac(mkt, tilt(20, 70)),
-      },
+      patch: { mktShares: tilt(20, 70) },
     },
     {
       label: "Sampling-heavy CAC",
-      inputs: {
-        ...baseInputs,
-        cac: weightedMarketingCac(mkt, tilt(80, 10)),
-      },
+      patch: { mktShares: tilt(80, 10) },
     },
   ];
 
   return scenarios
     .map((s) => {
-      const sim = simulateCockpit(data, s.inputs);
+      const inputs = {
+        ...baseInputs,
+        ...s.patch,
+      };
+      if (s.patch.mktShares) {
+        inputs.cac = weightedMarketingCac(mkt, s.patch.mktShares);
+      }
+      const sim = simulateCockpit(data, inputs);
       return {
         label: s.label,
+        patch: s.patch,
         dRatio: sim.blendRatio - base.blendRatio,
         ratio: sim.blendRatio,
       };
