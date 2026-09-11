@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs",
+    "test": "node --test"
+  }
+}
