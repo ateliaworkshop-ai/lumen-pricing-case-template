@@ -1,8 +1,5 @@
-import React, { useMemo, useState } from "react";
-import priceTestCsv from "../data/price_test_results.csv?raw";
-import channelEconomicsCsv from "../data/channel_economics.csv?raw";
+import React, { useMemo } from "react";
 import competitorCsv from "../data/competitor_prices_by_channel.csv?raw";
-import vwCsv from "../data/price_sensitivity_survey.csv?raw";
 import PaybackSection from "./PaybackSection.jsx";
 import VanWestendorpSection from "./VanWestendorpSection.jsx";
 import CockpitSection from "./CockpitSection.jsx";
@@ -16,30 +13,18 @@ import IntegritySection from "./IntegritySection.jsx";
 import PageNav from "./PageNav.jsx";
 import { parseCsv } from "./csv.js";
 import { LUMEN_PRICE, SINGLE_CAN, vwNotExpensiveShare } from "./exhibits.js";
+import {
+  interpolateAcceptance,
+  PRICE_MAX,
+  PRICE_MIN,
+  PRICE_PICKS,
+  SALES_CHANNELS,
+  unitEconomics,
+} from "./cockpit.js";
+import { DecisionBar, DecisionProvider, useDecision } from "./decision.jsx";
 
-const PRICES = [1.79, 2.19, 2.59];
-const CHANNELS = ["DTC Online", "Retail/Grocery", "Gym & Office"];
-
-const priceRows = parseCsv(priceTestCsv);
-const economicsRows = parseCsv(channelEconomicsCsv);
 const competitorRows = parseCsv(competitorCsv).filter(
   (r) => r.format === SINGLE_CAN,
-);
-const vwRows = parseCsv(vwCsv);
-
-const channelStructure = Object.fromEntries(
-  CHANNELS.map((channel) => {
-    const row = economicsRows.find((r) => r.channel === channel);
-    return [
-      channel,
-      {
-        retailer: row.retailer_margin_pct,
-        distributor: row.distributor_cut_pct,
-        payment: row.payment_processing_pct,
-        fulfillment: row.fulfillment_cost_eur,
-      },
-    ];
-  }),
 );
 
 function formatEur(value) {
@@ -51,8 +36,8 @@ function formatPct(value, { alreadyPercent = false } = {}) {
   return `${pct.toFixed(1)}%`;
 }
 
-function structureLabel(channel) {
-  const s = channelStructure[channel];
+function structureLabel(channel, takeRates) {
+  const s = takeRates[channel];
   const parts = [];
   if (s.retailer) parts.push(`retailer ${formatPct(s.retailer)}`);
   if (s.distributor) parts.push(`distributor ${formatPct(s.distributor)}`);
@@ -61,30 +46,38 @@ function structureLabel(channel) {
   return parts.length ? `Cuts: ${parts.join(" · ")}` : "No intermediary cuts";
 }
 
-export default function App() {
-  const [price, setPrice] = useState(2.19);
-  const [selected, setSelected] = useState(() => new Set(CHANNELS));
+function AppInner() {
+  const {
+    price,
+    setPrice,
+    shares,
+    toggleChannel,
+    leadChannel,
+    fundedChannels,
+    cockpitData,
+  } = useDecision();
 
-  function toggleChannel(channel) {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(channel)) next.delete(channel);
-      else next.add(channel);
-      return next;
-    });
-  }
-
-  const selectedChannels = CHANNELS.filter((c) => selected.has(c));
-
-  const rows = useMemo(
-    () =>
-      priceRows.filter(
-        (r) => r.price_eur === price && selected.has(r.channel),
-      ),
-    [price, selected],
+  const selected = useMemo(() => new Set(fundedChannels), [fundedChannels]);
+  const onKnot = cockpitData.acceptanceKnots.some(
+    (k) => Math.abs(k.price - price) < 0.001,
   );
+  const acceptance = interpolateAcceptance(price, cockpitData.acceptanceKnots);
 
-  const acceptance = rows[0]?.estimated_acceptance_pct_of_survey ?? null;
+  const rows = fundedChannels.map((channel) => {
+    const econ = unitEconomics(
+      price,
+      channel,
+      cockpitData.takeRates,
+      cockpitData.cogs,
+    );
+    return {
+      channel,
+      net_price_to_lumen_eur: econ.net,
+      unit_contribution_eur: econ.contribution,
+      contribution_margin_pct: econ.margin,
+    };
+  });
+
   const blendedContribution =
     rows.length === 0
       ? null
@@ -120,13 +113,17 @@ export default function App() {
 
   const below = competitorBand((p) => p < price);
   const above = competitorBand((p) => p > price);
+  const vwShare = vwNotExpensiveShare(cockpitData.vw, price);
 
   return (
     <div className="page">
       <a className="skip-link" href="#recommendation">
         Skip to recommendation
       </a>
-      <PageNav />
+      <div className="sticky-stack">
+        <PageNav />
+        <DecisionBar />
+      </div>
 
       <section
         id="recommendation"
@@ -205,22 +202,33 @@ export default function App() {
         <h2 id="explorer-title">Price &amp; channel explorer</h2>
         <p className="lede">
           Compare launch price and channel mix. Acceptance is a volume signal;
-          contribution is what LUMEN keeps per unit after channel cuts. The
-          team pick (€2.19) is tagged for orientation — explore any combination.
+          contribution is what LUMEN keeps per unit after channel cuts. These
+          controls are the same live decision as the bar, the charts, and the
+          cockpit — change one, and the rest follow.
         </p>
       </header>
 
       <section className="controls">
         <fieldset>
           <legend>Launch price</legend>
+          <input
+            type="range"
+            min={PRICE_MIN}
+            max={PRICE_MAX}
+            step="0.01"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            aria-label="Launch price"
+          />
+          <p className="stat-note">Live {formatEur(price)}</p>
           <div className="chip-row">
-            {PRICES.map((p) => (
+            {PRICE_PICKS.map((p) => (
               <button
                 key={p}
                 type="button"
-                className={p === price ? "chip is-on" : "chip"}
+                className={Math.abs(p - price) < 0.001 ? "chip is-on" : "chip"}
                 onClick={() => setPrice(p)}
-                aria-pressed={p === price}
+                aria-pressed={Math.abs(p - price) < 0.001}
               >
                 {formatEur(p)}
                 {p === LUMEN_PRICE ? <span className="chip-tag">team</span> : null}
@@ -232,7 +240,7 @@ export default function App() {
         <fieldset>
           <legend>Channels (select one or more)</legend>
           <div className="chip-row">
-            {CHANNELS.map((channel) => (
+            {SALES_CHANNELS.map((channel) => (
               <button
                 key={channel}
                 type="button"
@@ -241,6 +249,9 @@ export default function App() {
                 aria-pressed={selected.has(channel)}
               >
                 {channel}
+                {selected.has(channel) ? (
+                  <span className="chip-tag">{Math.round(shares[channel])}%</span>
+                ) : null}
               </button>
             ))}
           </div>
@@ -260,11 +271,12 @@ export default function App() {
                 <span style={{ width: `${acceptance}%` }} />
               </div>
               <p className="stat-note">
-                Share of surveyed respondents who would buy at {formatEur(price)}.
+                {onKnot
+                  ? `Share of surveyed respondents who would buy at ${formatEur(price)}.`
+                  : `Interpolated between the price-test knots (€1.79 / €2.19 / €2.59) at ${formatEur(price)}.`}{" "}
                 Same for every channel at a given price. Van Westendorp “not
-                yet expensive” at this price is{" "}
-                {(vwNotExpensiveShare(vwRows, price) * 100).toFixed(1)}%
-                {Math.abs(vwNotExpensiveShare(vwRows, price) * 100 - acceptance) > 5
+                yet expensive” at this price is {(vwShare * 100).toFixed(1)}%
+                {Math.abs(vwShare * 100 - acceptance) > 5
                   ? " — that does not reconcile with this file, and we flag it rather than pick a side."
                   : " — in line with this file."}
               </p>
@@ -277,8 +289,9 @@ export default function App() {
                 per unit · {blendedMargin.toFixed(1)}% contribution margin
               </p>
               <p className="stat-note">
-                Equal-weight average across {selectedChannels.join(", ")}.
-                Not a volume-weighted mix.
+                Equal-weight average across {fundedChannels.join(", ")}.
+                Not a volume-weighted mix. Channel % in the chips is the
+                cockpit spend split.
               </p>
             </article>
           </section>
@@ -307,10 +320,16 @@ export default function App() {
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.channel}>
+                  <tr
+                    key={r.channel}
+                    className="is-clickable"
+                    onClick={() => leadChannel(r.channel)}
+                  >
                     <td>
                       <strong>{r.channel}</strong>
-                      <span className="cuts">{structureLabel(r.channel)}</span>
+                      <span className="cuts">
+                        {structureLabel(r.channel, cockpitData.takeRates)}
+                      </span>
                     </td>
                     <td>{formatEur(r.net_price_to_lumen_eur)}</td>
                     <td>
@@ -330,6 +349,7 @@ export default function App() {
                 ))}
               </tbody>
             </table>
+            <p className="chart-hint">Click a row to lead the live mix toward that channel (70 / 15 / 15).</p>
           </section>
         </>
       )}
@@ -356,5 +376,13 @@ export default function App() {
       <hr className="section-rule" />
       <CockpitSection />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <DecisionProvider>
+      <AppInner />
+    </DecisionProvider>
   );
 }

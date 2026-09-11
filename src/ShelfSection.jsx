@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import competitorCsv from "../data/competitor_prices_by_channel.csv?raw";
 import historyCsv from "../data/competitor_price_history.csv?raw";
 import { LUMEN_PRICE, buildPromoPressure, buildShelf } from "./exhibits.js";
+import { PRICE_MAX, PRICE_MIN, REC, SALES_CHANNELS } from "./cockpit.js";
+import { useDecision } from "./decision.jsx";
 
 const shelf = buildShelf(competitorCsv);
 const promo = buildPromoPressure(historyCsv);
-const CHANNELS = ["Retail/Grocery", "Gym & Office", "DTC Online"];
 
 function formatEur(value) {
   return `€${value.toFixed(2)}`;
 }
 
-function ShelfLine({ items }) {
+function ShelfLine({ items, recPrice, pinnedPrice, onPickPrice, onPin }) {
   const min = 0.9;
   const max = 3.3;
+  const dragging = useRef(false);
   const x = (p) => `${8 + ((p - min) / (max - min)) * 84}%`;
   const mate = items.find((r) => r.competitor.includes("Mate"));
   const volt = items.find((r) => r.competitor.includes("Volt"));
@@ -21,9 +23,63 @@ function ShelfLine({ items }) {
     mate && volt
       ? { left: mate.price, width: volt.price - mate.price }
       : null;
+  const showRec = !items.some(
+    (row) => row.lumen && Math.abs(row.price - recPrice) < 0.005,
+  );
+
+  function pickFromEvent(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const t = (event.clientX - rect.left) / rect.width;
+    const inner = (t - 0.08) / 0.84;
+    const raw = min + inner * (max - min);
+    return Math.min(PRICE_MAX, Math.max(PRICE_MIN, raw));
+  }
 
   return (
-    <div className="shelf-line" role="img" aria-label="Single-can price line">
+    <div
+      className="shelf-line is-interactive"
+      role="slider"
+      tabIndex={0}
+      aria-valuemin={PRICE_MIN}
+      aria-valuemax={PRICE_MAX}
+      aria-valuenow={items.find((r) => r.lumen)?.price ?? recPrice}
+      aria-label="Single-can price line. Drag to set the live LUMEN price. Shift-click to pin."
+      onPointerDown={(event) => {
+        if (event.shiftKey) {
+          onPin?.(pickFromEvent(event));
+          return;
+        }
+        dragging.current = true;
+        event.currentTarget.setPointerCapture?.(event.pointerId);
+        onPickPrice(pickFromEvent(event));
+      }}
+      onPointerMove={(event) => {
+        if (dragging.current) onPickPrice(pickFromEvent(event));
+      }}
+      onPointerUp={() => {
+        dragging.current = false;
+      }}
+      onPointerCancel={() => {
+        dragging.current = false;
+      }}
+      onDoubleClick={() => onPickPrice(recPrice)}
+      onKeyDown={(event) => {
+        const live = items.find((r) => r.lumen)?.price ?? recPrice;
+        const step = event.shiftKey ? 0.1 : 0.01;
+        if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+          event.preventDefault();
+          onPickPrice(live - step);
+        } else if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+          event.preventDefault();
+          onPickPrice(live + step);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          onPickPrice(recPrice);
+        } else if (event.key === "Escape") {
+          onPin?.(null);
+        }
+      }}
+    >
       {gap && (
         <span
           className="shelf-gap"
@@ -34,11 +90,28 @@ function ShelfLine({ items }) {
         />
       )}
       <span className="shelf-axis" />
+      {showRec && (
+        <span className="shelf-dot is-rec" style={{ left: x(recPrice) }}>
+          <strong>Rec</strong>
+          {formatEur(recPrice)}
+        </span>
+      )}
+      {pinnedPrice != null && Math.abs(pinnedPrice - recPrice) > 0.02 && (
+        <span className="shelf-dot is-pin" style={{ left: x(pinnedPrice) }}>
+          <strong>Pin</strong>
+          {formatEur(pinnedPrice)}
+        </span>
+      )}
       {items.map((row) => (
         <span
           key={row.competitor}
           className={row.lumen ? "shelf-dot is-lumen" : "shelf-dot"}
           style={{ left: x(row.price) }}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            if (e.shiftKey) onPin?.(row.price);
+            else onPickPrice(row.price);
+          }}
         >
           <strong>{row.lumen ? "LUMEN" : row.competitor}</strong>
           {formatEur(row.price)}
@@ -55,40 +128,50 @@ function ShelfLine({ items }) {
 }
 
 export default function ShelfSection() {
-  const [channel, setChannel] = useState("Retail/Grocery");
-  const rows = (shelf.byChannel.get(channel) ?? []).slice();
+  const {
+    price,
+    setPrice,
+    shelfChannel,
+    setShelfChannel,
+    leadChannel,
+    pinnedPrice,
+    pinPrice,
+  } = useDecision();
+  const rows = (shelf.byChannel.get(shelfChannel) ?? []).slice();
   const withLumen = [
     ...rows,
     {
-      competitor: "LUMEN (our rec.)",
-      positioning: "Team pick",
-      price: LUMEN_PRICE,
+      competitor: "LUMEN (live)",
+      positioning: "Live decision",
+      price,
       lumen: true,
     },
   ].sort((a, b) => a.price - b.price);
-  const max = Math.max(shelf.maxPrice, ...withLumen.map((r) => r.price));
+  const max = Math.max(shelf.maxPrice, ...withLumen.map((r) => r.price), price);
 
   return (
     <section id="shelf" className="shelf" aria-labelledby="shelf-title">
       <header className="tool-header">
         <p className="eyebrow">Competitive context · exhibit 2</p>
-        <h2 id="shelf-title">Where €2.19 sits on the shelf</h2>
+        <h2 id="shelf-title">Where the live price sits on the shelf</h2>
         <p className="lede">
           Single-can (330 ml) list prices from competitor_prices_by_channel.csv.
-          €2.19 is above heritage (Mate Libre) and below VoltFit — the gap the
-          recommendation is built on. Not a recommended price from this chart
-          alone.
+          The terracotta marker is the live LUMEN price (team rec is €2.19).
+          Click a competitor — or the line — to match that price.
         </p>
       </header>
 
       <div className="chip-row" role="tablist" aria-label="Shelf channel">
-        {CHANNELS.map((ch) => (
+        {SALES_CHANNELS.map((ch) => (
           <button
             key={ch}
             type="button"
-            className={ch === channel ? "chip is-on" : "chip"}
-            onClick={() => setChannel(ch)}
-            aria-pressed={ch === channel}
+            className={ch === shelfChannel ? "chip is-on" : "chip"}
+            onClick={() => {
+              setShelfChannel(ch);
+              leadChannel(ch);
+            }}
+            aria-pressed={ch === shelfChannel}
           >
             {ch}
           </button>
@@ -96,12 +179,29 @@ export default function ShelfSection() {
       </div>
 
       {withLumen.length > 1 && (
-        <ShelfLine items={withLumen} />
+        <ShelfLine
+          items={withLumen}
+          recPrice={REC.price}
+          pinnedPrice={pinnedPrice}
+          onPickPrice={setPrice}
+          onPin={pinPrice}
+        />
       )}
+      <p className="chart-hint">
+        Drag the line or use arrows to move LUMEN. Shift-click a brand (or the
+        line) to pin a comparison. Double-click returns to €2.19. Channel tabs
+        also lead the live sales mix toward that channel (70 / 15 / 15).
+      </p>
 
       <ul className="shelf-list">
         {withLumen.map((row) => (
-          <li key={row.competitor} className={row.lumen ? "is-lumen" : undefined}>
+          <li
+            key={row.competitor}
+            className={row.lumen ? "is-lumen is-clickable" : "is-clickable"}
+            onClick={(e) =>
+              e.shiftKey ? pinPrice(row.price) : setPrice(row.price)
+            }
+          >
             <div className="shelf-meta">
               <strong>{row.competitor}</strong>
               <span>{row.positioning}</span>
@@ -125,7 +225,7 @@ export default function ShelfSection() {
           .map((p) => `${p.competitor} ${(p.promoShare * 100).toFixed(0)}% of months`)
           .join(" · ")}
         . PulsUp discounters; VoltFit / Root &amp; Rise rarely promo — another
-        reason a stable €2.19 is closer to premium than to mass.
+        reason a stable {formatEur(LUMEN_PRICE)} is closer to premium than to mass.
       </p>
     </section>
   );

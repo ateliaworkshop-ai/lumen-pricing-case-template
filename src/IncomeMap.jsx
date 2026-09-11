@@ -15,7 +15,7 @@ function fillFor(t) {
   return `rgb(${mix[0]}, ${mix[1]}, ${mix[2]})`;
 }
 
-export default function IncomeMap({ regions, highlightCode }) {
+export default function IncomeMap({ regions, highlightCode, onSelect }) {
   const [geographies, setGeographies] = useState(null);
   const [mapError, setMapError] = useState(null);
   const [hover, setHover] = useState(null);
@@ -75,10 +75,11 @@ export default function IncomeMap({ regions, highlightCode }) {
     <div className="choropleth">
       <h3>Income map</h3>
       <p className="stat-note">
-        Darker green = higher disposable income per inhabitant. Hover a region
-        for the figure. Same live Eurostat values as the table.{" "}
+        Darker green = higher disposable income per inhabitant. Click a region
+        to set it as the live launch frame. Same live Eurostat values as the
+        table.{" "}
         {highlightCode
-          ? "The team first region is outlined in terracotta."
+          ? "The live pick is outlined in terracotta."
           : "No region is singled out as the launch pick."}
       </p>
       <div className="map-frame">
@@ -113,9 +114,10 @@ export default function IncomeMap({ regions, highlightCode }) {
                       )
                     }
                     onMouseLeave={() => setHover(null)}
+                    onClick={() => region && onSelect?.(code)}
                     style={{
-                      default: { outline: "none" },
-                      hover: { outline: "none", fill: "#8a3d28" },
+                      default: { outline: "none", cursor: onSelect ? "pointer" : "default" },
+                      hover: { outline: "none", fill: "#8a3d28", cursor: onSelect ? "pointer" : "default" },
                       pressed: { outline: "none" },
                     }}
                   />

@@ -98,6 +98,24 @@ export function buildVanWestendorp(rows) {
   };
 }
 
+export function curveAtPrice(view, price) {
+  const { prices, curves } = view;
+  if (!prices.length) return null;
+  const p = Math.min(prices[prices.length - 1], Math.max(prices[0], price));
+  let i = 0;
+  while (i < prices.length - 1 && prices[i + 1] < p) i += 1;
+  const next = Math.min(i + 1, prices.length - 1);
+  const span = prices[next] - prices[i] || 1;
+  const t = i === next ? 0 : (p - prices[i]) / span;
+  const mix = (series) => series[i] + t * (series[next] - series[i]);
+  return {
+    tooCheap: mix(curves.tooCheap),
+    cheap: mix(curves.cheap),
+    expensive: mix(curves.expensive),
+    tooExpensive: mix(curves.tooExpensive),
+  };
+}
+
 function round2(value) {
   return Math.round(value * 100) / 100;
 }
