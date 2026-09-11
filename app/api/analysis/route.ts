@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+
+const base = "https://raw.githubusercontent.com/arpitdixit9/Digital-Spark-Seminar-Group-18-Lumen-Pricing/main/data/";
+const safeFiles = ["market_context.csv","competitor_prices_by_channel.csv","competitor_price_history.csv","price_test_results.csv","channel_economics.csv","cost_breakdown.csv","seasonality_and_weather.csv"];
+
+function csv(text:string){const rows=text.trim().split(/\r?\n/).map(r=>r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(v=>v.replace(/^"|"$/g,"").trim()));const h=rows.shift()||[];return rows.map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]??""])));}
+export async function GET(){const data:any={};for(const file of safeFiles){const res=await fetch(base+file,{next:{revalidate:3600}});data[file]=csv(await res.text());}return NextResponse.json({data,privacy:{excluded:["customer_survey.csv","customer_quotes.csv","historical_sales_weekly.csv","marketing_funnel_monthly.csv","price_sensitivity_survey.csv"],reason:"The public API returns aggregate-safe exhibits only; identifying survey fields are never exposed."},recommendation:{decision:"Enter Germany with a phased 2-3 city pilot",cities:["Berlin","Munich","Hamburg"],positioning:"Accessible premium adaptogenic functional beverage",price:"Use €2.19 as the base test price; reserve €2.59 for premium channels",tradeoff:"Favors CFO payback and learning speed over maximum initial reach."}});}
