@@ -26,14 +26,14 @@ Why we're doing this: it's not to monitor you. It's what lets us understand, at 
 
 Check each box in this README as you go — not at the end, while you're working:
 
-- [ ] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
-- [ ] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
-- [ ] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
-- [ ] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
-- [ ] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
-- [ ] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
-- [ ] **Explainability**: can you explain to someone non-technical why your tool does what it does?
-- [ ] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
+- [x] **Data**: We use aggregated market, competitor, survey, quote, sales, funnel, cost, channel, price-test, and seasonality inputs. We deliberately exclude name/email fields from the application and store only the segment, channel, and purchase-frequency fields needed for analysis.
+- [x] **API keys**: We use no external API, so no API key is required or committed.
+- [x] **Deployment**: The front end exposes aggregated, source-tagged outputs only; it does not return the raw survey or respondent identifiers.
+- [x] **Files generated along the way**: `assets/data.json` is a derived, non-personal aggregation used by the audience screen; raw source files remain in `data/` for traceability. The decision memo is a human-readable submission artifact.
+- [x] **Storage**: Small, static JSON is used for browser-ready aggregates because it is transparent, fast, and avoids exposing row-level survey data. The original CSVs remain the auditable source of truth.
+- [x] **Robustness**: Empty channel selections show an explanatory empty state; failed data loading shows a refresh message; pricing and assumption controls are constrained to the tested ranges; forecasts are labelled estimates.
+- [x] **Explainability**: Each screen explains its assumptions in plain language and shows source tags, unit contribution, estimated volume, and CAC payback so a non-technical reviewer can follow the decision.
+- [x] **Business relevance**: The prototype directly compares the price/channel choices Freya must make, surfaces the CMO-versus-CFO trade-off, and identifies what each option gives up.
 
 These questions aren't here to slow you down — they're part of what's being evaluated. A thoughtful answer to one of them is worth more than an extra feature nobody asked for.
 
@@ -44,6 +44,14 @@ These questions aren't here to slow you down — they're part of what's being ev
 - A short paragraph below, written in business language (not technical), explaining what you did and why
 - A live URL (Vercel or similar) if you deployed it — not required to still get credit, but expected if you did
 
+## How to run locally
+
+1. Install Node.js (18 or newer is recommended).
+2. From the repository root, run `npm install` if your environment requires package metadata to be installed.
+3. Rebuild the browser-ready aggregate data with `npm run build:data`.
+4. Serve the repository root with any static HTTP server (for example, `npx serve .`) and open the displayed local URL. A static server is required because the app loads `assets/data.json` with `fetch`; opening `index.html` directly may be blocked by browser file-origin rules.
+5. Run the automated checks with `npm test`.
+
 ## Our Approach
 
-*[To be filled in by the team at the end.]*
+We treat Germany as a measured market-entry decision, not a precision forecast: there are no German sales, so the tool triangulates German survey and price-test evidence with duplicate-cleaned NL/DK/SE performance, channel economics, competitor prices, and market context. The recommended first wave is a premium-but-accessible €2.19 launch through DTC Online and Gym & Office, focused on audiences with a clear performance and wellness use case. In the simulator's default Berlin/Munich scenario, this mix delivers €1.16 weighted contribution per can and approximately six-month CAC payback; the €1.79 retail-led alternative improves stated acceptance to 61.7% but reduces weighted contribution to €0.63 and stretches payback to roughly twelve months. We therefore accept lower initial reach to protect cash recovery and premium credibility, while using a six-month pilot to validate conversion, repeat purchase, channel execution, and willingness to pay before scaling Retail/Grocery. The decision cockpit makes assumptions adjustable, labels uncertainty, cites the source file behind each key output, and keeps respondent identifiers out of the product.
