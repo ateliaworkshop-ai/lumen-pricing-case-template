@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/ROIResult",
+  "$defs": {
+    "ROIResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "delta_contribution": {
+          "$ref": "#/$defs/Metric"
+        },
+        "delta_budget": {
+          "$ref": "#/$defs/Metric"
+        },
+        "ratio": {
+          "$ref": "#/$defs/Metric"
+        },
+        "recovery": {
+          "$ref": "#/$defs/Recovery"
+        },
+        "label": {
+          "type": "string"
+        },
+        "reference_fingerprint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "delta_contribution",
+        "delta_budget",
+        "ratio",
+        "recovery",
+        "label",
+        "reference_fingerprint"
+      ]
+    },
+    "Metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "not_calculable",
+            "not_applicable",
+            "not_reached",
+            "covered_at_start",
+            "no_finite_threshold"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "status",
+        "reasons"
+      ]
+    },
+    "Recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cumulative": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delay": {
+          "$ref": "#/$defs/Metric"
+        },
+        "relapse": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cumulative",
+        "delay",
+        "relapse"
+      ]
+    }
+  }
+}

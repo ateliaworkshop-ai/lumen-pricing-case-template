@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/UncertaintyResult",
+  "$defs": {
+    "UncertaintyResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evaluations": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Evaluation"
+          }
+        },
+        "ranges": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "minItems": 2,
+                "maxItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "evaluations",
+        "ranges",
+        "warnings"
+      ]
+    },
+    "Evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "engine_version": {
+          "type": "string"
+        },
+        "scenario_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "fingerprint": {
+          "type": "string"
+        },
+        "input_snapshot": {
+          "type": "object"
+        },
+        "months": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "demand": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Metric"
+            }
+          }
+        },
+        "sales": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Metric"
+            }
+          }
+        },
+        "unit_margin": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Metric"
+            }
+          }
+        },
+        "channel_financials": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Metric"
+              }
+            }
+          }
+        },
+        "monthly": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Metric"
+            }
+          }
+        },
+        "checkpoints": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/$defs/Metric"
+            }
+          }
+        },
+        "marketing_coverage": {
+          "$ref": "#/$defs/Recovery"
+        },
+        "launch_recovery": {
+          "$ref": "#/$defs/Recovery"
+        },
+        "break_even": {
+          "$ref": "#/$defs/Metric"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "engine_version",
+        "scenario_id",
+        "revision",
+        "fingerprint",
+        "input_snapshot",
+        "months",
+        "demand",
+        "sales",
+        "unit_margin",
+        "channel_financials",
+        "monthly",
+        "checkpoints",
+        "marketing_coverage",
+        "launch_recovery",
+        "break_even",
+        "warnings"
+      ]
+    },
+    "Metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "not_calculable",
+            "not_applicable",
+            "not_reached",
+            "covered_at_start",
+            "no_finite_threshold"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "status",
+        "reasons"
+      ]
+    },
+    "Recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cumulative": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delay": {
+          "$ref": "#/$defs/Metric"
+        },
+        "relapse": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cumulative",
+        "delay",
+        "relapse"
+      ]
+    }
+  }
+}

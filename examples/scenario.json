@@ -1,0 +1,965 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "demo-dtc",
+  "revision": "1",
+  "country": "DE",
+  "launch": "2026-07-01",
+  "horizon": 12,
+  "commercial": {
+    "mode": "A",
+    "level": {
+      "value": 10000,
+      "unit": "can/month",
+      "kind": "ASSUMPTION",
+      "source": "Synthetic MD-08/example input, not German evidence",
+      "accepted": true
+    },
+    "mix": {
+      "DTC Online": {
+        "value": 0.6,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      "Retail/Grocery": {
+        "value": 0.4,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      }
+    },
+    "ramp": {
+      "DTC Online": [
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        }
+      ],
+      "Retail/Grocery": [
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        {
+          "value": 1,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        }
+      ]
+    },
+    "season": [
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 1,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      }
+    ],
+    "price_response": {
+      "DTC Online": {
+        "mode": "constant",
+        "declaration": {
+          "text": "Volume fixed at all prices; no price elasticity claimed",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic demonstration, pending business validation",
+          "accepted": true
+        },
+        "reference_price": {
+          "value": 2.19,
+          "unit": "EUR/can",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "prices": [],
+        "acceptance": [],
+        "interpolate": false
+      },
+      "Retail/Grocery": {
+        "mode": "constant",
+        "declaration": {
+          "text": "Volume fixed at all prices; no price elasticity claimed",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic demonstration, pending business validation",
+          "accepted": true
+        },
+        "reference_price": {
+          "value": 2.19,
+          "unit": "EUR/can",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "prices": [],
+        "acceptance": [],
+        "interpolate": false
+      }
+    }
+  },
+  "marketing": {
+    "paid": [
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 400,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      }
+    ]
+  },
+  "economics": {
+    "channels": {
+      "DTC Online": {
+        "price": [
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          }
+        ],
+        "retailer": {
+          "value": 0,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "distributor": {
+          "value": 0,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "payment": {
+          "value": 0.029,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "fulfillment": {
+          "value": 0.35,
+          "unit": "EUR/can",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "cogs": [
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          }
+        ]
+      },
+      "Retail/Grocery": {
+        "price": [
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 2.19,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          }
+        ],
+        "retailer": {
+          "value": 0.35,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "distributor": {
+          "value": 0.08,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "payment": {
+          "value": 0,
+          "unit": "ratio",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "fulfillment": {
+          "value": 0,
+          "unit": "EUR/can",
+          "kind": "ASSUMPTION",
+          "source": "Synthetic MD-08/example input, not German evidence",
+          "accepted": true
+        },
+        "cogs": [
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          },
+          {
+            "value": 0.62,
+            "unit": "EUR/can",
+            "kind": "ASSUMPTION",
+            "source": "Synthetic MD-08/example input, not German evidence",
+            "accepted": true
+          }
+        ]
+      }
+    },
+    "fixed_costs": [
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      {
+        "value": 100,
+        "unit": "EUR",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      }
+    ],
+    "investment": {
+      "value": 1000,
+      "unit": "EUR",
+      "kind": "ASSUMPTION",
+      "source": "Synthetic MD-08/example input, not German evidence",
+      "accepted": true
+    },
+    "prelaunch_marketing": {
+      "value": 100,
+      "unit": "EUR",
+      "kind": "ASSUMPTION",
+      "source": "Synthetic MD-08/example input, not German evidence",
+      "accepted": true
+    },
+    "convention": {
+      "text": "Illustrative MD-05 convention; rates on same consumer price, no double fulfillment; taxes/consigne excluded explicitly for this synthetic example",
+      "kind": "ASSUMPTION",
+      "source": "Synthetic demonstration, pending business validation",
+      "accepted": true
+    },
+    "constant_mix": {
+      "DTC Online": {
+        "value": 0.6,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      },
+      "Retail/Grocery": {
+        "value": 0.4,
+        "unit": "ratio",
+        "kind": "ASSUMPTION",
+        "source": "Synthetic MD-08/example input, not German evidence",
+        "accepted": true
+      }
+    },
+    "fixed_budget": {
+      "text": "Budget and fixed costs independent of volume",
+      "kind": "ASSUMPTION",
+      "source": "Synthetic demonstration, pending business validation",
+      "accepted": true
+    }
+  },
+  "full_availability": {
+    "text": "All conditional demand satisfied; no stock or distribution constraint in this example",
+    "kind": "ASSUMPTION",
+    "source": "Synthetic demonstration, pending business validation",
+    "accepted": true
+  },
+  "capacity": {}
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/DecisionPolicy",
+  "$defs": {
+    "DecisionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "priority": {
+          "anyOf": [
+            {
+              "enum": [
+                "contribution",
+                "result"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "budget_limit": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "declaration": {
+          "$ref": "#/$defs/Declaration"
+        }
+      },
+      "required": [
+        "priority",
+        "budget_limit",
+        "declaration"
+      ]
+    },
+    "Parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "DATA",
+            "MODEL",
+            "ASSUMPTION",
+            "EXTERNAL"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "kind",
+        "source",
+        "accepted"
+      ]
+    },
+    "Declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "ASSUMPTION",
+            "EXTERNAL"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "kind",
+        "source",
+        "accepted"
+      ]
+    }
+  }
+}

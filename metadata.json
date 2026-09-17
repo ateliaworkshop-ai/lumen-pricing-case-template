@@ -1,0 +1,6 @@
+{
+  "name": "Lumen Strategy Simulator",
+  "description": "Pricing and go-to-market strategy simulator for Lumen entering the German functional beverage market.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,23 @@
+{
+  "base_main": "be2c3f3",
+  "python": "3.14.0",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "sklearn": "1.9.1",
+  "seed": 263317,
+  "validation": "panel, chronological separation, finite forecasts, poisoned future inputs: passed",
+  "sha256": {
+    "price_sensitivity_survey.csv": "a9c5c24f10cc6b952c08ecec248531fa7c105b5a6f601b95449433ed9a76eab1",
+    "competitor_prices_by_channel.csv": "b89be3551ebe20375bcc97baed124838b98d1fddc48f0ea1bfa6992136927130",
+    "cost_breakdown.csv": "421c32bb85b4817af09d1c60c833cb1ffb4bcef470226ae73291c38680655ad4",
+    "seasonality_and_weather.csv": "70d1115b4a08b3d410fd439a4d5dfb17cc794ce6e344f6c259cd78fe2a339189",
+    "customer_survey.csv": "4c5e0d2e3bfe49e28e2e16f951507ea9ae0b3b99682f8187caf27a40258faa5b",
+    "competitor_price_history.csv": "22b5475b486062582a9b18afee5577eca965fbb99d2134ddc825b68f58c646d1",
+    "channel_economics.csv": "c4bf9fb7b2bf2d9006ea8b3b2f9b8a1cba138ae179080c84dfc6d94e9b1b598e",
+    "price_test_results.csv": "68cb7ed413464b9548a049421421d881f74e91bf6c251f3ee2ce77196559f653",
+    "marketing_funnel_monthly.csv": "44812b41ae132ca3710706565e4a1edf4fb79f4b5b93ee8e6db255faa5ad81e8",
+    "market_context.csv": "60b769d71f6dbf65d3159e0bab75e9aa049656c852746c672f3d6e465b43b4dd",
+    "historical_sales_weekly.csv": "f6cbffb6fa7b7d6dd0a9c93fb55000bc7d03e408248e49fe4a84e1ba0b9af0d2",
+    "customer_quotes.csv": "2861c4f66265cf656c6b54500dc0309c1b0e2579877e04ba1302ab5889ef2e55"
+  }
+}

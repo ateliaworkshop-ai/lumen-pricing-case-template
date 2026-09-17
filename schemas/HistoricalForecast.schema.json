@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/HistoricalForecast",
+  "$defs": {
+    "HistoricalForecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model_version": {
+          "type": "string"
+        },
+        "artifact_sha256": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "horizon_weeks": {
+          "type": "integer"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ForecastPoint"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "model_version",
+        "artifact_sha256",
+        "origin",
+        "horizon_weeks",
+        "points",
+        "warnings"
+      ]
+    },
+    "ForecastPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "week": {
+          "type": "string"
+        },
+        "series": {
+          "type": "string"
+        },
+        "units": {
+          "type": "number"
+        },
+        "seasonal_factor": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "week",
+        "series",
+        "units",
+        "seasonal_factor"
+      ]
+    }
+  }
+}

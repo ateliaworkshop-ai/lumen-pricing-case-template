@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/ModelArtifact",
+  "$defs": {
+    "ModelArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model_version": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "training_sha256": {
+          "type": "string"
+        },
+        "epoch": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "train_weeks": {
+          "type": "integer"
+        },
+        "series": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "feature_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "means": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "scales": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "coefficients": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "intercept": {
+          "type": "number"
+        },
+        "libraries": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "model_version",
+        "target",
+        "training_sha256",
+        "epoch",
+        "origin",
+        "train_weeks",
+        "series",
+        "feature_names",
+        "means",
+        "scales",
+        "coefficients",
+        "intercept",
+        "libraries"
+      ]
+    }
+  }
+}

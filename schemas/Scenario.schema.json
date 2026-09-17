@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/Scenario",
+  "$defs": {
+    "Scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "scenario_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "country": {
+          "enum": [
+            "DE"
+          ]
+        },
+        "launch": {
+          "type": "string"
+        },
+        "horizon": {
+          "type": "integer"
+        },
+        "commercial": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModeA"
+            },
+            {
+              "$ref": "#/$defs/ModeB"
+            }
+          ]
+        },
+        "marketing": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        },
+        "economics": {
+          "$ref": "#/$defs/EconomicsInput"
+        },
+        "full_availability": {
+          "$ref": "#/$defs/Declaration"
+        },
+        "capacity": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "scenario_id",
+        "revision",
+        "country",
+        "launch",
+        "horizon",
+        "commercial",
+        "marketing",
+        "economics",
+        "full_availability",
+        "capacity"
+      ]
+    },
+    "ModeA": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "A"
+          ]
+        },
+        "level": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "mix": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "ramp": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        },
+        "season": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "price_response": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/PriceResponse"
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "level",
+        "mix",
+        "ramp",
+        "season",
+        "price_response"
+      ]
+    },
+    "Parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "DATA",
+            "MODEL",
+            "ASSUMPTION",
+            "EXTERNAL"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "kind",
+        "source",
+        "accepted"
+      ]
+    },
+    "PriceResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "constant",
+            "points"
+          ]
+        },
+        "declaration": {
+          "$ref": "#/$defs/Declaration"
+        },
+        "reference_price": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "prices": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "acceptance": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "interpolate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "mode",
+        "declaration",
+        "reference_price",
+        "prices",
+        "acceptance",
+        "interpolate"
+      ]
+    },
+    "Declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "ASSUMPTION",
+            "EXTERNAL"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text",
+        "kind",
+        "source",
+        "accepted"
+      ]
+    },
+    "ModeB": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "B"
+          ]
+        },
+        "organic": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        },
+        "campaigns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Campaign"
+          }
+        },
+        "dependencies": {
+          "$ref": "#/$defs/Declaration"
+        }
+      },
+      "required": [
+        "mode",
+        "organic",
+        "campaigns",
+        "dependencies"
+      ]
+    },
+    "Campaign": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "paid",
+            "referral"
+          ]
+        },
+        "cac": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "deduplication": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "incrementality": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "allocation": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        },
+        "cohort_units": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Parameter"
+            }
+          }
+        },
+        "budget_ceiling": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "eligible_customers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "cac",
+        "deduplication",
+        "incrementality",
+        "allocation",
+        "cohort_units",
+        "budget_ceiling",
+        "eligible_customers"
+      ]
+    },
+    "EconomicsInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ChannelEconomics"
+          }
+        },
+        "fixed_costs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "investment": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "prelaunch_marketing": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "convention": {
+          "$ref": "#/$defs/Declaration"
+        },
+        "constant_mix": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "fixed_budget": {
+          "$ref": "#/$defs/Declaration"
+        }
+      },
+      "required": [
+        "channels",
+        "fixed_costs",
+        "investment",
+        "prelaunch_marketing",
+        "convention",
+        "constant_mix",
+        "fixed_budget"
+      ]
+    },
+    "ChannelEconomics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "price": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "retailer": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "distributor": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "payment": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "fulfillment": {
+          "$ref": "#/$defs/Parameter"
+        },
+        "cogs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        }
+      },
+      "required": [
+        "price",
+        "retailer",
+        "distributor",
+        "payment",
+        "fulfillment",
+        "cogs"
+      ]
+    }
+  }
+}

@@ -26,14 +26,14 @@ Why we're doing this: it's not to monitor you. It's what lets us understand, at 
 
 Check each box in this README as you go — not at the end, while you're working:
 
-- [ ] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
-- [ ] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
-- [ ] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
-- [ ] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
-- [ ] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
-- [ ] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
-- [ ] **Explainability**: can you explain to someone non-technical why your tool does what it does?
-- [ ] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
+- [x] **Data**: what data will your tool actually handle? Is any of it sensitive (personal data, company customer data)? `data/customer_survey.csv` has name/email columns — did you use them in your tool? If yes, how did you protect/anonymize them? If no, why did you choose not to expose them? (A team that never touches these columns should still be able to answer — "we chose not to use them" is a valid answer.)
+- [x] **API keys**: if your tool calls an external API (weather, or anything else), where is the key stored? Never hardcoded in a file committed to GitHub. (A valid answer: "we didn't use any external API.")
+- [x] **Deployment**: if you deployed a live demo, does any endpoint or response return raw, unfiltered data (e.g. the full survey with name/email) to any visitor?
+- [x] **Files generated along the way**: if your tool (or Codex) created new files derived from the provided data, did you think about whether they should be committed to the repo or not?
+- [x] **Storage**: if you're keeping any data, in what structure, and why that choice over another?
+- [x] **Robustness**: what happens if the user gives an empty, inconsistent, or unexpected input?
+- [x] **Explainability**: can you explain to someone non-technical why your tool does what it does?
+- [x] **Business relevance**: does your prototype actually answer the problem posed in the brief, or is it an interesting technical build that's off-target?
 
 These questions aren't here to slow you down — they're part of what's being evaluated. A thoughtful answer to one of them is worth more than an extra feature nobody asked for.
 
@@ -46,4 +46,17 @@ These questions aren't here to slow you down — they're part of what's being ev
 
 ## Our Approach
 
-*[To be filled in by the team at the end.]*
+Nous avons construit un noyau de simulation qui sépare la prévision des marchés historiques des hypothèses de lancement allemandes. Il calcule les conséquences économiques, compare des scénarios et explique une proposition conditionnelle, sans présenter les hypothèses comme des ventes mesurées.
+
+## Decision engine (local, no frontend)
+
+See [ENGINE_CONTRACT.md](ENGINE_CONTRACT.md) for versioned JSON contracts, formulas, model replacement and open decisions. The [example input](examples/scenario.json) contains explicitly synthetic assumptions. Run from the repository root:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-engine.txt
+.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m examples.run --output work/engine-example.json
+```
+
+Scope of the checklist above: the engine reads only historical date/country/channel/units, never survey names/emails. It uses no external API/key and has no deployed endpoint. Generated results go to ignored `work/`; the synthetic input, schemas, code and tests are committed. Storage is explicit JSON snapshots and model artifacts, without database or user-account persistence. Invalid input is rejected, missing assumptions yield partial results, and every conditional choice exposes its input provenance and criterion. No measured German accuracy or causal marketing ROI is claimed.
