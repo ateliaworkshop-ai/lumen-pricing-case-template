@@ -1,0 +1,421 @@
+respondent_id,segment,age,city,purchase_frequency_per_month,monthly_beverage_spend_eur,price_sensitivity_1_10,preferred_channel,aware_pulsup,aware_matelibre,aware_voltfit,aware_rootandrise,lumen_purchase_intent_1_10
+1,Students & Budget-Conscious,22,Hamburg,11.7,25.38,5.1,Gym & Office,0,1,1,0,8.5
+2,Fitness & Gym-Goers,30,Hamburg,8.8,28.77,5.5,Gym & Office,0,0,1,0,7.1
+3,Students & Budget-Conscious,19,Cologne,2.6,23.26,8.1,Gym & Office,1,1,0,0,6.6
+4,On-the-go Commuters,41,Other Germany,6.4,9.08,5.4,Gym & Office,1,1,0,1,10
+5,Fitness & Gym-Goers,20,Other Germany,7.4,14.42,6.5,DTC Online,1,1,1,0,6.9
+6,Students & Budget-Conscious,20,Hamburg,3.1,15.15,9.2,Retail/Grocery,1,0,1,0,5.2
+7,Students & Budget-Conscious,18,Other Germany,5.4,10.76,7,DTC Online,0,0,1,0,6.2
+8,Urban Wellness Professionals,28,Berlin,8.9,23.74,2.2,Gym & Office,1,1,1,0,8.3
+9,Students & Budget-Conscious,19,Frankfurt,6.7,17.63,8.6,Gym & Office,0,1,0,0,4.6
+10,Students & Budget-Conscious,18,Other Germany,6.9,27.02,6.8,Retail/Grocery,1,1,0,0,3.7
+11,Students & Budget-Conscious,23,Other Germany,6.1,23.7,8.6,Retail/Grocery,1,1,0,0,4.7
+12,On-the-go Commuters,30,Berlin,5.2,30.05,6.3,Retail/Grocery,0,0,0,1,7.8
+13,Students & Budget-Conscious,23,Frankfurt,4.1,14.75,8.8,Retail/Grocery,1,1,1,0,3.8
+14,Students & Budget-Conscious,21,Other Germany,5.2,14.35,8.8,Gym & Office,0,1,1,0,8.4
+15,Fitness & Gym-Goers,34,Berlin,5.6,22.85,6.1,DTC Online,0,1,1,1,6.7
+16,Urban Wellness Professionals,33,Cologne,7.9,21.48,4.6,Retail/Grocery,0,1,0,1,9.2
+17,Urban Wellness Professionals,25,Berlin,7.1,15.4,4.7,DTC Online,1,0,0,1,8.5
+18,Urban Wellness Professionals,32,Other Germany,5.4,19.18,4.5,Gym & Office,0,0,0,0,8.5
+19,Students & Budget-Conscious,23,Other Germany,8.6,26.55,7.8,Gym & Office,1,0,0,0,7.4
+20,On-the-go Commuters,32,Munich,10.1,26.03,4.8,DTC Online,1,0,0,0,7.2
+21,Students & Budget-Conscious,20,Berlin,5.8,14.56,9.1,DTC Online,1,1,0,0,3.5
+22,Fitness & Gym-Goers,18,Cologne,7,17.96,5.2,Gym & Office,0,0,1,0,6.9
+23,Urban Wellness Professionals,37,Other Germany,9.7,14.89,4.2,DTC Online,0,1,0,1,10
+24,Students & Budget-Conscious,24,Frankfurt,7,8.69,6.2,Gym & Office,1,0,1,0,6.3
+25,Fitness & Gym-Goers,20,Other Germany,7.5,24.6,5.6,Gym & Office,0,1,1,0,8
+26,Students & Budget-Conscious,23,Hamburg,6.8,24.42,9.2,Gym & Office,1,1,0,0,2.8
+27,Urban Wellness Professionals,32,Other Germany,8.4,14.17,4.5,DTC Online,0,1,0,0,8.7
+28,Urban Wellness Professionals,39,Other Germany,8.8,16.61,3.4,DTC Online,0,1,1,1,7.8
+29,Students & Budget-Conscious,20,Other Germany,6.2,18.21,8.7,Retail/Grocery,1,1,1,0,5.8
+30,Urban Wellness Professionals,25,Other Germany,9.2,24.81,1,Gym & Office,0,0,0,0,10
+31,On-the-go Commuters,40,Munich,5.7,15.29,7.2,Retail/Grocery,1,1,0,1,4.6
+32,Urban Wellness Professionals,25,Berlin,6,21.92,4.1,DTC Online,1,0,1,0,10
+33,Urban Wellness Professionals,27,Cologne,6.6,15.28,4.7,Retail/Grocery,0,0,1,1,6.9
+34,Students & Budget-Conscious,19,Cologne,5.8,12.64,7,Gym & Office,1,0,1,0,7.5
+35,Fitness & Gym-Goers,27,Frankfurt,5.4,9.71,6.3,Gym & Office,0,0,1,0,5.9
+36,On-the-go Commuters,43,Other Germany,7.4,15.66,4.9,Gym & Office,0,1,0,0,7.3
+37,On-the-go Commuters,47,Berlin,5.2,20.87,7,Retail/Grocery,1,0,1,0,4.4
+38,On-the-go Commuters,27,Munich,3.4,16.93,6,Retail/Grocery,1,1,0,0,5.5
+39,Students & Budget-Conscious,22,Other Germany,4.3,22.22,10,Retail/Grocery,1,0,0,0,5.4
+40,On-the-go Commuters,27,Munich,8.8,13.16,5.4,Retail/Grocery,0,1,0,0,7.4
+41,Students & Budget-Conscious,18,Other Germany,0.5,15.5,7.9,DTC Online,1,0,0,0,4.6
+42,On-the-go Commuters,31,Munich,9.3,21.86,5.3,Retail/Grocery,1,0,0,0,7.4
+43,Students & Budget-Conscious,18,Frankfurt,5.9,31.46,7.2,Retail/Grocery,1,1,1,0,7
+44,Students & Budget-Conscious,19,Other Germany,4.6,16.56,8.7,Gym & Office,1,1,0,0,2.9
+45,On-the-go Commuters,38,Munich,4.7,25.72,4.4,Retail/Grocery,1,1,1,1,7.3
+46,Students & Budget-Conscious,21,Other Germany,4.8,12.97,9,Retail/Grocery,1,1,0,0,7.7
+47,On-the-go Commuters,31,Hamburg,3.4,23.05,4.3,Retail/Grocery,1,0,0,0,7.2
+48,Students & Budget-Conscious,23,Munich,5.7,20.4,6.5,Retail/Grocery,1,1,1,0,6.5
+49,On-the-go Commuters,43,Frankfurt,5.4,25.69,4,Retail/Grocery,1,0,0,0,9.5
+50,On-the-go Commuters,40,Hamburg,3.1,16.84,4.8,Retail/Grocery,0,0,0,0,9.4
+51,Urban Wellness Professionals,35,Berlin,7.2,27.65,3.5,DTC Online,0,0,1,1,8.5
+52,Students & Budget-Conscious,20,Frankfurt,2.9,23.58,9.1,Gym & Office,1,1,1,0,5.1
+53,Students & Budget-Conscious,24,Other Germany,4.3,22.05,7.5,DTC Online,1,1,0,0,5.2
+54,Students & Budget-Conscious,19,Other Germany,3.4,17.37,8.7,Gym & Office,1,0,1,0,3.5
+55,Fitness & Gym-Goers,33,Other Germany,7,22.45,4.3,DTC Online,0,0,1,0,7.2
+56,On-the-go Commuters,38,Berlin,8.6,28.82,4.6,Retail/Grocery,1,0,0,0,3.7
+57,On-the-go Commuters,39,Berlin,4.1,17.92,5.8,Retail/Grocery,0,1,0,0,6.1
+58,On-the-go Commuters,46,Other Germany,4,14.79,4.1,DTC Online,1,0,1,0,8
+59,Students & Budget-Conscious,18,Other Germany,6.2,21.19,8.6,Retail/Grocery,1,1,1,0,5.3
+60,Fitness & Gym-Goers,23,Berlin,5.6,24.13,4.8,Gym & Office,1,1,1,0,7.9
+61,On-the-go Commuters,46,Frankfurt,2.2,9.9,9.6,DTC Online,1,1,0,0,8.2
+62,Students & Budget-Conscious,21,Frankfurt,4.4,23.97,9.1,Retail/Grocery,1,0,0,1,4.4
+63,Fitness & Gym-Goers,33,Other Germany,5.5,16.1,4.6,Retail/Grocery,0,0,0,0,6.9
+64,On-the-go Commuters,45,Berlin,5.4,26.49,4.1,DTC Online,1,1,0,0,8.5
+65,Urban Wellness Professionals,33,Other Germany,6.4,29,4.6,DTC Online,1,0,1,0,7.1
+66,Fitness & Gym-Goers,30,Other Germany,6.8,18.48,6.6,Gym & Office,0,1,1,0,8
+67,Urban Wellness Professionals,32,Cologne,10.1,19.11,2.7,DTC Online,0,0,1,1,8.5
+68,Students & Budget-Conscious,21,Berlin,6.2,10.8,8.9,Gym & Office,1,0,1,0,2.7
+69,Students & Budget-Conscious,21,Other Germany,3.8,13.08,7.7,Retail/Grocery,0,1,0,0,6
+70,Students & Budget-Conscious,20,Munich,5.4,5.46,8.8,Retail/Grocery,1,0,0,0,1.9
+71,On-the-go Commuters,42,Munich,7.1,20.39,5.7,Gym & Office,1,1,1,1,6.8
+72,Fitness & Gym-Goers,18,Berlin,6.2,20.28,5.3,Gym & Office,1,1,1,0,8.8
+73,Fitness & Gym-Goers,32,Cologne,2.1,18.11,5.1,Retail/Grocery,1,0,0,0,7.1
+74,Students & Budget-Conscious,23,Other Germany,6.2,23.11,7.7,DTC Online,1,1,0,0,7.1
+75,Urban Wellness Professionals,38,Berlin,6,19.26,3.3,DTC Online,0,1,1,1,10
+76,Fitness & Gym-Goers,29,Other Germany,6.5,10.58,6,Gym & Office,1,1,0,0,8.6
+77,Fitness & Gym-Goers,31,Hamburg,4.9,13.22,7.2,Gym & Office,0,1,1,0,8.5
+78,Urban Wellness Professionals,33,Frankfurt,5.5,13.23,5.9,DTC Online,0,0,1,1,6.9
+79,Fitness & Gym-Goers,27,Other Germany,7.1,18.63,5.8,Retail/Grocery,0,1,1,0,7.2
+80,Urban Wellness Professionals,30,Hamburg,6.2,22.31,4.1,DTC Online,0,1,0,1,8.9
+81,Students & Budget-Conscious,22,Berlin,8.1,8.49,7.6,Retail/Grocery,1,0,1,0,5.8
+82,Students & Budget-Conscious,19,Other Germany,6.1,12.4,9.1,Retail/Grocery,1,0,0,0,5.1
+83,Urban Wellness Professionals,26,Cologne,4.7,13.11,4.6,DTC Online,1,1,1,0,8
+84,Fitness & Gym-Goers,29,Berlin,7.6,32.66,4.3,Retail/Grocery,1,0,1,0,10
+85,Urban Wellness Professionals,31,Other Germany,3.7,25.27,3.2,DTC Online,1,0,0,0,8.9
+86,Students & Budget-Conscious,24,Other Germany,1.8,7.37,6.9,Retail/Grocery,0,1,0,0,2.6
+87,Fitness & Gym-Goers,26,Frankfurt,6.6,24.08,6.8,Gym & Office,0,0,1,0,7.5
+88,Urban Wellness Professionals,26,Cologne,9.6,25.19,2.9,DTC Online,0,1,0,1,10
+89,Students & Budget-Conscious,19,Other Germany,5.2,14.51,7.2,Retail/Grocery,1,0,0,0,6.8
+90,Students & Budget-Conscious,18,Frankfurt,8.9,24.75,8,Retail/Grocery,1,0,0,0,4.9
+91,Fitness & Gym-Goers,30,Berlin,6.1,21.19,3.8,Retail/Grocery,0,0,0,1,9.6
+92,Fitness & Gym-Goers,34,Hamburg,7.3,26.29,5.9,Gym & Office,1,1,0,1,7.1
+93,On-the-go Commuters,48,Other Germany,3.4,14.94,7.3,Retail/Grocery,1,0,0,0,5.4
+94,Students & Budget-Conscious,20,Other Germany,3.7,20.1,6.3,Retail/Grocery,0,0,0,0,5.3
+95,Fitness & Gym-Goers,32,Cologne,6.9,24.36,4.1,Retail/Grocery,0,1,1,0,9.6
+96,On-the-go Commuters,47,Other Germany,6.2,11.78,6.7,Gym & Office,1,0,0,0,6.8
+97,On-the-go Commuters,38,Berlin,12.2,18.03,6.4,Gym & Office,0,0,0,1,6.7
+98,Students & Budget-Conscious,24,Cologne,5.1,20.99,7.9,Gym & Office,1,0,0,0,6
+99,Students & Budget-Conscious,20,Berlin,3.5,29.02,6.8,Retail/Grocery,1,0,0,0,7.2
+100,Students & Budget-Conscious,18,Other Germany,7.4,10.21,8.7,Gym & Office,1,0,0,1,4.8
+101,On-the-go Commuters,26,Other Germany,4.1,23.66,6,DTC Online,1,0,0,1,7.2
+102,Urban Wellness Professionals,35,Other Germany,6.2,22.33,5,Retail/Grocery,0,1,1,0,9.5
+103,On-the-go Commuters,35,Other Germany,5,17.15,7.6,Retail/Grocery,1,0,0,0,8.2
+104,Students & Budget-Conscious,20,Cologne,3.3,22.33,9,Retail/Grocery,0,1,0,0,4.5
+105,Students & Budget-Conscious,22,Other Germany,6,14.72,7.8,Retail/Grocery,1,1,0,0,6.6
+106,Fitness & Gym-Goers,29,Other Germany,4.3,30.77,4,Gym & Office,1,0,1,1,9.6
+107,On-the-go Commuters,46,Other Germany,6.4,12.72,8.1,Retail/Grocery,1,0,0,0,6.5
+108,Fitness & Gym-Goers,22,Frankfurt,5.3,28.54,4.9,Gym & Office,1,0,1,1,9.9
+109,Urban Wellness Professionals,34,Other Germany,9.1,8.32,5.3,DTC Online,1,0,0,1,9.6
+110,Urban Wellness Professionals,27,Frankfurt,4.1,29.09,4.7,Retail/Grocery,0,1,1,1,8
+111,On-the-go Commuters,25,Hamburg,9,33.18,2.4,Retail/Grocery,1,0,0,0,10
+112,Urban Wellness Professionals,27,Berlin,9.1,18.87,1.6,Retail/Grocery,0,1,0,1,10
+113,On-the-go Commuters,26,Other Germany,7.3,23.95,5.7,Gym & Office,1,1,1,1,6.5
+114,On-the-go Commuters,33,Berlin,6.8,10.87,7.5,Retail/Grocery,1,0,1,0,4.7
+115,Students & Budget-Conscious,24,Berlin,2.9,11.2,6.7,Retail/Grocery,1,1,0,0,7.3
+116,On-the-go Commuters,46,Hamburg,5.1,14.24,5.7,Retail/Grocery,1,0,1,0,7.7
+117,Urban Wellness Professionals,37,Berlin,7.1,20.01,2.4,DTC Online,1,1,1,0,10
+118,Students & Budget-Conscious,24,Other Germany,5.9,23.11,8.3,Gym & Office,1,1,0,0,5.2
+119,Students & Budget-Conscious,22,Hamburg,6.5,16.75,5.3,Retail/Grocery,1,1,0,0,5.6
+120,Fitness & Gym-Goers,29,Berlin,8.3,25.82,6.1,Retail/Grocery,1,0,1,1,8.3
+121,On-the-go Commuters,37,Hamburg,3.7,19.05,8,Retail/Grocery,1,1,1,0,7.2
+122,Urban Wellness Professionals,29,Munich,11.4,19.82,5.6,DTC Online,0,0,0,1,7.2
+123,On-the-go Commuters,36,Hamburg,5.2,20.99,4,Retail/Grocery,1,0,0,0,5.6
+124,Fitness & Gym-Goers,19,Frankfurt,4.8,23.82,4.3,Retail/Grocery,1,0,1,1,7.9
+125,Urban Wellness Professionals,29,Hamburg,8.1,14.15,1.7,Retail/Grocery,0,0,0,0,10
+126,Urban Wellness Professionals,37,Munich,5.8,15.41,4.5,Retail/Grocery,0,0,0,1,10
+127,Students & Budget-Conscious,22,Munich,2.4,10.8,7.4,DTC Online,0,0,1,0,5.9
+128,Urban Wellness Professionals,37,Other Germany,7,30.74,6.6,Retail/Grocery,0,1,0,1,9.5
+129,Fitness & Gym-Goers,26,Berlin,9.2,11.77,5.6,Gym & Office,1,0,1,0,7.4
+130,Students & Budget-Conscious,22,Other Germany,2.4,10.3,6.5,Gym & Office,1,1,1,0,6.6
+131,Fitness & Gym-Goers,25,Frankfurt,9.2,24.87,3.3,DTC Online,0,1,1,0,9.1
+132,Students & Budget-Conscious,18,Berlin,3.7,7.02,9.1,Retail/Grocery,0,1,0,0,5.3
+133,On-the-go Commuters,35,Berlin,5.7,16.99,6,DTC Online,1,0,0,0,7.8
+134,Urban Wellness Professionals,35,Berlin,6.2,21.65,5,DTC Online,0,1,1,1,8.7
+135,Fitness & Gym-Goers,26,Other Germany,4.7,26.19,4.8,DTC Online,0,0,1,0,10
+136,On-the-go Commuters,36,Other Germany,7,27.35,4.6,DTC Online,0,0,0,0,7.4
+137,Fitness & Gym-Goers,20,Frankfurt,6.7,25.2,7,Retail/Grocery,0,1,1,0,7.7
+138,Students & Budget-Conscious,19,Other Germany,3.2,18.26,9.1,Retail/Grocery,1,0,0,0,5
+139,Students & Budget-Conscious,20,Other Germany,5,32.97,9.1,Gym & Office,1,0,1,0,6.6
+140,Fitness & Gym-Goers,31,Hamburg,2.1,11.19,7.4,Retail/Grocery,1,0,1,1,8.4
+141,Urban Wellness Professionals,29,Other Germany,1.7,13.66,3.6,DTC Online,1,1,1,1,10
+142,Students & Budget-Conscious,23,Other Germany,3,23.43,5.7,Retail/Grocery,1,1,0,0,6.1
+143,Students & Budget-Conscious,18,Hamburg,8.7,22.76,8.5,Retail/Grocery,1,0,1,0,5.7
+144,Fitness & Gym-Goers,28,Munich,7.8,33.58,5.7,DTC Online,0,0,1,0,9.1
+145,On-the-go Commuters,45,Other Germany,4.3,18.98,5.6,Retail/Grocery,1,1,0,1,7.8
+146,Urban Wellness Professionals,26,Frankfurt,7.5,24.75,2.2,DTC Online,0,1,1,0,10
+147,Students & Budget-Conscious,21,Other Germany,3.8,16.67,8.6,DTC Online,1,0,1,0,2.6
+148,Students & Budget-Conscious,19,Other Germany,2.6,12.69,9.7,Retail/Grocery,1,1,0,0,2.9
+149,Urban Wellness Professionals,36,Cologne,9,7.63,6.5,Gym & Office,1,1,0,1,8.4
+150,Students & Budget-Conscious,20,Frankfurt,6.4,18.06,7.8,Retail/Grocery,1,0,1,0,7.5
+151,Urban Wellness Professionals,40,Cologne,8.7,26.77,4.5,Gym & Office,0,0,0,1,10
+152,On-the-go Commuters,26,Other Germany,4.5,18.68,6.5,Retail/Grocery,1,0,0,0,6.2
+153,Urban Wellness Professionals,40,Berlin,7.5,22.09,3.3,DTC Online,0,0,1,0,8
+154,Students & Budget-Conscious,18,Frankfurt,4.3,11.26,7.3,Retail/Grocery,0,1,1,0,7.9
+155,Students & Budget-Conscious,24,Other Germany,6.6,9.76,7,DTC Online,1,0,0,0,6.3
+156,On-the-go Commuters,28,Other Germany,9.6,23.94,6.6,Retail/Grocery,1,0,0,0,5.2
+157,Students & Budget-Conscious,24,Munich,1.8,14.87,8,Retail/Grocery,1,0,0,0,5.8
+158,Urban Wellness Professionals,29,Other Germany,5.4,26.67,3.5,DTC Online,0,0,0,0,10
+159,Urban Wellness Professionals,33,Other Germany,9.7,20.09,3.7,Retail/Grocery,1,0,1,1,10
+160,Students & Budget-Conscious,20,Berlin,6,22.37,7.7,Retail/Grocery,1,1,1,0,5.6
+161,Fitness & Gym-Goers,31,Berlin,6.2,25.25,3.8,Gym & Office,1,0,1,0,6
+162,On-the-go Commuters,32,Frankfurt,7.1,18.51,6.5,Retail/Grocery,1,1,0,0,7.2
+163,On-the-go Commuters,48,Other Germany,6.6,26.6,5.3,Gym & Office,1,0,0,0,7.2
+164,On-the-go Commuters,45,Other Germany,11.1,23.14,4.6,Gym & Office,0,1,0,0,8.8
+165,Fitness & Gym-Goers,25,Munich,10.7,29.49,3.5,Gym & Office,0,1,1,0,10
+166,Students & Budget-Conscious,24,Munich,4.2,15.73,7.7,Retail/Grocery,1,1,0,0,6.7
+167,Fitness & Gym-Goers,35,Cologne,5.8,12.4,8.8,Retail/Grocery,0,1,1,0,3.3
+168,Students & Budget-Conscious,22,Berlin,3.9,19.61,9.3,Retail/Grocery,1,0,0,0,4.7
+169,Urban Wellness Professionals,29,Hamburg,8,24.45,4.6,Gym & Office,1,1,1,1,8.9
+170,Urban Wellness Professionals,40,Berlin,7.3,22.23,3.9,DTC Online,1,0,0,0,9.1
+171,Urban Wellness Professionals,30,Hamburg,9.2,26.26,3.7,DTC Online,1,0,1,1,10
+172,Urban Wellness Professionals,31,Munich,4.6,19.76,4,DTC Online,0,0,0,1,10
+173,Urban Wellness Professionals,37,Frankfurt,4.5,25.36,4.5,DTC Online,0,1,1,1,6.9
+174,Urban Wellness Professionals,30,Hamburg,9.6,19.31,2.2,DTC Online,0,0,0,1,9.8
+175,Students & Budget-Conscious,20,Berlin,3.2,26.05,6.1,Retail/Grocery,1,0,0,0,6
+176,Urban Wellness Professionals,39,Cologne,5.7,26.87,3.8,DTC Online,0,0,0,1,9.7
+177,Urban Wellness Professionals,28,Munich,7.4,26.45,1.4,DTC Online,0,0,0,1,9.3
+178,On-the-go Commuters,26,Cologne,10.3,25.77,2.1,Gym & Office,1,1,0,0,8
+179,Students & Budget-Conscious,19,Other Germany,4.6,15.77,6.6,Gym & Office,1,0,0,0,5.7
+180,On-the-go Commuters,28,Berlin,4.5,24.37,8.6,Retail/Grocery,0,0,0,0,7.3
+181,Urban Wellness Professionals,33,Other Germany,7.8,20.88,5.6,Retail/Grocery,0,0,1,1,6.9
+182,Fitness & Gym-Goers,20,Other Germany,2.7,5.73,6.9,DTC Online,1,0,1,0,9.4
+183,Students & Budget-Conscious,24,Cologne,4.9,14.98,9.7,Gym & Office,1,1,0,0,4.1
+184,On-the-go Commuters,29,Other Germany,2.1,21.66,7.9,Retail/Grocery,1,0,1,0,6.3
+185,Fitness & Gym-Goers,25,Hamburg,5.5,21.09,7,Retail/Grocery,1,0,0,0,7.8
+186,Urban Wellness Professionals,29,Cologne,8.2,24.88,5.5,DTC Online,1,0,0,0,9.4
+187,Fitness & Gym-Goers,20,Frankfurt,8.4,20.58,3.6,Gym & Office,0,0,1,1,8.4
+188,Fitness & Gym-Goers,30,Hamburg,4.6,17.09,5.8,Retail/Grocery,0,1,0,1,6.8
+189,On-the-go Commuters,34,Munich,7.6,12.52,6.5,Gym & Office,1,1,1,0,4.3
+190,Students & Budget-Conscious,18,Other Germany,8.4,12.83,6.1,Retail/Grocery,1,0,1,0,7.4
+191,Students & Budget-Conscious,19,Berlin,5.8,13.1,6.2,DTC Online,1,1,0,0,6.5
+192,Urban Wellness Professionals,31,Other Germany,10,24.94,2.7,Retail/Grocery,1,1,0,1,8
+193,Students & Budget-Conscious,21,Berlin,8.5,17.74,7.2,DTC Online,1,1,0,0,5.1
+194,On-the-go Commuters,48,Munich,1.9,19.28,6,Gym & Office,1,1,0,0,6
+195,On-the-go Commuters,45,Berlin,8.3,15.76,5,Retail/Grocery,1,0,0,0,6.7
+196,Urban Wellness Professionals,26,Other Germany,7.2,24.72,4.7,Gym & Office,1,0,0,0,8.5
+197,Students & Budget-Conscious,19,Hamburg,2.3,22.25,8.8,Retail/Grocery,1,1,1,0,6.4
+198,On-the-go Commuters,34,Other Germany,6.5,14.53,7.2,Gym & Office,0,1,0,0,6.9
+199,On-the-go Commuters,49,Munich,8.9,24.49,7.8,DTC Online,1,1,1,0,5.9
+200,Urban Wellness Professionals,34,Berlin,11,29.88,1,DTC Online,1,1,0,1,10
+201,On-the-go Commuters,39,Other Germany,6.9,15.93,4.1,Retail/Grocery,1,1,1,0,9.1
+202,On-the-go Commuters,37,Other Germany,6.9,23.9,5.1,Gym & Office,1,1,0,0,7
+203,Students & Budget-Conscious,20,Other Germany,6.7,19.92,7.6,DTC Online,1,0,1,0,6.2
+204,Urban Wellness Professionals,27,Other Germany,7.9,24.59,1.6,DTC Online,0,0,0,1,10
+205,Urban Wellness Professionals,29,Berlin,9.2,14.98,5.1,Retail/Grocery,0,1,0,1,10
+206,Students & Budget-Conscious,23,Cologne,1.9,13.13,10,Retail/Grocery,1,0,0,0,4.6
+207,Students & Budget-Conscious,23,Hamburg,3.7,12.33,8.9,DTC Online,1,0,0,0,5.1
+208,Urban Wellness Professionals,27,Munich,10.8,13.62,4.3,Retail/Grocery,0,0,0,1,8.9
+209,Urban Wellness Professionals,40,Hamburg,8.9,31.64,3.1,DTC Online,0,1,0,1,10
+210,Urban Wellness Professionals,32,Other Germany,6.2,29.36,2.9,DTC Online,0,1,0,0,7
+211,Urban Wellness Professionals,30,Berlin,4,23.35,4.2,Retail/Grocery,0,0,0,1,9.1
+212,On-the-go Commuters,40,Frankfurt,6,18.07,6.4,Retail/Grocery,1,0,0,0,6.3
+213,Students & Budget-Conscious,24,Other Germany,4.5,23.4,9.7,Gym & Office,0,0,0,0,3.1
+214,Urban Wellness Professionals,28,Hamburg,5.7,12.26,5.6,DTC Online,1,0,0,0,9.3
+215,Fitness & Gym-Goers,29,Munich,9.3,21.36,4,Gym & Office,0,0,0,0,9.7
+216,Fitness & Gym-Goers,23,Other Germany,5.7,15.48,5.1,Gym & Office,1,0,1,0,8.2
+217,On-the-go Commuters,46,Other Germany,5.6,16.39,6.9,Gym & Office,0,1,0,0,4.9
+218,Students & Budget-Conscious,21,Cologne,5,5.75,7.4,DTC Online,1,1,1,0,6.1
+219,Students & Budget-Conscious,20,Munich,9.3,20.16,6.5,Gym & Office,0,1,0,0,6.8
+220,Fitness & Gym-Goers,31,Other Germany,6.9,20.95,5.8,Retail/Grocery,0,0,1,1,8.7
+221,Students & Budget-Conscious,18,Hamburg,6.2,11.32,8.7,DTC Online,1,1,1,0,5.5
+222,Students & Budget-Conscious,18,Cologne,2.6,20.1,8.3,DTC Online,1,1,0,0,4.5
+223,Students & Budget-Conscious,21,Cologne,4.9,16.89,7.3,DTC Online,1,1,0,0,5.2
+224,Students & Budget-Conscious,21,Other Germany,1.3,14.53,6.8,Retail/Grocery,1,0,1,0,5.6
+225,Urban Wellness Professionals,29,Berlin,6.5,23.05,4.2,DTC Online,1,0,1,0,10
+226,Students & Budget-Conscious,22,Munich,6.8,15.98,7,Retail/Grocery,0,0,0,0,7.1
+227,Urban Wellness Professionals,38,Berlin,5.3,24.97,5,DTC Online,1,1,1,1,9.5
+228,Fitness & Gym-Goers,19,Berlin,4.9,17.35,4.1,DTC Online,0,1,1,1,9.6
+229,Urban Wellness Professionals,35,Other Germany,9.7,22.61,3.2,Gym & Office,1,0,1,0,9.2
+230,Students & Budget-Conscious,21,Other Germany,7.9,14.82,5.3,Retail/Grocery,1,1,0,1,8
+231,Fitness & Gym-Goers,30,Berlin,9.3,19.25,6.7,Gym & Office,1,0,1,0,7.7
+232,Urban Wellness Professionals,37,Other Germany,9.5,8.57,3.6,DTC Online,0,1,0,1,10
+233,On-the-go Commuters,27,Munich,7.8,29.89,6.9,DTC Online,1,1,0,1,5.5
+234,On-the-go Commuters,49,Other Germany,4.4,25.71,4.9,Gym & Office,1,0,0,0,7.4
+235,Urban Wellness Professionals,36,Cologne,9.8,18.13,3,DTC Online,0,0,0,1,8.6
+236,Fitness & Gym-Goers,27,Munich,6.8,7.69,9.1,Gym & Office,0,0,1,1,3.4
+237,Fitness & Gym-Goers,19,Other Germany,4.2,20.13,4.5,DTC Online,1,0,1,1,6.3
+238,Fitness & Gym-Goers,24,Hamburg,5,26.97,4.5,Gym & Office,1,0,1,1,8
+239,Urban Wellness Professionals,33,Other Germany,4.5,17.06,6.1,DTC Online,0,1,0,1,7.3
+240,Fitness & Gym-Goers,32,Other Germany,3.7,20.93,6.6,DTC Online,1,0,1,1,7
+241,Students & Budget-Conscious,24,Berlin,7.1,24.29,6.6,Retail/Grocery,1,0,0,0,5.3
+242,Students & Budget-Conscious,23,Berlin,8,12.83,8.6,Gym & Office,1,1,0,0,4.6
+243,Urban Wellness Professionals,40,Hamburg,8.9,27.81,3.9,Retail/Grocery,1,0,0,1,9.6
+244,Fitness & Gym-Goers,29,Munich,6.8,23.52,4.4,DTC Online,1,0,1,0,8.7
+245,Fitness & Gym-Goers,22,Hamburg,5,29.45,5.5,Gym & Office,1,0,1,1,6.4
+246,Urban Wellness Professionals,28,Hamburg,5.8,20.27,4.2,Gym & Office,0,0,1,0,9.2
+247,Urban Wellness Professionals,37,Berlin,6.1,23.2,3.2,DTC Online,1,0,0,0,9.7
+248,Urban Wellness Professionals,28,Cologne,10.9,15.58,3,Retail/Grocery,0,0,1,1,10
+249,Students & Budget-Conscious,22,Cologne,5.1,10.62,8,Gym & Office,1,1,1,0,2.5
+250,Fitness & Gym-Goers,21,Other Germany,5.6,16.08,6.6,Gym & Office,1,1,0,0,7.4
+251,Fitness & Gym-Goers,21,Other Germany,3.3,21.46,6.6,Gym & Office,0,0,1,0,8.5
+252,Students & Budget-Conscious,21,Hamburg,1.9,9.18,9,Gym & Office,1,1,0,0,5
+253,On-the-go Commuters,28,Hamburg,2.8,21.21,6.6,Retail/Grocery,1,0,0,0,7.7
+254,Students & Budget-Conscious,21,Berlin,4.9,11.72,9,DTC Online,1,0,0,0,7
+255,Fitness & Gym-Goers,28,Cologne,8.5,14.16,3.6,Retail/Grocery,1,0,0,0,9.3
+256,Students & Budget-Conscious,19,Cologne,4.3,11.93,8.3,Gym & Office,1,1,0,0,5.3
+257,Students & Budget-Conscious,21,Cologne,5.6,8.18,9.3,DTC Online,1,1,1,0,8.5
+258,On-the-go Commuters,50,Other Germany,3.7,14.04,7.3,Retail/Grocery,0,0,0,0,4.6
+259,Fitness & Gym-Goers,33,Other Germany,7.6,18.89,7.2,DTC Online,0,1,1,0,8.2
+260,Students & Budget-Conscious,19,Cologne,6.3,25.31,8,Retail/Grocery,1,1,1,0,7.4
+261,Students & Budget-Conscious,23,Other Germany,2.7,8.36,8.2,Retail/Grocery,1,1,1,0,2.1
+262,On-the-go Commuters,40,Other Germany,5,13.56,5.9,Gym & Office,1,1,0,0,8.1
+263,Fitness & Gym-Goers,26,Hamburg,6.9,13.33,4.8,Retail/Grocery,1,0,0,0,9.5
+264,On-the-go Commuters,45,Munich,2.4,27.49,4.9,Gym & Office,1,0,0,0,9.1
+265,Fitness & Gym-Goers,35,Cologne,3.1,10.1,4.2,Gym & Office,1,1,1,1,8
+266,Students & Budget-Conscious,20,Other Germany,4.1,26.94,7.7,Retail/Grocery,1,1,0,0,6.6
+267,Fitness & Gym-Goers,35,Other Germany,9.6,21.51,5.7,Retail/Grocery,0,0,0,0,6.6
+268,Urban Wellness Professionals,26,Berlin,5.7,33.08,1.9,Gym & Office,0,0,0,1,8.6
+269,Fitness & Gym-Goers,24,Munich,7.2,14.06,5.8,Gym & Office,0,1,1,1,7.6
+270,Urban Wellness Professionals,29,Berlin,4.3,25.49,3.8,Retail/Grocery,0,1,0,1,8.5
+271,On-the-go Commuters,41,Berlin,8,25.11,4.6,Retail/Grocery,1,1,1,0,8.1
+272,Urban Wellness Professionals,25,Berlin,10.1,26.87,3.6,DTC Online,0,1,0,1,9.1
+273,Students & Budget-Conscious,23,Munich,5.5,13.89,6.5,DTC Online,1,1,1,0,6.4
+274,On-the-go Commuters,42,Berlin,3.5,25.31,4.9,Retail/Grocery,1,0,0,0,6.2
+275,Fitness & Gym-Goers,20,Other Germany,7.3,23.55,4.4,Retail/Grocery,0,0,1,1,8.8
+276,Urban Wellness Professionals,37,Cologne,5.4,18.83,2.8,Retail/Grocery,0,0,1,0,8.5
+277,Students & Budget-Conscious,24,Other Germany,9.8,9.44,7.4,Retail/Grocery,1,1,0,0,7.7
+278,On-the-go Commuters,34,Other Germany,2.7,24.13,4.7,Retail/Grocery,0,0,0,1,5.2
+279,Students & Budget-Conscious,22,Hamburg,8.5,22.31,7.3,Retail/Grocery,1,1,1,0,5
+280,On-the-go Commuters,31,Berlin,1.4,23.75,7.8,Retail/Grocery,1,1,1,0,5.6
+281,Urban Wellness Professionals,35,Hamburg,8,25.65,3.4,DTC Online,0,0,1,1,10
+282,On-the-go Commuters,38,Berlin,2.7,15.84,6.5,Retail/Grocery,1,1,0,0,5.5
+283,On-the-go Commuters,40,Frankfurt,2,22.4,7.4,Retail/Grocery,0,1,1,1,7.3
+284,Urban Wellness Professionals,25,Other Germany,5.8,27.5,3.6,Gym & Office,0,0,1,1,9.9
+285,On-the-go Commuters,43,Other Germany,7.3,16.05,4.5,DTC Online,0,0,0,1,8.7
+286,Urban Wellness Professionals,39,Berlin,5,20.58,3.4,DTC Online,1,1,1,1,10
+287,On-the-go Commuters,36,Hamburg,5.8,29.65,7.8,DTC Online,1,0,0,0,8
+288,Urban Wellness Professionals,37,Hamburg,12.6,24.14,3.5,Retail/Grocery,1,0,0,1,10
+289,On-the-go Commuters,39,Berlin,5.2,22.64,5.4,DTC Online,1,1,0,0,8.4
+290,Urban Wellness Professionals,40,Cologne,6,24.34,2.7,Retail/Grocery,1,0,0,1,10
+291,Students & Budget-Conscious,19,Cologne,2,21,9.5,Retail/Grocery,1,1,0,0,1.2
+292,Urban Wellness Professionals,29,Other Germany,10.5,19.75,3.3,Retail/Grocery,1,1,1,1,10
+293,On-the-go Commuters,41,Other Germany,9.3,7.96,7.2,Retail/Grocery,0,1,0,0,4.2
+294,Urban Wellness Professionals,25,Other Germany,10.3,24.27,1.2,Gym & Office,0,0,1,0,9.6
+295,On-the-go Commuters,47,Frankfurt,9.5,21.86,5.9,Retail/Grocery,1,1,1,0,6.4
+296,Students & Budget-Conscious,22,Berlin,3,16.05,6.9,Retail/Grocery,1,1,0,0,7.4
+297,Urban Wellness Professionals,33,Other Germany,10,20.03,1.6,Retail/Grocery,1,1,1,0,10
+298,Fitness & Gym-Goers,21,Other Germany,7,20.9,6.8,Retail/Grocery,0,1,1,0,4.5
+299,On-the-go Commuters,29,Cologne,6.4,12.68,6.9,DTC Online,0,1,0,0,7.7
+300,On-the-go Commuters,26,Other Germany,6.9,14.74,5.2,Retail/Grocery,1,0,0,0,4.9
+301,Students & Budget-Conscious,18,Hamburg,5.4,8.33,8.9,Retail/Grocery,1,1,0,0,6.2
+302,Urban Wellness Professionals,36,Hamburg,6.8,31.18,2.8,DTC Online,0,1,1,1,9.3
+303,On-the-go Commuters,50,Cologne,3.2,13.26,6.7,Retail/Grocery,0,0,0,0,2.6
+304,Urban Wellness Professionals,25,Cologne,10.5,27.21,1.8,Retail/Grocery,0,1,1,0,10
+305,Students & Budget-Conscious,20,Berlin,5,16.27,7.2,DTC Online,1,0,0,0,6.8
+306,Fitness & Gym-Goers,25,Other Germany,9.9,22.79,5.8,Retail/Grocery,1,1,0,0,6.5
+307,Students & Budget-Conscious,24,Frankfurt,6.7,27.85,7.2,DTC Online,1,1,0,0,4
+308,Urban Wellness Professionals,29,Berlin,6.9,15.85,3.8,Retail/Grocery,0,1,1,1,10
+309,Students & Budget-Conscious,23,Munich,7.9,17.46,7.2,Retail/Grocery,1,0,0,0,7.8
+310,Students & Budget-Conscious,23,Other Germany,6.3,22.42,7.8,Retail/Grocery,1,1,1,0,7
+311,Urban Wellness Professionals,29,Other Germany,5.9,4,3.8,Retail/Grocery,0,0,0,1,9.5
+312,Fitness & Gym-Goers,19,Hamburg,7.6,21.45,5.7,Retail/Grocery,1,0,1,0,7.2
+313,Urban Wellness Professionals,38,Berlin,6.8,9.25,1.8,DTC Online,1,0,0,1,9.7
+314,Students & Budget-Conscious,22,Munich,2.4,12.18,6.1,Retail/Grocery,0,1,1,0,7.5
+315,Fitness & Gym-Goers,26,Other Germany,3.1,27.15,7.2,Retail/Grocery,1,1,0,1,5.9
+316,Students & Budget-Conscious,20,Other Germany,5.7,27.73,8.3,Retail/Grocery,1,1,0,1,6.4
+317,Students & Budget-Conscious,19,Berlin,8.1,13.46,8.3,Retail/Grocery,1,1,0,0,5.5
+318,On-the-go Commuters,39,Other Germany,6,27.66,5.3,Retail/Grocery,1,0,0,0,6.5
+319,Fitness & Gym-Goers,35,Munich,6.5,18.17,3.2,Gym & Office,1,1,0,0,9.8
+320,Urban Wellness Professionals,40,Frankfurt,10.8,26.48,2.8,Retail/Grocery,0,1,0,1,8.2
+321,Students & Budget-Conscious,23,Other Germany,5.7,11.55,8.1,Gym & Office,1,0,1,0,4.1
+322,Urban Wellness Professionals,33,Hamburg,7.8,16.21,3.9,Retail/Grocery,0,1,1,0,9.9
+323,Students & Budget-Conscious,18,Munich,3.6,21.03,7.9,Retail/Grocery,1,0,0,0,6.9
+324,On-the-go Commuters,35,Berlin,8,16.08,5.9,Gym & Office,1,1,1,0,6.5
+325,Fitness & Gym-Goers,30,Other Germany,5.7,10.31,5.5,Retail/Grocery,0,0,1,0,8.5
+326,Urban Wellness Professionals,26,Other Germany,8.3,19.85,4.6,DTC Online,0,0,1,1,10
+327,Students & Budget-Conscious,24,Munich,4.7,26.93,8,Retail/Grocery,1,1,1,0,6.1
+328,Students & Budget-Conscious,22,Hamburg,6.2,14.71,7.5,Retail/Grocery,1,0,0,0,5.5
+329,On-the-go Commuters,48,Munich,4.6,28.99,5.8,Retail/Grocery,1,1,0,0,7.4
+330,Urban Wellness Professionals,39,Munich,8.9,11.3,4.4,DTC Online,0,0,1,0,10
+331,On-the-go Commuters,44,Other Germany,6.8,30.74,5.8,Retail/Grocery,1,0,1,0,6.3
+332,Urban Wellness Professionals,35,Berlin,7.1,19.7,6.4,DTC Online,1,1,0,1,8.3
+333,Urban Wellness Professionals,33,Berlin,6.2,11.35,6.4,Retail/Grocery,0,0,1,0,5.1
+334,On-the-go Commuters,36,Other Germany,6.5,23.76,3.9,Retail/Grocery,1,1,1,0,7.4
+335,Students & Budget-Conscious,23,Munich,2.9,23.55,8,Retail/Grocery,1,0,0,0,6.7
+336,Students & Budget-Conscious,21,Cologne,4.3,11.71,9.4,Gym & Office,1,1,0,0,5.6
+337,Fitness & Gym-Goers,25,Frankfurt,1.6,19.49,5.8,Gym & Office,1,0,0,0,10
+338,Urban Wellness Professionals,34,Berlin,6.8,26.83,3.7,DTC Online,0,0,0,1,7.5
+339,Students & Budget-Conscious,20,Berlin,3.6,15.48,8.8,DTC Online,1,1,1,0,6.2
+340,Urban Wellness Professionals,40,Other Germany,6.7,23.41,2.6,DTC Online,1,0,1,0,8.3
+341,Urban Wellness Professionals,28,Other Germany,5.7,31.68,2.3,DTC Online,0,1,0,1,10
+342,Fitness & Gym-Goers,30,Other Germany,6.8,19.39,6.7,Gym & Office,1,0,1,1,6.4
+343,Urban Wellness Professionals,38,Other Germany,7.9,18.18,2.6,Retail/Grocery,0,0,1,1,10
+344,Urban Wellness Professionals,27,Berlin,8.5,19.04,2.9,Retail/Grocery,1,1,0,0,10
+345,Fitness & Gym-Goers,32,Berlin,5.3,20.38,5.2,Retail/Grocery,1,0,1,0,7.5
+346,Students & Budget-Conscious,20,Other Germany,5.3,19.12,7.7,Retail/Grocery,1,1,0,0,7.4
+347,Students & Budget-Conscious,23,Other Germany,4.9,13.43,8.8,DTC Online,1,0,1,0,7.5
+348,Students & Budget-Conscious,24,Other Germany,4.5,11.43,10,Retail/Grocery,0,1,1,0,3.3
+349,Urban Wellness Professionals,30,Munich,7,22.94,3.7,DTC Online,1,1,1,1,10
+350,Fitness & Gym-Goers,25,Other Germany,3.3,28.45,6.2,DTC Online,1,0,1,1,5.3
+351,On-the-go Commuters,46,Berlin,4.5,14.18,7.7,Retail/Grocery,1,0,0,0,4.9
+352,Urban Wellness Professionals,31,Other Germany,6.2,29.59,3.1,Gym & Office,0,1,0,0,10
+353,Fitness & Gym-Goers,23,Munich,5.6,14.37,6.1,Retail/Grocery,0,0,1,0,10
+354,Urban Wellness Professionals,33,Berlin,7.5,31.1,3.7,Retail/Grocery,0,0,1,1,9.4
+355,Students & Budget-Conscious,24,Cologne,3.3,21.4,7.7,Retail/Grocery,1,1,0,1,4.2
+356,Students & Budget-Conscious,21,Munich,5.8,26.01,10,Retail/Grocery,1,1,1,0,3.9
+357,Students & Budget-Conscious,23,Other Germany,3.7,12.95,6.4,Gym & Office,1,1,0,0,5.3
+358,Students & Budget-Conscious,19,Cologne,4.9,17.6,6.5,Retail/Grocery,1,1,0,0,6
+359,Urban Wellness Professionals,26,Other Germany,5,21.62,4.2,Retail/Grocery,0,0,1,1,8.6
+360,Urban Wellness Professionals,30,Cologne,7.7,16.07,4.5,DTC Online,0,1,0,0,7.2
+361,Students & Budget-Conscious,23,Hamburg,6.8,19.58,7.1,DTC Online,1,1,0,0,2.7
+362,Fitness & Gym-Goers,31,Munich,5.8,23.74,5,Retail/Grocery,1,0,0,0,8.9
+363,Students & Budget-Conscious,21,Munich,6.3,18.07,6.7,Gym & Office,1,0,0,0,6.1
+364,Students & Budget-Conscious,18,Other Germany,2,17.77,9.2,Gym & Office,1,1,1,0,3.6
+365,Fitness & Gym-Goers,35,Berlin,5.6,17.85,6,Gym & Office,1,0,1,1,9
+366,Students & Budget-Conscious,23,Other Germany,6.1,18.45,7.2,DTC Online,0,1,1,0,6.4
+367,Fitness & Gym-Goers,27,Hamburg,7.3,24.26,1.3,Retail/Grocery,1,0,1,1,10
+368,Fitness & Gym-Goers,27,Other Germany,5.8,26.37,7.3,Retail/Grocery,0,0,1,0,8.8
+369,Fitness & Gym-Goers,18,Other Germany,4.4,14.58,5.8,Gym & Office,0,0,1,0,7.7
+370,Students & Budget-Conscious,19,Munich,2.2,9.81,10,DTC Online,0,1,1,0,2.8
+371,Urban Wellness Professionals,26,Other Germany,7.2,18.62,3.3,Gym & Office,0,1,1,0,9.2
+372,Urban Wellness Professionals,37,Other Germany,8.1,23.86,3.7,Gym & Office,0,1,1,0,8.3
+373,Urban Wellness Professionals,34,Munich,8.7,23.03,5.2,DTC Online,1,0,1,1,5.4
+374,On-the-go Commuters,48,Other Germany,8.4,23.56,7.6,DTC Online,1,0,0,0,2.6
+375,Urban Wellness Professionals,25,Munich,11.6,33.22,2.1,Retail/Grocery,1,0,0,1,10
+376,Students & Budget-Conscious,20,Munich,3.8,19.12,7.5,Gym & Office,1,1,0,0,6.3
+377,Students & Budget-Conscious,23,Other Germany,6.3,21.93,8.5,Retail/Grocery,1,0,1,0,3.9
+378,Students & Budget-Conscious,21,Berlin,4.2,21.82,7.2,DTC Online,1,0,0,0,3.7
+379,Students & Budget-Conscious,24,Other Germany,6.8,17.8,6.1,Retail/Grocery,1,0,0,0,4.9
+380,Urban Wellness Professionals,35,Other Germany,7.6,29,3,Retail/Grocery,1,1,0,1,10
+381,Urban Wellness Professionals,28,Munich,7.5,17.77,2.2,DTC Online,0,1,1,0,10
+382,Fitness & Gym-Goers,31,Frankfurt,5.2,15.96,5.2,Retail/Grocery,0,1,1,0,5.9
+383,Students & Budget-Conscious,21,Berlin,4,9.91,6.4,Retail/Grocery,1,1,1,0,4.8
+384,Fitness & Gym-Goers,18,Other Germany,6.5,18.63,4.2,Retail/Grocery,1,0,0,0,8.2
+385,On-the-go Commuters,38,Other Germany,5.4,10.23,4.4,Gym & Office,1,0,0,1,7.5
+386,Fitness & Gym-Goers,29,Berlin,9.2,15.89,5.7,Gym & Office,1,0,1,0,8.6
+387,Students & Budget-Conscious,21,Other Germany,9.7,12.45,10,Retail/Grocery,1,0,0,0,3.5
+388,On-the-go Commuters,27,Berlin,3.3,24.95,7.6,Retail/Grocery,1,0,0,0,4.9
+389,Urban Wellness Professionals,25,Frankfurt,12,22.27,3.1,DTC Online,0,1,0,0,9.8
+390,Students & Budget-Conscious,23,Other Germany,5.5,15.57,6.4,DTC Online,1,0,0,0,5.6
+391,Fitness & Gym-Goers,19,Other Germany,7.5,12.82,4,Gym & Office,0,0,1,1,9.3
+392,On-the-go Commuters,48,Munich,6.2,18.59,7.4,Gym & Office,0,0,1,1,6.3
+393,Urban Wellness Professionals,33,Munich,8.9,22.94,3.3,Gym & Office,0,0,1,1,7.8
+394,On-the-go Commuters,32,Cologne,6.9,28.59,5.7,Retail/Grocery,1,0,0,0,9.6
+395,Urban Wellness Professionals,30,Munich,5.3,27.77,2.1,DTC Online,1,0,0,1,10
+396,Urban Wellness Professionals,37,Cologne,7,28.84,3.6,Retail/Grocery,0,0,1,0,8.9
+397,Fitness & Gym-Goers,31,Other Germany,10,20.45,5.2,Gym & Office,0,1,1,0,10
+398,Urban Wellness Professionals,30,Munich,6.9,25.26,3.6,DTC Online,1,1,1,1,10
+399,Students & Budget-Conscious,22,Other Germany,4.1,19.04,7.8,DTC Online,0,0,0,0,4.9
+400,Fitness & Gym-Goers,26,Munich,5,7.41,6.4,Retail/Grocery,1,1,1,0,8.8
+401,Urban Wellness Professionals,35,Other Germany,7.8,26.8,3.7,DTC Online,0,1,1,1,9.5
+402,Fitness & Gym-Goers,21,Other Germany,6.2,18.14,6,Gym & Office,1,0,1,1,5
+403,Urban Wellness Professionals,29,Other Germany,8,20.19,1,Retail/Grocery,0,0,1,1,10
+404,On-the-go Commuters,49,Cologne,4.7,15.54,7.1,DTC Online,0,1,0,0,4.7
+405,Students & Budget-Conscious,21,Other Germany,5.4,13.6,8.2,DTC Online,0,0,0,1,5.9
+406,Fitness & Gym-Goers,24,Berlin,3.8,18.56,5.2,Retail/Grocery,1,0,0,0,8.1
+407,On-the-go Commuters,26,Hamburg,7.1,16.43,5.3,Gym & Office,0,0,0,0,5.6
+408,Students & Budget-Conscious,23,Berlin,2.7,15.1,9.5,Retail/Grocery,1,0,0,1,6.7
+409,Fitness & Gym-Goers,20,Other Germany,7.5,25.51,3.2,Gym & Office,0,0,1,0,10
+410,On-the-go Commuters,43,Frankfurt,3.2,17.76,6.2,Retail/Grocery,1,0,0,0,7.2
+411,On-the-go Commuters,26,Berlin,5.7,18.93,6,Retail/Grocery,1,0,0,0,6.7
+412,On-the-go Commuters,49,Cologne,6.9,14.54,6.6,Retail/Grocery,1,0,0,0,6.7
+413,Students & Budget-Conscious,24,Other Germany,4.5,20.85,9,Retail/Grocery,1,0,0,0,6
+414,On-the-go Commuters,46,Munich,6.4,26.1,6.6,Retail/Grocery,1,0,1,0,3.6
+415,Students & Budget-Conscious,20,Hamburg,5.3,12.96,8.3,Retail/Grocery,1,1,1,0,5
+416,Fitness & Gym-Goers,31,Munich,4.4,28.03,5.7,DTC Online,1,1,1,0,9.2
+417,On-the-go Commuters,29,Munich,7.5,15.1,6.5,Retail/Grocery,1,1,1,0,6.7
+418,Students & Budget-Conscious,18,Other Germany,6.3,22.13,8.6,Gym & Office,1,0,1,0,3.7
+419,On-the-go Commuters,27,Hamburg,4.6,12.16,6.6,Retail/Grocery,1,0,1,0,6.6
+420,Students & Budget-Conscious,22,Other Germany,5.4,26.96,7.7,Retail/Grocery,1,1,0,0,5.4
