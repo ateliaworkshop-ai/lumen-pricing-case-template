@@ -5,6 +5,7 @@ prompts/
 .codex/
 AGENTS.md
 CLAUDE.md
+data/
 .env
 .env.*
 !.env.example

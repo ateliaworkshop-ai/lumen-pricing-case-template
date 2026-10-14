@@ -13,3 +13,5 @@ AGENTS.md  export-ignore
 CLAUDE.md  export-ignore
 .gitattributes export-ignore
 .vercelignore  export-ignore
+# The case's raw data room (some files hold names and emails): the app copies what it needs.
+data/      export-ignore

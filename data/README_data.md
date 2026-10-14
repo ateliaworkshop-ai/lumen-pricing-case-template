@@ -40,7 +40,7 @@ for a number that isn't there.
   in there on purpose (duplicate rows, an unusual spike week). A good analyst
   notices and handles data-quality issues rather than taking every row at face
   value — treat that the same way you would with a real company export.
-- **The 5 possible deliverables in the brief are a starting menu, not a
+- **The tool ideas at the end of the brief are a starting menu, not a
   checklist.** Several teams working from the exact same files can end up with
   genuinely different, equally valid tools depending on which questions you
   decide matter most.
@@ -49,5 +49,7 @@ for a number that isn't there.
   a public API) and correlating it with the seasonality data here. Not
   required, but it's there if your team wants to push further.
 - **Some files contain name/email-style fields** (`customer_survey.csv`). Take
-  a moment as a team to decide how you'll handle that in your build and your
-  repo — it's worth a line in `PROMPTS.md`.
+  a moment as a team to decide how you'll handle that in your build, and say it
+  in your hand-in note. These columns never go online: the `data/` folder is
+  left out when you put your app online, and anything your app needs from it
+  is copied without them.
