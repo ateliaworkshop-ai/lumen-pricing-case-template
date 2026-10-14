@@ -1,0 +1,16 @@
+# Secrets: never commit keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.*
+.streamlit/secrets.toml
+
+# Local tool state
+.claude/settings.local.json
+.DS_Store
+node_modules/
+__pycache__/
+.venv/
+venv/

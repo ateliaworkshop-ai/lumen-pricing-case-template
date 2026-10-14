@@ -1,0 +1,15 @@
+# Keep the prompt logger runnable on Windows: git must not turn its line endings into CRLF.
+*.sh    text eol=lf
+*.jsonl text eol=lf
+*.ps1   text eol=crlf
+
+# Left out of every ZIP of the repository (GitHub's "Download ZIP", git archive):
+# the prompt log and the agent's instructions must never reach a public website.
+prompts/   export-ignore
+.atelia/   export-ignore
+.claude/   export-ignore
+.codex/    export-ignore
+AGENTS.md  export-ignore
+CLAUDE.md  export-ignore
+.gitattributes export-ignore
+.vercelignore  export-ignore

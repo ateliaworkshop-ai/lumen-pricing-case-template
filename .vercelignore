@@ -1,0 +1,12 @@
+# Never uploaded to Vercel: the prompt log, the agent's instructions, the keys.
+prompts/
+.atelia/
+.claude/
+.codex/
+AGENTS.md
+CLAUDE.md
+.env
+.env.*
+!.env.example
+*.pem
+*.key

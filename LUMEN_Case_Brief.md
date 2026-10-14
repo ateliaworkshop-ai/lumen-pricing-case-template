@@ -6,7 +6,7 @@
 ## Germany market entry — we need a price, a launch channel, and a timeline
 
 LUMEN launched in Copenhagen in 2022: a low-sugar, sparkling functional drink built on natural
-caffeine from green tea and a light adaptogen blend. We've spent three years earning our place on
+caffeine from green tea and a light adaptogen blend. We've spent four years earning our place on
 shelves and screens in the Netherlands, Denmark and Sweden. Germany is next — Europe's largest
 market for functional beverages, and the one every investor asks us about first.
 
@@ -19,7 +19,8 @@ market for functional beverages, and the one every investor asks us about first.
 
 ### Why now
 
-NL/DK/SE now generate roughly €3.2M in trailing revenue and the brand has real repeat-purchase
+NL/DK/SE now generate roughly €1.2M in trailing-twelve-month revenue (€1.6M over the 78 weeks in
+Exhibit 6) and the brand has real repeat-purchase
 loyalty in Copenhagen and Amsterdam. Investors keep asking about Germany specifically — it's the
 obvious next market, not an opportunistic one.
 

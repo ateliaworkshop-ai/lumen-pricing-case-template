@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.atelia/log-prompt.sh\" claude-code",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

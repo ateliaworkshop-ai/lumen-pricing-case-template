@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$(git rev-parse --show-toplevel)/.atelia/log-prompt.sh\" codex",
+            "commandWindows": "powershell -NoProfile -ExecutionPolicy Bypass -File .atelia/log-prompt.ps1 codex",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
