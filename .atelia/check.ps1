@@ -69,7 +69,7 @@ $base = if ($root) { $root } else { (Get-Location).Path }
 $log = Join-Path (Join-Path $base "prompts") ("{0}-{1}.jsonl" -f $handle, (Get-Date).ToString("yyyy-MM-dd"))
 if ((Test-Path $log) -and ((Get-Content $log -Encoding UTF8 | Select-Object -Last 1) -match "ATELIA setup check")) { Pass "Prompt log: your message is in prompts/$(Split-Path $log -Leaf)" }
 elseif (Test-Path $log) { Fail "Prompt log: your last message is not the setup check" "Send the check prompt again, as a new message." }
-else { Fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept ""trust this folder"". Codex: type /hooks, approve the ATELIA hook. Then send the check prompt again." }
+else { Fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept ""trust this folder"". Codex: when it says ""Hooks need review"", choose ""Trust all and continue"". Then send the check prompt again." }
 
 # 8. Not in a synced folder
 if ($base -match "OneDrive|Dropbox|iCloud") { Warn "Your repository is in a synced folder ($base)" "Syncing can lock or duplicate files. Move it to atelia in your user folder." }
@@ -82,6 +82,11 @@ $main = ((git show origin/main:.atelia/VERSION 2>$null) -join "") -replace "\s",
 if (-not $mine) { Fail "ATELIA files: no version on this branch" "Paste the check prompt from your ATELIA team page: it brings the latest files from main." }
 elseif ($main -and $main -ne $mine) { Fail "ATELIA files: version $mine here, $main on main" "Paste the check prompt from your ATELIA team page: it brings the latest files from main." }
 else { Pass "ATELIA files: version $mine" }
+
+# 10. In step with the team: what teammates merged into main is in this branch
+$behind = (git rev-list --count HEAD..origin/main 2>$null)
+if ($behind -and [int]$behind -gt 0) { Warn "Your branch is $behind change(s) behind main" "Ask your agent: update my branch from main." }
+elseif ($behind) { Pass "In step with main" }
 
 Write-Output ""
 if ($script:fails -eq 0) { Write-Output "ATELIA: your computer is ready. Commit and push prompts/, then look for this message on your team page." }

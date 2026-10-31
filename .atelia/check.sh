@@ -80,7 +80,7 @@ if [ -f "$LOG" ] && tail -n 1 "$LOG" | grep -q "ATELIA setup check"; then
 elif [ -f "$LOG" ]; then
   fail "Prompt log: your last message is not the setup check" "Send the check prompt again, as a new message."
 else
-  fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept \"trust this folder\". Codex: type /hooks, approve the ATELIA hook. Then send the check prompt again."
+  fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept \"trust this folder\". Codex: when it says \"Hooks need review\", choose \"Trust all and continue\". Then send the check prompt again."
 fi
 
 # 8. Not in a synced folder
@@ -98,6 +98,14 @@ elif [ -n "$MAIN" ] && [ "$MAIN" != "$MINE" ]; then
   fail "ATELIA files: version $MINE here, $MAIN on main" "Paste the check prompt from your ATELIA team page: it brings the latest files from main."
 else
   pass "ATELIA files: version $MINE"
+fi
+
+# 10. In step with the team: what teammates merged into main is in this branch
+BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null)
+if [ -n "$BEHIND" ] && [ "$BEHIND" -gt 0 ]; then
+  warn "Your branch is $BEHIND change(s) behind main" "Ask your agent: update my branch from main."
+elif [ -n "$BEHIND" ]; then
+  pass "In step with main"
 fi
 
 echo

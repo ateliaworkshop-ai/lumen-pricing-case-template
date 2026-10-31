@@ -1,6 +1,8 @@
 # Keep the prompt logger runnable on Windows: git must not turn its line endings into CRLF.
 *.sh    text eol=lf
 *.jsonl text eol=lf
+# Each line of a prompt log stands alone: if two branches add to the same log, keep both sides' lines.
+prompts/*.jsonl merge=union
 *.ps1   text eol=crlf
 
 # Left out of every ZIP of the repository (GitHub's "Download ZIP", git archive):
