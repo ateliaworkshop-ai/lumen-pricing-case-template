@@ -38,7 +38,7 @@ ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 REMOTE=$(git remote get-url origin 2>/dev/null)
 case "$REMOTE" in
   *github.com[:/]ateliaworkshop-ai/*) REPO="${REMOTE##*[:/]ateliaworkshop-ai/}"; pass "Team repository: ${REPO%.git}" ;;
-  "") fail "This folder is not your team repository" "Start the agent inside the folder the setup prompt cloned (atelia/<your repository>)." ;;
+  "") fail "This folder is not your team repository" "Quit the agent and start it again inside the repository, as step 5 of 'Prefer to work on your own computer?' on your team page says." ;;
   *) fail "This repository is not an ATELIA team repository ($REMOTE)" "Start the agent inside the folder the setup prompt cloned." ;;
 esac
 
@@ -67,7 +67,7 @@ fi
 if [ -n "$REMOTE" ] && GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes" git ls-remote --heads origin >/dev/null 2>&1; then
   pass "GitHub access: this computer reaches your repository, no password asked"
 else
-  fail "GitHub does not let this computer in" "Paste the setup prompt again: it connects GitHub (browser sign-in on Windows, an SSH key on Mac). Accepted the invitation on your ATELIA team page?"
+  fail "GitHub does not let this computer in" "With Codex: approve its network request and run the check again first. Otherwise paste the setup prompt again: it connects GitHub (browser sign-in on Windows, an SSH key on Mac). Accepted the invitation on your ATELIA team page?"
 fi
 
 # 7. The prompt log caught this message
@@ -110,7 +110,7 @@ fi
 
 echo
 if [ "$FAILS" -eq 0 ]; then
-  echo "ATELIA: your computer is ready. Commit and push prompts/, then look for this message on your team page."
+  echo "ATELIA: your computer is ready. Your agent now commits and pushes prompts/: then open your team page, where your ATELIA setup check message appears under The record within a minute."
 else
   echo "ATELIA: $FAILS check(s) failed. Fix them as shown above, or send everything from \"ATELIA setup check\" down to contact@ateliaworkshop.ai."
 fi

@@ -36,7 +36,7 @@ At the end of every request, even one that only answered a question (its line in
 2. Bring in `main` again, as above (`git fetch origin`, then `git merge origin/main`), so what you push always holds the team's latest work.
 3. Push the branch: `git push -u origin HEAD`.
 
-If the push is blocked by your sandbox or needs approval, ask the user to approve it. Do not skip it: the team's feedback is based on what reaches GitHub.
+If the push is blocked by your sandbox or needs approval, ask the user to approve it. Do not skip it: the team's feedback is based on what reaches GitHub. If you still cannot push, tell the student exactly what to do, never just "push it yourself": in Codex on the web, click "Create PR" at the top of the task; on a computer, open a new terminal window and run `cd "<this folder's full path>"`, then `git push -u origin HEAD`.
 
 ## Bring the work into main (when the student asks)
 

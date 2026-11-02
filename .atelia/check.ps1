@@ -24,7 +24,8 @@ if ($nodev) {
 } else { Fail "Node.js is not installed" "Install the LTS version from nodejs.org (default options), then open a new PowerShell window." }
 $npmv = $null
 try { $npmv = (& npm.cmd -v 2>$null | Select-Object -First 1) } catch { }
-$policy = [string](Get-ExecutionPolicy)
+# Get-ExecutionPolicy can fail to load (a Windows PowerShell started from PowerShell 7): then the policy is unknown, not an error.
+$policy = try { [string](Get-ExecutionPolicy -ErrorAction Stop) } catch { "unknown" }
 if (-not $npmv) { Fail "npm does not run" "Reinstall Node.js from nodejs.org, then open a new PowerShell window." }
 elseif ($policy -eq "Restricted" -or $policy -eq "AllSigned") { Fail "PowerShell blocks npm (execution policy: $policy)" "Run once: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned (answer Y). On a school laptop where that is refused, type npm.cmd instead of npm." }
 else { Pass "npm: $npmv" }
@@ -33,7 +34,7 @@ else { Pass "npm: $npmv" }
 $root = Run git rev-parse --show-toplevel
 $remote = Run git remote get-url origin
 if ($remote -match 'github\.com[:/]ateliaworkshop-ai/(.+?)(\.git)?$') { Pass "Team repository: $($Matches[1])" }
-elseif (-not $remote) { Fail "This folder is not your team repository" "Start the agent inside the folder the setup prompt cloned (atelia\<your repository>)." }
+elseif (-not $remote) { Fail "This folder is not your team repository" "Quit the agent and start it again inside the repository, as step 5 of 'Prefer to work on your own computer?' on your team page says." }
 else { Fail "This repository is not an ATELIA team repository ($remote)" "Start the agent inside the folder the setup prompt cloned." }
 
 # 4. Who you are
@@ -57,7 +58,7 @@ $env:GCM_INTERACTIVE = "never"
 $reach = $false
 if ($remote) { git ls-remote --heads origin *> $null; $reach = ($LASTEXITCODE -eq 0) }
 if ($reach) { Pass "GitHub access: this computer reaches your repository, no password asked" }
-else { Fail "GitHub does not let this computer in" "Paste the setup prompt again: it signs you in to GitHub through the browser. Accepted the invitation on your ATELIA team page?" }
+else { Fail "GitHub does not let this computer in" "With Codex: approve its network request and run the check again first. Otherwise paste the setup prompt again: it signs you in to GitHub through the browser. Accepted the invitation on your ATELIA team page?" }
 
 # 7. The prompt log caught this message
 $handle = $env:ATELIA_HANDLE
@@ -72,7 +73,7 @@ elseif (Test-Path $log) { Fail "Prompt log: your last message is not the setup c
 else { Fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept ""trust this folder"". Codex: when it says ""Hooks need review"", choose ""Trust all and continue"". Then send the check prompt again." }
 
 # 8. Not in a synced folder
-if ($base -match "OneDrive|Dropbox|iCloud") { Warn "Your repository is in a synced folder ($base)" "Syncing can lock or duplicate files. Move it to atelia in your user folder." }
+if ($base -match "OneDrive|Dropbox|iCloud") { Warn "Your repository is in a synced folder ($base)" "Syncing can lock or duplicate files. Move it to atelia in your home folder." }
 else { Pass "Folder: $base" }
 
 # 9. The ATELIA files are the latest (the check prompt brings them from main first)
@@ -89,13 +90,13 @@ if ($behind -and [int]$behind -gt 0) { Warn "Your branch is $behind change(s) be
 elseif ($behind) { Pass "In step with main" }
 
 Write-Output ""
-if ($script:fails -eq 0) { Write-Output "ATELIA: your computer is ready. Commit and push prompts/, then look for this message on your team page." }
+if ($script:fails -eq 0) { Write-Output "ATELIA: your computer is ready. Your agent now commits and pushes prompts/: then open your team page, where your ATELIA setup check message appears under The record within a minute." }
 else { Write-Output "ATELIA: $($script:fails) check(s) failed. Fix them as shown above, or send everything from ""ATELIA setup check"" down to contact@ateliaworkshop.ai." }
 Write-Output ""
 Write-Output "--- diagnostic ---"
 Write-Output "system: $([Environment]::OSVersion.VersionString) $env:PROCESSOR_ARCHITECTURE / PowerShell $($PSVersionTable.PSVersion)"
-Write-Output "git: $gitv / node: $nodev / npm: $npmv / execution policy: $(Get-ExecutionPolicy)"
+Write-Output "git: $gitv / node: $nodev / npm: $npmv / execution policy: $policy"
 Write-Output "remote: $remote"
 Write-Output "branch: $branch"
-Write-Output "atelia files: $(if ($mine) { $mine } else { none }) (main: $(if ($main) { $main } else { unknown }))"
+Write-Output "atelia files: $(if ($mine) { $mine } else { 'none' }) (main: $(if ($main) { $main } else { 'unknown' }))"
 if ($script:fails -eq 0) { exit 0 } else { exit 1 }
