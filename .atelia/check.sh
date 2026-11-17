@@ -30,7 +30,7 @@ fi
 if command -v npm >/dev/null 2>&1 && npm -v >/dev/null 2>&1; then
   pass "npm: $(npm -v 2>/dev/null)"
 else
-  fail "npm does not run" "Windows: run Set-ExecutionPolicy -Scope CurrentUser RemoteSigned in PowerShell once. Otherwise reinstall Node.js."
+  fail "npm does not run" "Windows: run Set-ExecutionPolicy -Scope CurrentUser RemoteSigned -Force in PowerShell once. Otherwise reinstall Node.js."
 fi
 
 # 3. The team repository
@@ -75,10 +75,13 @@ HANDLE="${ATELIA_HANDLE:-$LOGIN}"
 [ -n "$HANDLE" ] || HANDLE="${EMAIL%%@*}"
 HANDLE=$(printf '%s' "$HANDLE" | tr 'A-Z' 'a-z' | tr -c 'a-z0-9._-' '-' | cut -c1-40)
 LOG="${ROOT:-.}/prompts/$HANDLE-$(date +%Y-%m-%d).jsonl"
-if [ -f "$LOG" ] && tail -n 1 "$LOG" | grep -q "ATELIA setup check"; then
+# Among the last five lines (the student may type while the check runs), and sent in the last
+# 15 minutes: an older check, from another tool, does not prove this one records.
+SINCE=$(date -u -v-15M +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -d '15 minutes ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)
+if [ -f "$LOG" ] && tail -n 5 "$LOG" | grep "ATELIA setup check" | sed -n 's/.*"ts":"\([^"]*\)".*/\1/p' | awk -v since="$SINCE" '$0 >= since { found = 1 } END { exit !found }'; then
   pass "Prompt log: your message is in prompts/$(basename "$LOG")"
 elif [ -f "$LOG" ]; then
-  fail "Prompt log: your last message is not the setup check" "Send the check prompt again, as a new message."
+  fail "Prompt log: your recent messages do not include the setup check" "Send the check prompt again, as a new message."
 else
   fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept \"trust this folder\". Codex: when it says \"Hooks need review\", choose \"Trust all and continue\". Then send the check prompt again."
 fi
@@ -86,6 +89,7 @@ fi
 # 8. Not in a synced folder
 case "${ROOT:-$(pwd)}" in
   *OneDrive*|*Dropbox*|*"Mobile Documents"*|*iCloud*) warn "Your repository is in a synced folder (${ROOT})" "Syncing can lock or duplicate files. Move it to atelia in your home folder." ;;
+  */Desktop/*|*/Documents/*|*/Bureau/*) warn "Your repository is in Desktop or Documents (${ROOT})" "Nothing to do unless iCloud (Mac) or OneDrive (Windows) backs up your Desktop and Documents: then move it to atelia in your home folder." ;;
   *) pass "Folder: ${ROOT:-$(pwd)}" ;;
 esac
 

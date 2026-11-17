@@ -53,7 +53,7 @@ if command -v perl >/dev/null 2>&1; then
     if (defined $prompt) {
       $prompt =~ s/-----BEGIN [A-Z ]*PRIVATE KEY-----.*?-----END [A-Z ]*PRIVATE KEY-----/[REDACTED]/gs;
       $prompt =~ s/\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|(?:sk|rk|pk)_(?:live|test)_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[abprs]-[A-Za-z0-9-]{10,}|sb_secret_[A-Za-z0-9_-]{10,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})/[REDACTED]/g;
-      $prompt =~ s/\b((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)\s*[:=]\s*)\S+/$1\[REDACTED]/gi;
+      $prompt =~ s/(?<![A-Za-z])((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|mot[\s_-]*de[\s_-]*passe|mdp)(?:\s+[^\s:=]{1,20})?\s*(?:[:=]|\x{FF1A}|\s+(?:est|is)\s+)\s*)(?:"[^"\n]*"|\x{AB}[^\x{BB}\n]*\x{BB}|\x27[^\x27\n]*\x27|\S+)/$1\[REDACTED]/gi;
     }
     my %e = %ENV; my $n = sub { length($_[0] // "") ? $_[0] : undef };
     my $sid = ref($p) eq "HASH" ? $p->{session_id} : undef;
@@ -78,7 +78,7 @@ if [ -z "$LINE" ] && command -v node >/dev/null 2>&1; then
       if (prompt) prompt = prompt
         .replace(/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g, "[REDACTED]")
         .replace(/\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|(?:sk|rk|pk)_(?:live|test)_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[abprs]-[A-Za-z0-9-]{10,}|sb_secret_[A-Za-z0-9_-]{10,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})/g, "[REDACTED]")
-        .replace(/\b((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)\s*[:=]\s*)\S+/gi, "$1[REDACTED]");
+        .replace(/(?<![A-Za-z])((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|mot[\s_-]*de[\s_-]*passe|mdp)(?:\s+[^\s:=]{1,20})?\s*(?:[:=]|\uFF1A|\s+(?:est|is)\s+)\s*)(?:"[^"\n]*"|\u00AB[^\u00BB\n]*\u00BB|\x27[^\x27\n]*\x27|\S+)/gi, "$1[REDACTED]");
       const e = process.env;
       process.stdout.write(JSON.stringify({ v: 1, atelia: e.A_VER || null, ts: e.A_TS, tool: e.A_TOOL,
         author: { name: e.A_NAME || null, email: e.A_EMAIL || null, handle: e.A_HANDLE },

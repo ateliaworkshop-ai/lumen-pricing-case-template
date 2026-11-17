@@ -27,7 +27,7 @@ try { $npmv = (& npm.cmd -v 2>$null | Select-Object -First 1) } catch { }
 # Get-ExecutionPolicy can fail to load (a Windows PowerShell started from PowerShell 7): then the policy is unknown, not an error.
 $policy = try { [string](Get-ExecutionPolicy -ErrorAction Stop) } catch { "unknown" }
 if (-not $npmv) { Fail "npm does not run" "Reinstall Node.js from nodejs.org, then open a new PowerShell window." }
-elseif ($policy -eq "Restricted" -or $policy -eq "AllSigned") { Fail "PowerShell blocks npm (execution policy: $policy)" "Run once: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned (answer Y). On a school laptop where that is refused, type npm.cmd instead of npm." }
+elseif ($policy -eq "Restricted" -or $policy -eq "AllSigned") { Fail "PowerShell blocks npm (execution policy: $policy)" "Run once: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned -Force. On a school laptop where that is refused, type npm.cmd instead of npm." }
 else { Pass "npm: $npmv" }
 
 # 3. The team repository
@@ -67,13 +67,30 @@ if (-not $handle -and $email) { $handle = $email.Split("@")[0] }
 $handle = ([string]$handle).ToLowerInvariant() -replace "[^a-z0-9._-]", "-"
 if ($handle.Length -gt 40) { $handle = $handle.Substring(0, 40) }
 $base = if ($root) { $root } else { (Get-Location).Path }
+# git gives C:/Users/...: with backslashes, the folder tests below read it as Windows writes it.
+$base = $base -replace "/", "\"
 $log = Join-Path (Join-Path $base "prompts") ("{0}-{1}.jsonl" -f $handle, (Get-Date).ToString("yyyy-MM-dd"))
-if ((Test-Path $log) -and ((Get-Content $log -Encoding UTF8 | Select-Object -Last 1) -match "ATELIA setup check")) { Pass "Prompt log: your message is in prompts/$(Split-Path $log -Leaf)" }
-elseif (Test-Path $log) { Fail "Prompt log: your last message is not the setup check" "Send the check prompt again, as a new message." }
+# Among the last five lines (the student may type while the check runs), and sent in the last
+# 15 minutes: an older check, from another tool, does not prove this one records.
+$since = (Get-Date).ToUniversalTime().AddMinutes(-15)
+$recent = $false
+if (Test-Path $log) {
+  foreach ($line in (Get-Content $log -Encoding UTF8 | Select-Object -Last 5)) {
+    if ($line -notmatch "ATELIA setup check") { continue }
+    try {
+      $ts = ($line | ConvertFrom-Json).ts
+      $at = if ($ts -is [datetime]) { $ts.ToUniversalTime() } else { [datetime]::Parse([string]$ts, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]"AdjustToUniversal,AssumeUniversal") }
+      if ($at -ge $since) { $recent = $true }
+    } catch { }
+  }
+}
+if ($recent) { Pass "Prompt log: your message is in prompts/$(Split-Path $log -Leaf)" }
+elseif (Test-Path $log) { Fail "Prompt log: your recent messages do not include the setup check" "Send the check prompt again, as a new message." }
 else { Fail "Prompt log: nothing saved today" "Claude: quit, start again inside this folder, accept ""trust this folder"". Codex: when it says ""Hooks need review"", choose ""Trust all and continue"". Then send the check prompt again." }
 
 # 8. Not in a synced folder
 if ($base -match "OneDrive|Dropbox|iCloud") { Warn "Your repository is in a synced folder ($base)" "Syncing can lock or duplicate files. Move it to atelia in your home folder." }
+elseif ($base -match "\\(Desktop|Documents|Bureau)(\\|$)") { Warn "Your repository is in Desktop or Documents ($base)" "Nothing to do unless OneDrive backs up your Desktop and Documents: then move it to atelia in your home folder." }
 else { Pass "Folder: $base" }
 
 # 9. The ATELIA files are the latest (the check prompt brings them from main first)

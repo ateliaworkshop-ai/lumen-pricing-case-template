@@ -7,7 +7,7 @@ The users are business students: explain what you do in plain language, and keep
 
 ## Case rules
 
-- Work only on the current branch. Never push to or rewrite `main`, and never force-push.
+- Work on the student's own branch. Never rewrite `main`, never force-push (no `--force`, no `+` in a push) and never delete a branch on GitHub (`--delete`). Push to `main` only when the student asks to put their work in the team's version, exactly as "Bring the work into main" says.
 - If the current branch is `main`, first switch to the student's own branch: `git switch <login>` if it exists, otherwise `git switch -c <login>`, where `<login>` is `git config github.user`.
 - Never read, print, or commit secrets. API keys live in `.env` (git-ignored). If you need a key, ask the user to put it in `.env` and read it from the environment.
 - Never ask the user for a password or a GitHub token, and never put one in a command or a remote URL. If git asks for credentials, stop and tell the user to finish the ATELIA setup (signing in to GitHub once, in the browser or with an SSH key).
@@ -38,14 +38,17 @@ At the end of every request, even one that only answered a question (its line in
 
 If the push is blocked by your sandbox or needs approval, ask the user to approve it. Do not skip it: the team's feedback is based on what reaches GitHub. If you still cannot push, tell the student exactly what to do, never just "push it yourself": in Codex on the web, click "Create PR" at the top of the task; on a computer, open a new terminal window and run `cd "<this folder's full path>"`, then `git push -u origin HEAD`.
 
-## Bring the work into main (when the student asks)
+## Bring the work into main (only when the student asks)
 
-When the student wants their work in the team's version ("merge my work", "put it in main", "add it to the team's app"):
+`main` is the team's shared version: the app that goes online. Only on an explicit request to put the work there ("merge my work", "put my work in main"); if you are not sure that is what the student means, ask:
 
-1. Bring in `main` and push, as above, and make sure the app still runs.
-2. Give the student this link, filled in: `https://github.com/<owner>/<repo>/compare/main...<branch>?expand=1` (owner and repo from `git remote get-url origin`, branch from `git branch --show-current`).
-3. Tell them: click "Create pull request", then "Merge pull request", then "Confirm merge". If a pull request from this branch is already open, GitHub shows "View pull request": open it and merge it the same way. You never merge into `main` yourself.
-4. If GitHub says the branch has conflicts or is out of date (a teammate merged in between), they must not use GitHub's "Resolve conflicts" button: they ask you "update my branch from main", and you do the steps above again.
+1. Commit everything first (`git add -A && git commit -m "<what changed>"`), including what this request just changed. Then bring in `main` as in "Stay in step with your team": teammates' work is kept, a real choice is asked, no conflict marker remains, and the app still runs.
+2. Push the branch: `git push -u origin HEAD`.
+3. Put it in `main`: `git push origin HEAD:main`. Never add `--force` or `+`. If your tool asks for approval, ask the student to approve it. Git accepts it only if `main` has not moved since step 1, so no teammate's work can be lost. If git answers "fetch first" or "non-fast-forward", a teammate has just merged: go back to step 1, then try again (at most three times; then tell the student what happened). Any other refusal ("remote rejected", a permission or proxy error, a sandbox): go to step 5.
+4. Tell the student in plain words what is now in the team's version, and that teammates get it the next time they ask their agent anything.
+5. If your tool cannot push to `main` (Codex on the web, or a sandbox that refuses), tell the student how to finish instead. In Codex on the web: click "Create PR" at the top of the task, then on GitHub "Merge pull request" and "Confirm merge". Elsewhere: give this link, filled in, `https://github.com/<owner>/<repo>/compare/main...<branch>?expand=1` (from `git remote get-url origin` and `git branch --show-current`), and the same clicks. Never GitHub's "Resolve conflicts" button: if GitHub shows conflicts, the student asks you "update my branch from main" and you do step 1 again.
+
+"Update my branch from main" alone means step 1 only: bring the team's work into the branch, without touching `main`.
 
 ## Setup check
 

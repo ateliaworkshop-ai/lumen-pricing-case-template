@@ -46,7 +46,7 @@ try {
   if ($prompt) {
     $prompt = [regex]::Replace($prompt, "-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----", "[REDACTED]")
     $prompt = [regex]::Replace($prompt, "\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|(?:sk|rk|pk)_(?:live|test)_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[abprs]-[A-Za-z0-9-]{10,}|sb_secret_[A-Za-z0-9_-]{10,}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})", "[REDACTED]")
-    $prompt = [regex]::Replace($prompt, "(?i)\b((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)\s*[:=]\s*)\S+", '$1[REDACTED]')
+    $prompt = [regex]::Replace($prompt, '(?i)(?<![A-Za-z])((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|mot[\s_-]*de[\s_-]*passe|mdp)(?:\s+[^\s:=]{1,20})?\s*(?:[:=]|\uFF1A|\s+(?:est|is)\s+)\s*)(?:"[^"\n]*"|\u00AB[^\u00BB\n]*\u00BB|\x27[^\x27\n]*\x27|\S+)', '$1[REDACTED]')
   }
 
   function Nz($v) { if ($v) { [string]$v } else { $null } }

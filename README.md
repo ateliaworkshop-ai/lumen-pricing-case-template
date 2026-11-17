@@ -13,10 +13,10 @@ You need your own licence: Claude (Pro or higher) or ChatGPT (Plus or higher, fo
 
 ## Rules
 
-1. **One branch per person, named after your GitHub login.** Your agent creates it for you. Never push to `main` directly, never force-push.
+1. **One branch per person, named after your GitHub login.** Your agent creates it for you. `main` is the team's shared version: only your agent puts your work there, when you say "merge my work". Never push to `main` yourself, never force-push.
 2. **Your prompts are logged automatically** in `prompts/` (one file per person per day). Do not edit or delete them. They reach ATELIA when your agent pushes your branch, which it does at the end of every request.
 3. **Never paste a password, a GitHub token or an API key** into your agent or into a file. The setup never needs one. API keys for your app go in a `.env` file, which is never committed. If a key ever lands in a commit, tell ATELIA at once so it can be revoked.
-4. **Merge often** into `main` (a pull request every hour or so), so the team's work stays together.
+4. **Say "merge my work" often** (about every hour), so the team's work stays together. Your agent brings in your teammates' work first, then adds yours to `main`.
 
 ## The case
 
