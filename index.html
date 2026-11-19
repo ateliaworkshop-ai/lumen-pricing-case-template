@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LUMEN — Germany Launch Cockpit</title>
+    <meta name="description" content="An explainable pricing and go-to-market decision cockpit for LUMEN's Germany launch." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">✦</span><span>LUMEN</span><small>LAUNCH COCKPIT</small></div>
+        <nav>
+          <a class="nav-item active" href="#overview"><span>◒</span> Overview</a>
+          <a class="nav-item" href="#scenario"><span>⌁</span> Scenario builder</a>
+          <a class="nav-item" href="#pricing"><span>↗</span> Pricing & channels</a>
+          <a class="nav-item" href="#roi"><span>◎</span> Marketing ROI</a>
+          <a class="nav-item" href="#market"><span>⌖</span> Market prioritizer</a>
+          <a class="nav-item" href="#positioning"><span>◈</span> Positioning</a>
+          <a class="nav-item" href="#timing"><span>◷</span> Timing & risk</a>
+        </nav>
+        <div class="sidebar-footer"><div class="status-dot"></div><span>Model ready</span><span class="mono">v0.1</span></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar"><div><div class="eyebrow">GERMANY MARKET ENTRY · 2026</div><h1>Decision cockpit</h1></div><div class="top-actions"><button class="ghost-btn" id="resetBtn">↺ Reset</button></div></header>
+
+        <section class="hero-grid" id="overview">
+          <div class="hero-copy"><span class="pill green">● LIVE SCENARIO</span><h2>Make the trade-off<br /><em>visible.</em></h2><p>LUMEN has one market-entry decision to make: find the price and channel mix that earns attention without burning runway.</p><div class="hero-note"><span>↳</span><span><strong>Current recommendation</strong><br />Balanced premium launch with a fast learning loop.</span></div></div>
+          <div class="recommendation-card"><div class="card-label">RECOMMENDATION · BASE CASE</div><div class="rec-main"><div><div class="rec-price" id="recPrice">€2.19</div><div class="rec-caption">recommended shelf price</div></div><div class="confidence"><span class="confidence-ring">78</span><span>confidence<br /><small>moderate-high</small></span></div></div><div class="rec-tags"><span>Premium accessible</span><span>Online + specialty retail</span><span>Q2 launch</span></div><div class="rec-explain" id="recExplain">€2.19 keeps acceptance above 50% while materially improving contribution versus the entry price. A blended launch lets LUMEN learn online and borrow credibility from premium shelves.</div></div>
+        </section>
+
+        <section class="overview-tools" aria-label="Tool summary">
+          <div class="section-heading compact"><div><div class="eyebrow">AT A GLANCE</div><h3>Explore the decision in six connected views.</h3></div><span class="muted">Click a card to open the detail</span></div>
+          <div class="tool-card-grid">
+            <a class="tool-card tool-card-main" href="#scenario"><span class="tool-icon">⌁</span><div><div class="tool-kicker">01 · SCENARIO BUILDER</div><h4>Shape the launch</h4><p>Move price, channel mix, budget, and timing to see the consequences.</p></div><strong>€2.19 <small>current price</small></strong><span class="tool-arrow">↗</span></a>
+            <a class="tool-card" href="#pricing"><span class="tool-icon">↗</span><div><div class="tool-kicker">02 · PRICING</div><h4>Balance demand & margin</h4><p>Compare acceptance with contribution at each price point.</p></div><strong id="overviewAcceptance">51.7% <small>acceptance</small></strong><span class="tool-arrow">↗</span></a>
+            <a class="tool-card" href="#roi"><span class="tool-icon">◎</span><div><div class="tool-kicker">03 · MARKETING ROI</div><h4>Protect payback</h4><p>Put budget behind the channels with the clearest economics.</p></div><strong id="overviewCac">€41 <small>scenario CAC</small></strong><span class="tool-arrow">↗</span></a>
+            <a class="tool-card" href="#market"><span class="tool-icon">⌖</span><div><div class="tool-kicker">04 · MARKET</div><h4>Find the first signal</h4><p>Prioritise German cities using demand and channel readiness.</p></div><strong>Berlin <small>82 / 100</small></strong><span class="tool-arrow">↗</span></a>
+            <a class="tool-card" href="#positioning"><span class="tool-icon">◈</span><div><div class="tool-kicker">05 · POSITIONING</div><h4>Own the space between</h4><p>See how LUMEN can sit between mass and boutique premium.</p></div><strong>Premium <small>accessible</small></strong><span class="tool-arrow">↗</span></a>
+            <a class="tool-card" href="#timing"><span class="tool-icon">◷</span><div><div class="tool-kicker">06 · TIMING & RISK</div><h4>Launch, learn, scale</h4><p>Sequence the launch around seasonality and repeat purchase proof.</p></div><strong>Q2 <small>launch window</small></strong><span class="tool-arrow">↗</span></a>
+          </div>
+        </section>
+
+        <section class="metric-grid" id="metrics"><div class="metric-card"><div class="metric-title">Expected acceptance <span>ⓘ</span></div><div class="metric-value" id="acceptance">51.7%</div><div class="metric-foot"><span class="trend positive">↑ 8.4 pts</span> vs premium price</div></div><div class="metric-card"><div class="metric-title">Contribution / unit <span>ⓘ</span></div><div class="metric-value" id="contribution">€0.93</div><div class="metric-foot"><span class="trend positive">↑ €0.28</span> vs entry price</div></div><div class="metric-card"><div class="metric-title">LTV : CAC <span>ⓘ</span></div><div class="metric-value" id="ltvCac">3.2 : 1</div><div class="metric-foot"><span class="trend positive">Above</span> 3.0× target</div></div><div class="metric-card"><div class="metric-title">Payback period <span>ⓘ</span></div><div class="metric-value" id="payback">8.6 mo</div><div class="metric-foot"><span class="trend caution">Watch</span> CFO threshold: 9 mo</div></div></section>
+
+        <section class="section-block" id="scenario"><div class="section-heading"><div><div class="eyebrow">01 · SCENARIO BUILDER</div><h3>Shape the launch, see the consequences.</h3></div><span class="scenario-name" id="scenarioName">Balanced premium launch</span></div><div class="scenario-grid"><div class="control-panel"><div class="control-row"><label>Price point <span class="value" id="priceValue">€2.19</span></label><input id="priceSlider" type="range" min="0" max="2" step="1" value="1" /><div class="range-labels"><span>€1.79</span><span>€2.19</span><span>€2.59</span></div></div><div class="control-row"><label>Retail / online mix <span class="value" id="mixValue">60 / 40</span></label><input id="mixSlider" type="range" min="0" max="100" step="5" value="60" /><div class="range-labels"><span>Online first</span><span>Retail first</span></div></div><div class="control-row"><label>Marketing budget <span class="value" id="budgetValue">€120k</span></label><input id="budgetSlider" type="range" min="60" max="240" step="10" value="120" /><div class="range-labels"><span>Lean</span><span>Accelerate</span></div></div><div class="control-row"><label>Launch timing <span class="value" id="timingValue">Q2 2026</span></label><select id="timingSelect"><option>Q1 2026</option><option selected>Q2 2026</option><option>Q3 2026</option><option>Q4 2026</option></select></div></div><div class="consequence-panel"><div class="panel-label">WHAT CHANGES IF YOU MOVE THE LEVERS?</div><div class="consequence-list" id="consequences"></div></div></div></section>
+
+        <section class="split-section" id="pricing"><div class="chart-card"><div class="section-heading compact"><div><div class="eyebrow">02 · PRICING & CHANNELS</div><h3>Margin grows. Acceptance bends.</h3></div><span class="legend"><i class="dot blue"></i>Acceptance <i class="dot amber"></i>Contribution</span></div><div class="bar-chart" id="priceChart"></div><div class="chart-foot">Candidate prices from price-test results · Contribution varies by channel</div></div><div class="insight-card"><div class="insight-icon">↗</div><div class="eyebrow">TRADE-OFF DETECTED</div><h3 id="tradeoffTitle">€2.19 is the balance point.</h3><p id="tradeoffCopy">The premium price adds margin, but acceptance falls by almost half. The middle price protects demand while giving the business room to fund acquisition.</p><div class="source-note">Based on Exhibit 11 · price_test_results.csv</div></div></section>
+
+        <section class="split-section lower" id="roi"><div class="roi-card"><div class="section-heading compact"><div><div class="eyebrow">03 · MARKETING ROI</div><h3>Budget where payback is legible.</h3></div></div><div class="roi-bars"><div class="roi-row"><span>Paid social</span><div class="mini-track"><i style="width:68%"></i></div><b>€38 CAC</b></div><div class="roi-row"><span>Creators</span><div class="mini-track"><i style="width:52%"></i></div><b>€29 CAC</b></div><div class="roi-row"><span>Retail activation</span><div class="mini-track"><i style="width:81%"></i></div><b>€46 CAC</b></div><div class="roi-row"><span>Search</span><div class="mini-track"><i style="width:43%"></i></div><b>€24 CAC</b></div></div><div class="roi-footer"><span>Current blend CAC</span><strong>€44</strong><span class="arrow">→</span><span>Scenario CAC</span><strong id="scenarioCac">€41</strong></div></div><div class="explain-card"><div class="eyebrow">WHY THIS RECOMMENDATION?</div><div class="explain-step"><span>1</span><div><strong>Evidence</strong><p>Search and creator channels show the clearest path to efficient first purchase.</p></div></div><div class="explain-step"><span>2</span><div><strong>Consequence</strong><p>A retail-heavy mix builds credibility but pushes payback beyond the CFO’s comfort zone.</p></div></div><div class="explain-step"><span>3</span><div><strong>Choice</strong><p>Use online for learning velocity, then scale specialty retail once repeat signals are proven.</p></div></div></div></section>
+
+        <section class="section-block market-section" id="market"><div class="section-heading"><div><div class="eyebrow">04 · MARKET PRIORITIZER</div><h3 id="marketTitle">Start where the signal is strongest.</h3></div><span class="muted">Scenario-adjusted ranking</span></div><div class="city-grid"><div class="city-card top"><div class="rank">01</div><div><h4>Berlin</h4><p id="berlinReason">Highest category density · strong functional-beverage fit</p></div><strong id="berlinScore">82</strong></div><div class="city-card"><div class="rank">02</div><div><h4>Hamburg</h4><p id="hamburgReason">Premium retail access · high repeat potential</p></div><strong id="hamburgScore">76</strong></div><div class="city-card"><div class="rank">03</div><div><h4>Munich</h4><p id="munichReason">Spending power · more established competition</p></div><strong id="munichScore">71</strong></div></div></section>
+
+        <section class="final-grid" id="positioning"><div class="positioning-card"><div class="section-heading compact"><div><div class="eyebrow">05 · POSITIONING MAP</div><h3 id="positioningTitle">Own the space between.</h3></div></div><div class="map"><span class="axis-label y">PERCEIVED VALUE</span><span class="axis-label x">PRICE</span><div class="competitor puls">PulsUp<small>€1.0–1.3</small></div><div class="competitor mate">Mate Libre<small>€1.4–1.8</small></div><div class="competitor volt">VoltFit<small>€2.1–2.7</small></div><div class="competitor root">Root & Rise<small>€2.5–3.1</small></div><div class="lumen-dot" id="lumenPosition">LUMEN<span>€2.19</span></div></div></div><div class="timing-card" id="timing"><div class="eyebrow">06 · TIMING & RISK</div><h3 id="timingTitle">Launch in Q2, learn by Q3.</h3><div class="timeline"><div class="time-item active"><span>Q2</span><p><strong>Launch</strong><br />Spring demand window</p></div><div class="time-item"><span>Q3</span><p><strong>Validate</strong><br />Repeat & retention read</p></div><div class="time-item"><span>Q4</span><p><strong>Scale</strong><br />Broaden retail footprint</p></div></div><div class="risk-box"><span>!</span><div><strong>Key risk</strong><p id="riskCopy">Premium positioning without repeat purchase proof could make CAC look acceptable while hiding weak LTV.</p></div></div></div></section>
+        <footer class="footer"><span>Model transparency: all outputs are directional and based on the case exhibits.</span><span class="mono">LUMEN / STRATEGY & ANALYTICS</span></footer>
+      </main>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
